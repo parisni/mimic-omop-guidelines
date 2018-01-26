@@ -1,19 +1,22 @@
 # Introduction
 
-En vrac... :
+<!-- medical database merging: objectives -->
 
-- Problématique générale : 
-    - corpus multiples, multilingues, avec des choses normalisées (LOINC, ICD, ...) et d'autres moins.
-    - volonté d'ouvrir des données (même si de nombreux écueils...)... Un "MIMIC international"
-    - nécessité d'assurer l'interopérabilité 
-    - volonté de garantir la reproductibilité
-- Quelle est la situation actuelle ? Quelles sont les limites ?
-- Quelle est l'approche envisagée ? 
-- Quelles sont les autres approches possibles ? Qu'ont-elles de moins bien ? 
-- Présentation générale d'OMOP
-
-- Mise en oeuvre
-
-- Mise en oeuvre pour le datathon (MIMIC avec porte vers les documents APHP)
+- multiples corpora, multiple languages
+- some normalized concepts (LOINC, ICD, ...) but 1. mapping can be improved and 2. other concepts are not normalized
+- interoperability
+- reproducilibity (through corpora, languages, etc.)
 
 
+<!-- medical database modelling - state of the art -->
+- i2b2
+- mimic
+- pcornet
+- fhir
+
+Limits of this state
+
+<!-- terminology mapping - state of the art-->
+
+
+<!-- this work: improvement on both modelling and terminology mapping -->
