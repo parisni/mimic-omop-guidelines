@@ -1,5 +1,10 @@
 # Results
 
-<!-- database modelling loss of data-->
+- comparaison MIMICIII / MIMIC OMOP (basic statistics)
 
-<!-- terminology mapping coverage -->
+- loss of data (try to quantify it)
+
+- terminology mapping coverage
+
+- derived values / data / scores
+

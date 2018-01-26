@@ -18,5 +18,8 @@ Limits of this state
 
 <!-- terminology mapping - state of the art-->
 
-
 <!-- this work: improvement on both modelling and terminology mapping -->
+
+<!-- presentation of multiple ICU database -->
+
+<!-- presentation of OMOP CDM -->
