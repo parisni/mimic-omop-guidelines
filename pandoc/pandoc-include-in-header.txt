@@ -1,0 +1,65 @@
+\usepackage[textwidth=12cm]{geometry}
+\usepackage{color,soul}
+\usepackage[utf8]{inputenc}
+
+%%%%%%%%%%%%
+%% Title font
+%%%%%%%%%%%%
+\makeatletter
+\renewcommand*\maketitle{%
+    \begingroup
+    \centering
+    \fontsize{16}{18}% 72pt on 80pt leading
+    \fontfamily{lmss}% Helvetica
+    \fontseries{b}% Bold
+    \fontshape{sl}% Slanted
+    \selectfont
+     \@title 
+    \par
+     \fontsize{14}{16}% 72pt on 80pt leading
+    \selectfont
+    \@date
+    \par
+    \@author
+    \vskip0.5in
+    \endgroup
+}
+\makeatother
+
+%%%%%%%%%%%%
+%% Highlight method (\action)
+%%%%%%%%%%%%
+% ``private macros''
+\makeatletter
+\def\@highlightttpeeknext{\futurelet\@nexttoken\@highlightttaux}
+\def\@highlighttt #1.{%
+    \def\@highlightttaux{\ifx\@nexttoken\egroup
+       \myhighlightmethod {#1}\else
+       \myhighlightmethod {#1.}\linebreak[2]%
+       \expandafter\@highlighttt\fi}%
+    \@highlightttpeeknext}
+
+\def\@plaintt {\futurelet\@nexttoken\@plainttaux}
+\def\@plainttaux {\ifx\@nexttoken\egroup\else
+                  \ifx\@nexttoken\bgroup
+                  \expandafter\expandafter\expandafter\@plaintta\else
+                  \expandafter\expandafter\expandafter\@plainttb\fi\fi}
+\def\@plaintta #1{{#1}\@plaintt}
+\def\@plainttb #1{\ifcat\@nexttoken a\penalty\hyphenpenalty \plaintthook
+  #1\else \plaintthook{#1}\linebreak[2]\fi\@plaintt}
+
+
+% ``commands''
+
+%\newcommand{\action}[1]{{\selectfont
+%   \@highlighttt #1.}}
+\newcommand{\action}[1]{\hl{#1}}
+
+\makeatother
+
+% ``customization''
+%\newcommand{\myhighlightmethod}[1]{\fboxsep0pt\colorbox{yellow}{\textbf{\strut#1}}}
+%\newcommand{\myhighlightmethod}[1]{\hl{#1}}
+%\newcommand{\plaintthook}{}
+
+%%%%%%%%%%%%
