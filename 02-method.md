@@ -1,6 +1,7 @@
+
 # Method
 
-<!-- quick presentation of mimicIII : our study case -->
+**quick presentation of mimicIII : our study case**
 
 - presentation of mimicIII : our case study
 
