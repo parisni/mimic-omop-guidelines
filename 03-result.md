@@ -21,7 +21,7 @@ cf extra : basic_statistics.sql
 - percent of records loaded from the source database to the CDM 
     - percent of columns
     - percent of rows
-  as have done many studies 21-25 
+  as have done other studies (1) 
 
 - Row
  
@@ -67,8 +67,5 @@ Need colaborative work
 
 ## dat-icu feedbacks (most of queries under 30 second ; simplified model VS MIMIC ; to much normalized for data scientist)
 
-21. F. FitzHenry; F.S. Resnic; S.L. Robbins; J. Denton; L. Nookala; D. Meeker; L. Ohno-Machado; M.E. Matheny. Creating a Common Data Model for Comparative Effectiveness with the Observational Medical Outcomes Partnership. Appl Clin Inform 2015; 6: 536–547
-22.Overhage JM, Ryan PB, Reich CG, Hartzema AG, Stang PE. Validation of a common data model for active safety surveillance research. Journal of the American Medical Informatics Association 2012; 19(1): 54–60. 
-23.Zhou X, Murugesan S, Bhullar H, Liu Q, Cai B, Wentworth C, Bate A. An evaluation of the THIN database in the OMOP Common Data Model for active drug safety surveillance. Drug Safety 2013, 36(2):119–134. i
-24.Matcho A, Ryan P, Fife D, Reich C. Fidelity assessment of a clinical practice research datalink conversion to the OMOP common data model. Drug Safety 2014; 37(11): 945–959.
-25.DeFalco F, Ryan P, Soledad Cepeda M. Applying standardized drug terminologies to observational health care databases: a case study on opioid exposure. Health Serv Outcomes Res Method 2013, 13(1):58–67.
+
+1. F. FitzHenry Creating a Common Data Model for Comparative Effectiveness with the Observational Medical Outcomes Partnership. Appl Clin Inform 2015; 6: 536–547
