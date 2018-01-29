@@ -23,7 +23,8 @@ cf extra : basic_statistics.sql
     - percent of rows
   as have done many studies 21-25 
 
-- Row 
+- Row
+ 
 | items                             |rows per persons|
 |-----------------------------------|----------------|
 | Nb patients                       | 100 % |
