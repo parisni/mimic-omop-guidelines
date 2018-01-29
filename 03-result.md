@@ -2,7 +2,8 @@
 
 ## comparaison MIMICIII / MIMIC OMOP (basic statistics)
 
-| 					|OMOP-MIMIC 			| MIMICIII |
+| items					|OMOP-MIMIC 			| MIMICIII |
+|---------------------------------------|-------------------------------|----------|
 | Persons (Number) 			| 46.520 			| 46.520 |
 | Admissions (Number) 			| 58.976 			| 58.976 |
 | Icustays (Number)   			| 61.532 			| 71.576 |
@@ -23,7 +24,7 @@ cf extra : basic_statistics.sql
   as have done many studies 21-25 
 
 - Row 
-|                                   |rows per persons|
+| items                             |rows per persons|
 |-----------------------------------|----------------|
 | Nb patients                       | 100 % |
 | Nb admissions                     | 100 % |
