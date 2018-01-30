@@ -6,8 +6,9 @@
   MIMIC-III (Medical Information Mart for Intensive Care) is freely-available database comprising deidentified 
   health-related data associated with over forty thousand patients who stayed in critical care units between 2001 and 2012(1).
   It includes both administrative data (demographic, ICD9, procedures) and clinical data (examination, laboratory results, medication administration and notes)
-  There are two basic types of data : low - middle frequency data which are stored in a relation model and the high granulary data as the waveform of EKG, EEG.
-  In this article we will talk only about the first. 
+  Three types of data are collected : clinical data from hospital information system, death data from the social security database
+  and the high granulary data as the waveform of EKG, EEG.
+  In this article we won't speak about high frequency datas. 
 
   The aim of MIMIC-III is to provide open datas, more collaborative and reproductitible studies with shared codes. 
   The mimic documentation is a available online physionet.org/about/mimic/. 
