@@ -11,6 +11,7 @@
 ==XT: What are the pros and cons of this solution against keeping the structure but producing some "query plans" for the frequent accesses? Several participants at dat-icu told me that at the end of the end, most of the teams struggled to finally produce queries that were very similar to their neighbors' queries==
 
 **terminology mapping**
+
 - athena existing standard mapping
 - athena missing concepts
 

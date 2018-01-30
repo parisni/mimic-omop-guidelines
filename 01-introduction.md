@@ -37,7 +37,7 @@ mapping:
 **presentation of multiple ICU database**
 
 Multiple ICU databases are already available.
-- eICU (3, freely-availablecomprising deidentified with more than hundreds of thousands of patients. Data are available to researchers via PhysioNet, similar to the MIMIC database
+- eICU (3), freely-availablecomprising deidentified with more than hundreds of thousands of patients. Data are available to researchers via PhysioNet, similar to the MIMIC database
 - MIMIC,freely-available last release MIMIC-III
 - OUTCOMEREA (http://outcomerea.fr/index.php)
 - CUBREA (http://www.pifo.uvsq.fr/hebergement/cubrea/cr_index.htm), with many ICU from APHP with > 2000000 icu stays
@@ -75,3 +75,8 @@ We’ll also discuss about potential loss of information links to this ETL.
 6. F. FitzHenry and Al. Creating a Common Data Model for Comparative Effectiveness with the Observational Medical Outcomes Partnership. Appl Clin Inform 2015; 6: 536–547
 7. S. Bayzid and Al. Conversion of MIMIC to OHDSI CDM. National Center for Biomedical Communications, Bethesda, Maryland
 
+Two articles (suggested by Christel) on conversion of Sniiram-like and EHR to OMOP:
+
+7. You SC, Lee S, Cho SY, Park H, Jung S, Cho J, Yoon D, Park RW. Conversion of National Health Insurance Service-National Sample Cohort (NHIS-NSC) Database into Observational Medical Outcomes Partnership-Common Data Model (OMOP-CDM). Stud Health Technol Inform. 2017;245:467-470. PubMed PMID: 29295138.
+
+8. Yoon D, Ahn EK, Park MY, Cho SY, Ryan P, Schuemie MJ, Shin D, Park H, Park RW. Conversion and Data Quality Assessment of Electronic Health Record Data at a Korean Tertiary Teaching Hospital to a Common Data Model for Distributed Network Research. Healthc Inform Res. 2016 Jan;22(1):54-8. doi: 10.4258/hir.2016.22.1.54. Epub 2016 Jan 31. PubMed PMID: 26893951; PubMed Central PMCID: PMC4756059.
