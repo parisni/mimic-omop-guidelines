@@ -13,11 +13,11 @@
 **medical database modelling - state of the art**
 
 - i2b2
-opensource, relational, one central table called observation_fact table.
-Provide good interface for cohort selection
+is an opensource common data model. The central table is called observation_fact table. 
+I2B2 prrovides good interface for cohort selection. Compare to OMOP-CDM the hierarchies are organise with a 'concept path' column. Two concepts are linked by a single relationship
 - fhir
-FHIR,Fast Healthcare Interoperability Resources is a standard for exchanging healthcare information electronically(https://www.hl7.org/fhir/overview.html)
-Some papers have showed that collaboration between this technology may provide both applicative software and analytic research(1
+FHIR,Fast Healthcare Interoperability Resources is a standard for exchanging healthcare information electronically (https://www.hl7.org/fhir/overview.html)
+Some papers have showed that collaboration between FHIR  may provide both applicative software and analytic research and showed great promise(1)
 - pcornet
 PCORnet, the National Patient-Centered Clinical Research Network, is an opensource initiative of the Patient-Centered Outcomes Research Institute (PCORI)
 PCORnet Common Data Model (CDM) hoping to integrate multiple data from different sources.

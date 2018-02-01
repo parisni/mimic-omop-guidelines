@@ -10,18 +10,26 @@
   and the high granulary data as the waveform of EKG, EEG.
   In this article we won't speak about high frequency datas. 
 
-  The aim of MIMIC-III is to provide open datas, more collaborative and reproductitible studies with shared codes. 
+  The aim of MIT with MIMIC-III is to provide open datas, more collaborative and reproductitible studies with shared codes. 
+  In this purpose the transformation from MIMICIII to MIMIC-OMOP with standardized mapping concept is important.
   The mimic documentation is a available online physionet.org/about/mimic/. 
   A public github was created : https://github.com/MIT-LCP/mimic-code with many contributers around the world. 
-
+ 
 - methodology of ETL and ETL mapping specifications
-	- preprocessing of mimic : add emergency stays, unique number of all the database (mimic_id), 
+	- preprocessing of mimic : add emergency stays, unique number of all the database (mimic_id), dropping of icustays table which is a derived table from transfers and assignation of a new visit_detail pour each admission in ICU
 	- technical (database, programming language, subset,  sequence, unit testing)
 	- conceptual (concept mapping)
+	- concept-driven methodology : the domain of each local concept drive the concept to the right table
+	- try not to infer results : specimen for labevents, start/end_datetime for drug_exposure 
+	- fact_relationship : for drug solution, microbiology / antibiograms, caresites / 
 
 - modifications of OMOP model (few columns) 
 	- structural (columns type, columns name, new columns)
+		- visit_detail : adding of admitting_source_value, admitting_source_concept_id, admitting_concept_id, discharge_to_source_value, discharge_to_source_concept_id, discharge_to_concept_id
 	- conceptual (new concepts specific to ICU or general)
+		- measurement_type_concept_id
+		- visit_detail_type_concept_id
+                
 
 
 

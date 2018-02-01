@@ -66,7 +66,12 @@ Need colaborative work
 - Note_NLP
 - SOFA, SAPSII
 
-## dat-icu feedbacks (most of queries under 30 second ; simplified model VS MIMIC ; to much normalized for data scientist)
+## dat-icu feedbacks 
+- with big data APHP platforms
+- most of queries under 30 second ; simplified model VS MIMIC ; to much normalized for data scientist)
 
+## others
+- estimation of number of work hours
+- size of MIMIC OMOP, row number for the bigest relation (measurement)
 
 1. F. FitzHenry Creating a Common Data Model for Comparative Effectiveness with the Observational Medical Outcomes Partnership. Appl Clin Inform 2015; 6: 536–547
