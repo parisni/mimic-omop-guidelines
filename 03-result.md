@@ -3,6 +3,7 @@ The OMOP-CDM contains n data tables. We populated m tables.
 From MIMICIII we create a standardized model called MIMICIII-OMOP.
 
 | Omop tables    	| Source tables|
+|-----------------------|--------------|
 | PERSONS 		| patients, admissions |
 | DEATH 		| patients, admissions |
 | VISIT_OCCURRENCE 	| admissions |
