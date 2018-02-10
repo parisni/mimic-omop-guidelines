@@ -1,5 +1,25 @@
-
 # Results
+
+## table populated with their mimic source table link
+| Omop tables    	| Source tables|
+| PERSONS 		| patients, admissions |
+| DEATH 		| patients, admissions |
+| VISIT_OCCURRENCE 	| admissions |
+| VISIT_DETAIL 		| transfers, service |
+| MEASUREMENT 		| chartevents, labevents, microbiologyevents, outputevents |
+| OBSERVATION 		| admissions, chartevents, datetimevvents, drgcodes |
+| DRUG_EXPOSURE 	| prescriptions, inputevents_cv, inputevents_mv|
+| PROCEDURE_OCCURRENCE 	| cptevents, procedureevents_mv, procedure_icd|
+| CONDITION_OCCURRENCE 	| admissions, diagnosis_icd |
+| NOTE 			| notevents|
+| NOTE_NLP 		| noteevents |
+| COHORT_ATTRIBUTE 	| callout |
+| CARE_SITE 		| trasnfers, service |
+| PROVIDER 		| caregivers |
+| OBSERVATION_PERIOD 	| patients, admissions |
+| SPECIMEN 	 	| chartevents, labevents, microbiologyevents |
+
+- observation_period provide duplicate information: we fill this table to respect the omop model and tools
 
 ## comparaison MIMICIII / MIMIC OMOP (basic statistics)
 
@@ -15,6 +35,8 @@
 | Mortality, ICU (Number, %)        	| 5815 (9%)                   	| 5814 (9%) |
 | Mortality, hospital (Number, %)   	| 4559 (6%)                   	| 4511 (7%) |
 | Lab measurement per admissions (mean) |                    		|  |
+
+papier + test
 
 cf extra : basic_statistics.sql
 
@@ -41,8 +63,7 @@ cf extra : basic_statistics.sql
 remark all the error lign are deleted
 
 - Columns
-% of sources columns which fits to CDM
-ex : storetime and chartime
+% of sources columns which doesn't fits to CDM
 
 ## terminology mapping coverage
 - ICD-9-CM 
@@ -73,5 +94,20 @@ Need colaborative work
 ## others
 - estimation of number of work hours
 - size of MIMIC OMOP, row number for the bigest relation (measurement)
+- chartevents and lavents provide many number field as a string which is not handy for statistical analyse. We provide a standard and easy improval by the community model to extract numerical value from string
+	- operators have been extracted to fill operator_concept_id column
+	- numeric value has been extracted to fill value_as_number column
+	- units of measures have been extracted to fill unit_concept_id column
 
 1. F. FitzHenry Creating a Common Data Model for Comparative Effectiveness with the Observational Medical Outcomes Partnership. Appl Clin Inform 2015; 6: 536–547
+
+
+
+
+
+
+	
+
+
+
+

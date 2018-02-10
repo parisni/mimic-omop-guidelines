@@ -4,7 +4,7 @@
 
 - multiple corpora, multiple languages
 - some normalized concepts (LOINC, ICD, ...) but 1. mapping can be improved and 2. other concepts are not normalized
-- interoperability
+- interoperability, international research
 - reproducilibity (through corpora, languages, etc.)
 - more data: better outcomes
 - decrease costs and investment in developing algorithms and help to performs transferable analyses
@@ -24,7 +24,7 @@ The most known are the
 - International Statistical Classification of Diseases and Related Health Problems (ICD) maintained by WHO
 
 The coverage of this classifications is quite different because of the basis of their purpose (diagnosis, therapeutic, administrative..) and they don't solve the semantic heterogenicity in healthcare.
-Ontology has been developped to provide more interoperability. It describes common vocabularies for researchers who need to share information in a domain. Reusing knowledge in new applications and to sharing  encoded knowledge across software environments is a major aim in deveopping this ontologeies
+Ontology has been developped to provide more interoperability. It describes common vocabularies for researchers who need to share information in a domain. Reusing knowledge in new applications and to sharing  encoded knowledge across software environments is a major aim in deveopping this ontologies(10)
 
 **terminology mapping - state of the art**
 
@@ -101,7 +101,4 @@ Two articles (suggested by Christel) on conversion of Sniiram-like and EHR to OM
 9. Yoon D, Ahn EK, Park MY, Cho SY, Ryan P, Schuemie MJ, Shin D, Park H, Park RW. Conversion and Data Quality Assessment of Electronic Health Record Data at a Korean Tertiary Teaching Hospital to a Common Data Model for Distributed Network Research. Healthc Inform Res. 2016 Jan;22(1):54-8. doi: 10.4258/hir.2016.22.1.54. Epub 2016 Jan 31. PubMed PMID: 26893951; PubMed Central PMCID: PMC4756059.
 
 
-
-- http://library.ahima.org/doc?oid=61537#.Wnw3woKDOu5
-
-Mapping the ATC classification to the UMLS Metathesaurus: some pragmatic applications
+10. T. Gruber. Toward principles for the design of ontologies used for knowledge sharing?, International journal of human-computer studies, 1995
