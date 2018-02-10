@@ -1,5 +1,10 @@
 # data source
 
+- several other open-source databases
+	- eICU (3), freely-available comprising deidentified with more than hundreds of thousands of patients. Data are available to researchers via PhysioNet, similar to the MIMIC database
+	- OUTCOMEREA (http://outcomerea.fr/index.php)
+	- CUBREA (http://www.pifo.uvsq.fr/hebergement/cubrea/cr_index.htm), with many ICU from APHP with > 2000000 icu stays
+
 - presentation of mimicIII : our case study
   MIMIC-III (Medical Information Mart for Intensive Care) is freely-available database comprising deidentified 
   health-related data associated with over forty thousand patients who stayed in critical care units between 2001 and 2012(1).
@@ -9,16 +14,19 @@
   In this article we won't speak about high frequency datas. 
 
   The aim of MIT with MIMIC-III is to provide open datas, more collaborative and reproductitible studies with shared codes. 
-  In this purpose the transformation from MIMICIII to MIMIC-OMOP with standardized mapping concept is important.
+  MIMIC is a large used database with x number of publications.
+  In this purpose the transformation from MIMICIII to MIMICIII-OMOP with standardized mapping concept is important.
   The mimic documentation is a available online physionet.org/about/mimic/. 
   A public github was created : https://github.com/MIT-LCP/mimic-code with many contributers around the world. 
 
 # ETL mapping specifications
-- The key table for omop is the concept table.
+- The key table for omop is the concept table. The standard vocabulary of OMOP is mainly based on the Systematized Nomenclature of Medicine Clinical Terms (SNOMED-CT)
 - A mapping between many classification and the standard omop ones (ICD-9 and snomed-CT for examples) is already provides with concept_relationship.
 - Local code for mimiciii such as admission diagnoses, demographic status, drugs, signs and symptoms were manually mapped to OMOP standard models by several participants. For example local drug codes were mapped to the OMOP standardized vocabularies, which use RxNorm. This work was followed and check by a physician. All laboratory exams, exit diagnoses and procedures were already mapped to standard classication. All the csv files used for the mapping are available on github
 	
 # methodology of ETL
+
+All the process is available freely on the github website.
 
 ## Preprocessing and modification of mimic
 
@@ -60,7 +68,3 @@
 	
 1. A.E.W. Johnson, Tom J. Pollard and Al. MIMIC-III, a freely accessible critical care database. Scientific Data. 2016-5-24
 2. https://mimic.physionet.org/mimictables/icustays/
-
-
-
-

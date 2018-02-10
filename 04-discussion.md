@@ -21,3 +21,7 @@ What else could have been done instead?
 - large community mapping: this was too early to open the work to public so that effort and direction could be kept
 
 
+
+OMOP model
+- enables observational studies to be conducted using multiple data sources
+-  while confidential personal health data remain with the original data holders

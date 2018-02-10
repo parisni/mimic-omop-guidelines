@@ -1,6 +1,7 @@
-# Results
+# table populated with their mimic source table link
+The OMOP-CDM contains n data tables. We populated m tables.
+From MIMICIII we create a standardized model called MIMICIII-OMOP.
 
-## table populated with their mimic source table link
 | Omop tables    	| Source tables|
 | PERSONS 		| patients, admissions |
 | DEATH 		| patients, admissions |
@@ -21,7 +22,10 @@
 
 - observation_period provide duplicate information: we fill this table to respect the omop model and tools
 
-## comparaison MIMICIII / MIMIC OMOP (basic statistics)
+# Quality evaluation
+
+##  comparaison MIMICIII / MIMIC OMOP (basic statistics)
+The table lists the baseline characterization of the population of MIMICIII-OMOP compared with MIMICIII.
 
 | items					|OMOP-MIMIC 			| MIMICIII |
 |---------------------------------------|-------------------------------|----------|
@@ -69,8 +73,7 @@ remark all the error lign are deleted
 - ICD-9-CM 
    A part of source data for condition_occurrence was ICD-9 codes. 
    The OMOP common standard vocabulary, SNOMED-CT, did not cover all ICD-9-CM codes (95%)
-   Moreover, not all ICD-9-CM codes can have one-to-one mapping to SNOMED, some are one-to-many (28%)
-   https://www.nlm.nih.gov/research/umls/mapping_projects/icd9cm_to_snomedct.html
+   Moreover, not all ICD-9-CM codes can have one-to-one mapping to SNOMED, some are one-to-many (28%)(2)
 - LOINC
 - RxNorm
 
@@ -78,20 +81,29 @@ remark all the error lign are deleted
 Need colaborative work
 
 - % of domain_id not in adequation with table name 
+	- some are logical because observation domain may be measurement table and vice verca
 
 - we have mapped  many source concept to one standard concept
   is it the same meaning? distribution of values sometimes very different
 
-## derived values / data / scores
+## ACHILLES evaluation
+ACHILLES is open-source software application developped by OHDSI and Achilles Heel provided data quality checker
+Other team used this tool to practice data quality assess(4).
+Our result ...
+
+# Community sharing
+
+We provided many derived values. Community is welcome to improve it
 - F/P, corrected Ca / K, BMI
-- Note_NLP
+- Note_NLP with section splitting. The algorythm is freely accessible here
 - SOFA, SAPSII
 
-## dat-icu feedbacks 
-- with big data APHP platforms
+# Feedbacks of real MIMICIII-OMOP testing
+- this work has been done with APHP to test OMOP model in real statistical condition. A datathon was organised in collaboration with the MIT.(3)
+We also test the big data APHP platforms.
 - most of queries under 30 second ; simplified model VS MIMIC ; to much normalized for data scientist)
 
-## others
+# others
 - estimation of number of work hours
 - size of MIMIC OMOP, row number for the bigest relation (measurement)
 - chartevents and lavents provide many number field as a string which is not handy for statistical analyse. We provide a standard and easy improval by the community model to extract numerical value from string
@@ -100,14 +112,6 @@ Need colaborative work
 	- units of measures have been extracted to fill unit_concept_id column
 
 1. F. FitzHenry Creating a Common Data Model for Comparative Effectiveness with the Observational Medical Outcomes Partnership. Appl Clin Inform 2015; 6: 536–547
-
-
-
-
-
-
-	
-
-
-
-
+2. https://www.nlm.nih.gov/research/umls/mapping_projects/icd9cm_to_snomedct.html
+3. http://blogs.aphp.fr/dat-icu/
+4. Y.Dukyong and Al.Conversion and Data Quality Assessment of Electronic Health Record Data at a Korean Tertiary Teaching Hospital to a Common Data Model for Distributed Network Research.Healthcare Informatics Research 2016; 54
