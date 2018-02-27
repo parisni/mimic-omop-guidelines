@@ -42,7 +42,7 @@ FROM mimiciii.icustays;
 SELECT COUNT(distinct visit_detail_id) AS icustay_omop
 FROM omop.visit_detail
 WHERE visit_detail_concept_id = 581382                             -- concept.concept_name = 'Inpatient Intensive Care Facility'
-AND visit_type_concept_id = 2000000006;                            -- concept.concept_name = 'Ward and physical location'
+AND visit_detail_type_concept_id = 2000000006;                            -- concept.concept_name = 'Ward and physical location'
 
 -- More tests
  
@@ -54,7 +54,7 @@ FROM mimiciii.icustays;
 SELECT COUNT(distinct person_id), COUNT(distinct visit_occurrence_id)
 FROM omop.visit_detail
 WHERE visit_detail_concept_id = 581382                             -- concept.concept_name = 'Inpatient Intensive Care Facility'
-AND visit_type_concept_id = 2000000006;                            -- concept.concept_name = 'Ward and physical location'
+AND visit_detail_type_concept_id = 2000000006;                            -- concept.concept_name = 'Ward and physical location'
 
 
 -- ----------------------------------------------------------------------------------
@@ -210,10 +210,10 @@ SELECT percentile_25 AS Q1_iculos_mimic
 SELECT percentile_25 AS Q1_iculos_omop
        , median AS median_iculos_omop
        , percentile_75 AS Q3_iculos_omop
-       , MIN( EXTRACT(EPOCH FROM visit_end_datetime  - visit_start_datetime)/60.0/60.0/24.0    )    AS minimum_iculos_omop
-       , MAX( EXTRACT(EPOCH FROM visit_end_datetime  - visit_start_datetime)/60.0/60.0/24.0  )    AS maximum_iculos_omop
-       , CAST(AVG(  EXTRACT(EPOCH FROM visit_end_datetime  - visit_start_datetime)/60.0/60.0/24.0  ) AS INTEGER)   AS mean_iculos_omop
-       , STDDEV( EXTRACT(EPOCH FROM visit_end_datetime  - visit_start_datetime)/60.0/60.0/24.0    ) AS stddev_iculos_omop
+       , MIN( EXTRACT(EPOCH FROM visit_detail_end_datetime  - visit_detail_start_datetime)/60.0/60.0/24.0    )    AS minimum_iculos_omop
+       , MAX( EXTRACT(EPOCH FROM visit_detail_end_datetime  - visit_detail_start_datetime)/60.0/60.0/24.0  )    AS maximum_iculos_omop
+       , CAST(AVG(  EXTRACT(EPOCH FROM visit_detail_end_datetime  - visit_detail_start_datetime)/60.0/60.0/24.0  ) AS INTEGER)   AS mean_iculos_omop
+       , STDDEV( EXTRACT(EPOCH FROM visit_detail_end_datetime  - visit_detail_start_datetime)/60.0/60.0/24.0    ) AS stddev_iculos_omop
   FROM
   (SELECT MAX( CASE WHEN( percentile = 1    ) THEN los END    ) AS percentile_25
         , MAX( CASE WHEN( percentile = 2    ) THEN los END    ) AS median
@@ -227,17 +227,17 @@ SELECT percentile_25 AS Q1_iculos_omop
                         ) + 1
           as percentile
           FROM
-             ( SELECT EXTRACT(EPOCH FROM visit_end_datetime  - visit_start_datetime)/60.0/60.0/24.0 as los, count(*) AS nb_los
+             ( SELECT EXTRACT(EPOCH FROM visit_detail_end_datetime  - visit_detail_start_datetime)/60.0/60.0/24.0 as los, count(*) AS nb_los
                 FROM omop.visit_detail
 		WHERE visit_detail_concept_id = 581382               -- concept.concept_name = 'Inpatient Intensive Care Facility'
-		AND visit_type_concept_id = 2000000006               -- concept.concept_name = 'Ward and physical location'
-                GROUP BY EXTRACT(EPOCH FROM visit_end_datetime  - visit_start_datetime)/60.0/60.0/24.0
+		AND visit_detail_type_concept_id = 2000000006               -- concept.concept_name = 'Ward and physical location'
+                GROUP BY EXTRACT(EPOCH FROM visit_detail_end_datetime  - visit_detail_start_datetime)/60.0/60.0/24.0
                ) as counter
          ) as p
      WHERE percentile <= 3
   ) as percentile_table, omop.visit_detail
   WHERE visit_detail_concept_id = 581382                             -- concept.concept_name = 'Inpatient Intensive Care Facility'
-  AND visit_type_concept_id = 2000000006                             -- concept.concept_name = 'Ward and physical location'
+  AND visit_detail_type_concept_id = 2000000006                             -- concept.concept_name = 'Ward and physical location'
   GROUP BY percentile_25, median, percentile_75;
 
 -- ----------------------------------------------------------------------------------
@@ -305,10 +305,10 @@ WITH tmp AS
         SELECT visit_detail_id
         FROM omop.visit_detail
 	WHERE visit_detail_concept_id = 581382                    -- concept.concept_name = 'Inpatient Intensive Care Facility'
-	AND visit_type_concept_id = 2000000006                    -- concept.concept_name = 'Ward and physical location'
+	AND visit_detail_type_concept_id = 2000000006                    -- concept.concept_name = 'Ward and physical location'
 	AND discharge_to_concept_id = 4216643                     -- concept.concept_name = 'Patient died'
   ) d USING (visit_detail_id)
   WHERE t.visit_detail_concept_id = 581382
-  AND t.visit_type_concept_id = 2000000006
+  AND t.visit_detail_type_concept_id = 2000000006
 )
 SELECT dead AS  dead_icu_omop, total AS total_icu_omop, dead * 100 / total AS dead_percent_icu_omop FROM tmp;
