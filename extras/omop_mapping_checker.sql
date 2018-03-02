@@ -41,7 +41,7 @@ FROM prescriptions_ndc
 LEFT JOIN ndc_to_concept_id USING (ndc)
 LEFT JOIN rxnorm_to_concept_id USING (concept_id)
 ) 
-to './paper_omop/extras/check_ndc_rxnorm_mapping.csv' DELIMITER ',' csv header; 						-- resultat = 100 lignes
+to './paper_omop/extras/checks/check_ndc_rxnorm_mapping.csv' DELIMITER ',' csv header; 						-- resultat = 100 lignes
 																-- 15 lignes avec une erreur (soit dans le ndc, soit car ndc non mappes)
 
 SELECT count(*) From concept where vocabulary_id = 'NDC'; 									-- 679882
@@ -97,7 +97,7 @@ FROM condition_occurrence
 LEFT JOIN icd_to_concept_id USING (concept_code)
 LEFT JOIN snomed_to_concept_id USING (concept_id)
 ) 
-to './paper_omop/extras/check_icd9CM_snomed_mapping.csv' DELIMITER ',' csv header; 						-- resultat = 85 lignes
+to './paper_omop/extras/checks/check_icd9CM_snomed_mapping.csv' DELIMITER ',' csv header; 						-- resultat = 85 lignes
 																-- 0 erreurs
 
 SELECT count(*) From concept where vocabulary_id = 'ICD9CM';									-- 18672
@@ -128,7 +128,7 @@ LEFT JOIN standard_cpt4 USING (cpt_cd)
 	JOIN concept standard ON standard.concept_id = standard_cpt4.procedure_concept_id
 LIMIT 100
 ) 
-to './paper_omop/extras/check_CPT4_snomed_mapping.csv' DELIMITER ',' csv header; 							-- resultat = 85 lignes
+to './paper_omop/extras/checks/check_CPT4_snomed_mapping.csv' DELIMITER ',' csv header; 							-- resultat = 85 lignes
 																	-- 0 erreurs
 */
 --SELECT count(*) From concept where vocabulary_id = 'CPT4';										-- 15446
