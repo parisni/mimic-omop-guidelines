@@ -65,10 +65,11 @@ cf extra : basic_statistics.sql
 | Drugs                             |  % |
 | Notes                             |  % |
 
-remark all the error lign are deleted
+remark all the error lign are deleted ( prescriptions, inputevents_mv, chartevents, procedureevents_mv, note)
 
 - Columns
 % of sources columns which doesn't fits to CDM
+storetime!!
 
 ## terminology mapping coverage
 - ICD-9-CM 
@@ -106,6 +107,7 @@ We also test the big data APHP platforms.
 
 # others
 - estimation of number of work hours
+- ethnicity_concept_id : only two strange concept_name hispanic or non_hispanic
 - size of MIMIC OMOP, row number for the bigest relation (measurement)
 - chartevents and lavents provide many number field as a string which is not handy for statistical analyse. We provide a standard and easy improval by the community model to extract numerical value from string
 	- operators have been extracted to fill operator_concept_id column
