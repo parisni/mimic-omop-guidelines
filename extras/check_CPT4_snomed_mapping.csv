@@ -1,0 +1,101 @@
+source_concept_id,source_name,procedure_concept_id,standard_name
+2105330,Osteotomy; fibula,4218294,Osteotomy of fibula
+2104019,"Open treatment of radial head or neck fracture, includes internal fixation or radial head excision, when performed",4290101,Excision of radial head
+2107736,"Repair blood vessel with graft other than vein; intrathoracic, with bypass",4272324,Cardiopulmonary bypass operation
+2108872,"Esophagoscopy, flexible, transoral; with removal of foreign body(s)",4294382,Esophagogastroduodenoscopy
+2212349,"Gases, blood, any combination of pH, pCO2, pO2, CO2, HCO3 (including calculated O2 saturation); with O2 saturation, by direct measurement, except pulse oximetry",4020553,Oxygen saturation measurement
+2109388,"Anastomosis, Roux-en-Y, of intrahepatic biliary ducts and gastrointestinal tract",4275715,Direct anastomosis of intrahepatic ducts and gastrointestinal tract
+2105228,"Decompression fasciotomy, leg; anterior and/or lateral, and posterior compartment(s)",4178757,Lateral fasciotomy
+2108870,"Esophagoscopy, flexible, transoral; with band ligation of esophageal varices",4294382,Esophagogastroduodenoscopy
+2103555,"Posterior segmental instrumentation (eg, pedicle fixation, dual rods with multiple hooks and sublaminar wires); 13 or more vertebral segments (List separately in addition to code for primary procedure)",4181745,Posterior spinal instrumentation with segmental fixation
+2105956,"Arthroscopy, shoulder, surgical; debridement, extensive",4077445,Arthroscopy of shoulder with extensive debridement
+2104932,"Closed treatment of hip dislocation, traumatic; requiring anesthesia",4179768,Reduction of closed traumatic hip dislocation with anesthesia
+2110409,Burr hole(s) or trephine; with drainage of brain abscess or cyst,4285891,Trephination of cranium
+2108892,"Esophagogastroduodenoscopy, flexible, transoral; with band ligation of esophageal/gastric varices",4141512,Fiberoptic endoscopic rubber band ligation of upper gastrointestinal tract varices
+2109722,"Cystectomy, complete, with ureteroileal conduit or sigmoid bladder, including intestine anastomosis",4353381,Ureteroileal conduit with ileal bladder including bowel anastomosis
+2109489,"Repair initial inguinal hernia, age 5 years or older; reducible",4071096,Primary repair of inguinal hernia
+2514404,"Initial hospital care, per day, for the evaluation and management of a patient, which requires these 3 key components: A detailed or comprehensive history; A detailed or comprehensive examination; and Medical decision making that is straightforward or of ",4313303,Evaluation and management of inpatient
+2108012,"Exploration (not followed by surgical repair), with or without lysis of artery; carotid artery",4337385,Exploration of carotid artery
+2107593,"Placement of proximal or distal extension prosthesis for endovascular repair of infrarenal abdominal aortic or iliac aneurysm, false aneurysm, or dissection; initial vessel",4146646,Abdominal aortic aneurysm stenting
+2104833,"Acetabuloplasty; (eg, Whitman, Colonna, Haygroves, or cup type)",4249895,Acetabuloplasty
+2110330,"Induced abortion, by dilation and evacuation",4170151,Evacuation of uterus
+2102978,"Autograft for spine surgery only (includes harvesting the graft); local (eg, ribs, spinous process, or laminar fragments) obtained from same incision (List separately in addition to code for primary procedure)",4020472,Autogenous bone graft
+2104493,"Repair, extensor tendon, finger, primary or secondary; without free graft, each tendon",4078271,Finger operation
+2109318,"Hepatectomy, resection of liver; total right lobectomy",4247012,"Hepatectomy, total right lobectomy"
+2109086,Revision of colostomy; complicated (reconstruction in-depth) (separate procedure),4171364,"Revision of colostomy, complicated"
+2108962,"Gastrectomy, total; with esophagoenterostomy",4088171,Esophagoduodenostomy with complete gastrectomy
+2102701,"Excision of chest wall tumor involving ribs, with plastic reconstruction; without mediastinal lymphadenectomy",4080174,Limited thoracoplasty
+2109458,"Unlisted laparoscopy procedure, abdomen, peritoneum and omentum",4040396,Procedure on abdomen
+2110649,"Laminotomy (hemilaminectomy), with decompression of nerve root(s), including partial facetectomy, foraminotomy and/or excision of herniated intervertebral disc, reexploration, single interspace; each additional lumbar interspace (List separately in additi",4332423,Decompression of spinal nerve root
+42742539,Abdominal paracentesis (diagnostic or therapeutic); without imaging guidance,4231419,Abdominal paracentesis
+2108018,"Exploration (not followed by surgical repair), with or without lysis of artery; other vessels",4198388,Exploration of artery
+2108456,Hematopoietic progenitor cell (HPC); allogeneic transplantation per donor,4174368,Allogeneic transplantation
+2103417,"Incision and drainage, open, of deep abscess (subfascial), posterior spine; cervical, thoracic, or cervicothoracic",4108316,Incision and drainage of abscess
+2100974,"Placement of visceral extension prosthesis for endovascular repair of abdominal aortic aneurysm involving visceral vessels, each visceral branch (List separately in addition to code for primary procedure)",4146646,Abdominal aortic aneurysm stenting
+2102975,"Tissue grafts, other (eg, paratenon, fat, dermis)",4000731,Grafting procedure
+2110600,"Replacement or revision of cerebrospinal fluid shunt, obstructed valve, or distal catheter in shunt system",4312594,Replacement of distal catheter in shunt system
+2106991,Insertion or replacement of temporary transvenous dual chamber pacing electrodes (separate procedure),4250607,Replacement of transvenous atrial and ventricular pacemaker electrode leads
+2104059,"Decompression fasciotomy, forearm and/or wrist, flexor AND extensor compartment; without debridement of nonviable muscle and/or nerve",4260679,"Decompression fasciotomy of wrist, flexor and extensor compartment"
+2110249,"Lysis of adhesions (salpingolysis, ovariolysis)",4245629,Lysis of pelvic adhesions
+2107716,"Repair blood vessel, direct; intra-abdominal",4054559,Repair of blood vessel
+2106646,Carinal reconstruction,4214889,Carinal reconstruction
+2109020,"Enterotomy, small intestine, other than duodenum; for exploration, biopsy(s), or foreign body removal",2109020,"Enterotomy, small intestine, other than duodenum; for exploration, biopsy(s), or foreign body removal"
+2102700,Excision of chest wall tumor including ribs,4127484,Excision of rib
+2414397,"Office or other outpatient visit for the evaluation and management of an established patient, which requires at least 2 of these 3 key components: An expanded problem focused history; An expanded problem focused examination; Medical decision making of low",4147508,Evaluation and management of established outpatient in office or other outpatient facility
+2104261,Closed treatment of ulnar shaft fracture; without manipulation,4299774,Closed reduction of fracture of ulna
+2110240,"Laparoscopy, surgical; with removal of adnexal structures (partial or total oophorectomy and/or salpingectomy)",4171198,Laparoscopy with removal of adnexal structures
+2104878,"Closed treatment of pelvic ring fracture, dislocation, diastasis or subluxation; without manipulation",4044027,Procedure on bone of pelvis
+2109753,"Cystorrhaphy, suture of bladder wound, injury or rupture; simple",4023287,Repair of rupture of bladder
+2105246,"Biopsy, soft tissue of leg or ankle area; superficial",4031834,"Biopsy of soft tissue of ankle area, superficial"
+2103461,"Open treatment and/or reduction of odontoid fracture(s) and or dislocation(s) (including os odontoideum), anterior approach, including placement of internal fixation; without grafting",4057654,Open reduction of spinal fracture
+2111077,Orbitotomy without bone flap (frontal or transconjunctival approach); with removal of lesion,4327354,Orbitotomy
+2110489,"Craniofacial approach to anterior cranial fossa; extradural, including unilateral or bifrontal craniotomy, elevation of frontal lobe(s), osteotomy of base of anterior cranial fossa",4101626,Craniotomy
+2110643,"Laminotomy (hemilaminectomy), with decompression of nerve root(s), including partial facetectomy, foraminotomy and/or excision of herniated intervertebral disc; 1 interspace, cervical",4075579,Primary hemilaminectomy excision of cervical intervertebral disc
+2109370,Cholecystectomy with exploration of common duct,4261768,Cholecystectomy with exploration of common duct
+2104012,Treatment of closed elbow dislocation; requiring anesthesia,4253201,Reduction of closed elbow dislocation requiring anesthesia
+2108001,"Reoperation, femoral-popliteal or femoral (popliteal)-anterior tibial, posterior tibial, peroneal artery, or other distal vessels, more than 1 month after original operation (List separately in addition to code for primary procedure)",4115340,Arterial bypass using vein graft
+2314122,Needle electromyography; larynx,4047655,Procedure on larynx
+2103521,"Arthrodesis, posterior interbody technique, including laminectomy and/or discectomy to prepare interspace (other than for decompression), single interspace; each additional interspace (List separately in addition to code for primary procedure)",4145274,Chondrectomy of spine
+2108261,"Arterial catheterization or cannulation for sampling, monitoring or transfusion (separate procedure); percutaneous",4213288,Insertion of catheter into artery
+2110864,"Suture of digital nerve, hand or foot; each additional digital nerve (List separately in addition to code for primary procedure)",4259430,Suture of digital nerve of hand
+2107741,"Thromboendarterectomy, including patch graft, if performed; superficial femoral artery",4221138,Thromboendarterectomy of lower limb artery
+2103375,Radical resection of sternum,4229774,Radical resection of sternum for osteomyelitis
+2107224,"Coronary artery bypass, using venous graft(s) and arterial graft(s); 3 venous grafts (List separately in addition to code for primary procedure)",4115340,Arterial bypass using vein graft
+2110266,"Resection (initial) of ovarian, tubal or primary peritoneal malignancy with bilateral salpingo-oophorectomy and omentectomy; with total abdominal hysterectomy, pelvic and limited para-aortic lymphadenectomy",4030412,Pelvic lymphadenectomy
+2110484,Craniectomy or craniotomy; with treatment of penetrating wound of brain,4106703,Craniectomy with treatment of penetrating wound of brain
+2103739,Closed treatment of acromioclavicular dislocation; with manipulation,4258016,Closed reduction of dislocation of acromioclavicular joint
+2109451,"Laparoscopy, abdomen, peritoneum, and omentum, diagnostic, with or without collection of specimen(s) by brushing or washing (separate procedure)",4081610,Endoscopy with brush biopsy and washing
+2211757,"Ultrasound, pregnant uterus, real time with image documentation, transvaginal",4207654,Diagnostic ultrasound of gravid uterus
+2111028,"Vitrectomy, mechanical, pars plana approach",4314406,Mechanical vitrectomy by pars plana approach
+2100977,"Endovascular repair using prosthesis of abdominal aortic aneurysm, pseudoaneurysm or dissection, abdominal aorta involving visceral vessels (superior mesenteric, celiac and/or renal artery[s]), radiological supervision and interpretation",4038398,Radiologic supervision and interpretation of procedure
+2110394,"Laparoscopy, surgical, with adrenalectomy, partial or complete, or exploration of adrenal gland with or without biopsy, transabdominal, lumbar or dorsal",4137462,Adrenalectomy
+2109520,"Laparoscopy, surgical, repair, incisional hernia (includes mesh insertion, when performed); reducible",4031970,Repair of incisional hernia
+2105025,Suture of infrapatellar tendon; primary,4229423,"Suture of infrapatellar tendon, primary"
+2102139,"Removal with reinsertion, non-biodegradable drug delivery implant",4259690,Insertion of nonbiodegradable drug delivery device
+2211797,"Fluoroscopic guidance for central venous access device placement, replacement (catheter only or complete), or removal (includes fluoroscopic guidance for vascular access and catheter manipulation, any necessary contrast injections through access site or c",4022792,Removal of central venous line
+2105207,Manipulation of knee joint under general anesthesia (includes application of traction or other fixation devices),4077597,Manipulation of knee joint under general anesthesia
+2101919,"Debridement including removal of foreign material at the site of an open fracture and/or an open dislocation (eg, excisional debridement); skin and subcutaneous tissues",4150040,Debridement of skin and subcutaneous tissue
+2109249,"Hemorrhoidectomy, internal and external, 2 or more columns/groups",4189196,Complete external hemorrhoidectomy
+2110392,Excision of carotid body tumor; without excision of carotid artery,4051038,Excision of carotid body tumor
+2108425,"Splenectomy; total, en bloc for extensive disease, in conjunction with other procedure (List in addition to code for primary procedure)",4018300,Total splenectomy
+2110115,"Colpopexy, abdominal approach",4010268,Colpopexy by abdominal approach
+2105103,"Arthroplasty, knee, condyle and plateau; medial AND lateral compartments with or without patella resurfacing (total knee arthroplasty)",4078547,Arthroplasty of knee
+2313647,"Visual field examination, unilateral or bilateral, with interpretation and report; extended examination (eg, Goldmann visual fields with at least 3 isopters plotted and static determination within the central 30, or quantitative, automated threshold perim",4092702,"Visual field examination and evaluation, extended"
+2111282,"Microsurgical techniques, requiring use of operating microscope (List separately in addition to code for primary procedure)",4304474,Microscopy during surgical procedure
+2110602,Removal of complete cerebrospinal fluid shunt system; without replacement,4128500,CSF shunt removal
+2106829,"Thoracoscopy, surgical; with excision of mediastinal cyst, tumor, or mass",4269215,Excision of mediastinal cyst
+2107519,"Embolectomy or thrombectomy, with or without catheter; axillary, brachial, innominate, subclavian artery, by arm incision",4133489,Limb incision
+2109455,"Laparoscopy, surgical; with insertion of tunneled intraperitoneal catheter",4040567,Procedure on peritoneum
+2108323,"Primary percutaneous transluminal mechanical thrombectomy, noncoronary, non-intracranial, arterial or arterial bypass graft, including fluoroscopic guidance and intraprocedural pharmacological thrombolytic injection(s); initial vessel",4287324,Thrombectomy of artery
+2108060,"Introduction of catheter, right heart or main pulmonary artery",4305794,Introduction of catheter into pulmonary artery
+2104753,"Decompression fasciotomy(ies), pelvic (buttock) compartment(s) (eg, gluteus medius-minimus, gluteus maximus, iliopsoas, and/or tensor fascia lata muscle), unilateral",4133169,Operative procedure on pelvis
+2109363,"Laparoscopy, surgical; cholecystectomy",4163971,Laparoscopic cholecystectomy
+2105847,Application of long arm splint (shoulder to hand),4194049,Application of splint
+2104317,Percutaneous skeletal fixation of distal radioulnar dislocation,4324382,Manual reduction of closed dislocation of distal radioulnar joint
+2110248,"Salpingo-oophorectomy, complete or partial, unilateral or bilateral (separate procedure)",4021363,Salpingo-oophorectomy
+2104152,"Repair, tendon or muscle, flexor, forearm and/or wrist; primary, single, each tendon or muscle",4085724,"Repair of flexor tendon forearm, wrist, hand"
+2103516,"Arthrodesis, posterior or posterolateral technique, single level; cervical below C2 segment",4217181,Cervical arthrodesis
+2104675,"Percutaneous skeletal fixation of unstable phalangeal shaft fracture, proximal or middle phalanx, finger or thumb, with manipulation, each",4234311,Percutaneous skeletal fixation of fracture of phalangeal shaft with manipulation
+2108453,"Bone marrow; biopsy, needle or trocar",4209298,"Bone marrow biopsy, needle or trocar"
+2110671,"Vertebral corpectomy (vertebral body resection), partial or complete, transperitoneal or retroperitoneal approach with decompression of spinal cord, cauda equina or nerve root(s), lower thoracic, lumbar, or sacral; single segment",4044029,Procedure on sacrum
+2102976,"Allograft, morselized, or placement of osteopromotive material, for spine surgery only (List separately in addition to code for primary procedure)",4020473,Allogeneic bone graft

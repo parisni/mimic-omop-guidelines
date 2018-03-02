@@ -1,3 +1,7 @@
+-------------------------------------------------------------------------------------------------------------------------------------------------
+-- check prescriptions mapping = NDC -> Rxnorm
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
 /*
 \copy 
 (
@@ -44,6 +48,11 @@ SELECT count(*) From concept where vocabulary_id = 'NDC'; 									-- 679882
 SELECT count(*) from concept_relationship where concept_id_2 IN (SELECT concept_id From concept where vocabulary_id = 'NDC');	-- 535068 ==>78 % des items NDC sont mappes en rxnorm
 */
 
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+-- check condition mapping = ICD9 -> SNOMED
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
 /*
 \copy 
 (
@@ -88,9 +97,38 @@ FROM condition_occurrence
 LEFT JOIN icd_to_concept_id USING (concept_code)
 LEFT JOIN snomed_to_concept_id USING (concept_id)
 ) 
-to './paper_omop/extras/check_icd9_snomed_mapping.csv' DELIMITER ',' csv header; 						-- resultat = 85 lignes
+to './paper_omop/extras/check_icd9CM_snomed_mapping.csv' DELIMITER ',' csv header; 						-- resultat = 85 lignes
 																-- 0 erreurs
 
 SELECT count(*) From concept where vocabulary_id = 'ICD9CM';									-- 18672
 SELECT count(*) from concept_relationship where concept_id_2 IN (SELECT concept_id From concept where vocabulary_id = 'ICD9CM'); -- 70771
 */
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+-- check procedure mapping = CPT4 -> snomed
+-------------------------------------------------------------------------------------------------------------------------------------------------
+/*
+\copy 
+(
+WITH
+"standard_cpt4" as (
+	select distinct on (c1.concept_id) first_value(c2.concept_id) over(partition by c1.concept_id order by relationship_id ASC) as procedure_concept_id
+		, c1.concept_id  as source_concept_id, c1.concept_code as cpt_cd
+	from omop.concept c1
+	join omop.concept_relationship cr on concept_id_1 = c1.concept_id and relationship_id IN ('CPT4 - SNOMED eq','Maps to')
+	left join omop.concept c2 on concept_id_2 = c2.concept_id
+	WHERE
+	    c1.vocabulary_id ='CPT4'
+	and c2.standard_concept = 'S'
+)
+SELECT distinct source_concept_id, source.concept_name as source_name, procedure_concept_id, standard.concept_name as standard_name
+FROM mimiciii.cptevents
+LEFT JOIN standard_cpt4 USING (cpt_cd)
+	JOIN concept source ON source.concept_id = standard_cpt4.source_concept_id
+	JOIN concept standard ON standard.concept_id = standard_cpt4.procedure_concept_id
+LIMIT 100
+) 
+to './paper_omop/extras/check_CPT4_snomed_mapping.csv' DELIMITER ',' csv header; 							-- resultat = 85 lignes
+																	-- 0 erreurs
+*/
+--SELECT count(*) From concept where vocabulary_id = 'CPT4';										-- 15446
