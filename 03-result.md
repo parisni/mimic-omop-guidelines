@@ -65,7 +65,7 @@ cf extra : basic_statistics.sql
 | Drugs                             |  % |
 | Notes                             |  % |
 
-remark all the error lign are deleted ( prescriptions, inputevents_mv, chartevents, procedureevents_mv, note)
+remark all the error rows are deleted ( prescriptions, inputevents_mv, chartevents, procedureevents_mv, note)
 
 - Columns
 % of sources columns which doesn't fits to CDM

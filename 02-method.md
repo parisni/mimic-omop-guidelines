@@ -68,3 +68,9 @@ All the process is available freely on the github website.
 	
 1. A.E.W. Johnson, Tom J. Pollard and Al. MIMIC-III, a freely accessible critical care database. Scientific Data. 2016-5-24
 2. https://mimic.physionet.org/mimictables/icustays/
+
+## Additional structural contributions
+- analytics material views
+	- adding concept_names everywhere for readibility
+	- design specific table for: labs, microbiology, to split measurement table into smaller pieces.
+- derived data pipelines
