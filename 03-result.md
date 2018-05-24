@@ -92,6 +92,11 @@ Need colaborative work
 ACHILLES is open-source software application developped by OHDSI and Achilles Heel provided data quality checker
 Other team used this tool to practice data quality assess(4).
 Our result ...
+- Quality control
+- 18h 50k patients
+- difficulté pour ajoute fr. 
+- extension achilles how to ?
+- comparison with other paper about error/warnings.
 
 # Community sharing
 

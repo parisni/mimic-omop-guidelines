@@ -22,7 +22,8 @@
 # ETL mapping specifications
 - The key table for omop is the concept table. The standard vocabulary of OMOP is mainly based on the Systematized Nomenclature of Medicine Clinical Terms (SNOMED-CT)
 - A mapping between many classification and the standard omop ones (ICD-9 and snomed-CT for examples) is already provides with concept_relationship.
-- Local code for mimiciii such as admission diagnoses, demographic status, drugs, signs and symptoms were manually mapped to OMOP standard models by several participants. For example local drug codes were mapped to the OMOP standardized vocabularies, which use RxNorm. This work was followed and check by a physician. All laboratory exams, exit diagnoses and procedures were already mapped to standard classication. All the csv files used for the mapping are available on github
+- Local code for mimiciii such as admission diagnoses, demographic status, drugs, signs and symptoms were manually mapped to OMOP standard models by several participants. For example local drug codes were mapped to the OMOP standardized vocabularies, which use RxNorm. This work was followed and check by a physician. All laboratory exams, exit diagnoses and procedures were already mapped to standard classication. All the csv files used for the mapping are available on github:  evaluation  + comments fields. => solution that can scale for medical users without database background. [TODO APA]
+- fuzzy match algorithm for mapping suggestion semi-automatic. [TODO: NPA]
 	
 # methodology of ETL
 
@@ -70,7 +71,8 @@ All the process is available freely on the github website.
 2. https://mimic.physionet.org/mimictables/icustays/
 
 ## Additional structural contributions
-- analytics material views
+- era/analytics material views
 	- adding concept_names everywhere for readibility
+	-[TODO APA] microbiology era table
 	- design specific table for: labs, microbiology, to split measurement table into smaller pieces.
-- derived data pipelines
+- [TODO NPA] derived data pipelines: methods based on uima.

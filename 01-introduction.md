@@ -92,7 +92,7 @@ Many has been developped, certains are open-source:
 	- The central table is called observation_fact table. 
 	- Compare to OMOP-CDM the hierarchies are organise with a 'concept path' column. Two concepts are linked by a single relationship                                
 
-- PCORnet, the National Patient-Centered Clinical Research Network
+- PCORnet, the National Patient-Centered Clinical Research Network [TODO APA]
 	- PCORnet Common Data Model (CDM) hoping to integrate multiple data from different sources and leverages standard terminologies and coding systems for healthcare (including ICD, SNOMED, CPT, HCPSC, and LOINC) to enable interoperability with and responsiveness to evolving data standards.
 	- The first version of the CDM was released in 2014
 	- Compare to OMOP CDM, PCORNET is less effective for use with a longitudinal community registry (6)
@@ -101,6 +101,7 @@ Many has been developped, certains are open-source:
 	- is a standard for exchanging healthcare information electronically (https://www.hl7.org/fhir/overview.html)
 	- Some papers have showed that collaboration between FHIR  may provide both applicative software and analytic research and showed great promise(5, 13) nico
 
+OMOP choice Justification: [TODO APA] Terminology standardized, analytics tools tool available, SQL Model (Justifier VS NO-SQL). 
 
 # Our study
 The aim of MIT with MIMIC-III is to provide open datas, more collaborative and reproductitible studies with shared codes.
