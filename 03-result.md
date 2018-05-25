@@ -1,3 +1,14 @@
+1. ETL
+
+2. ANALYTICS
+
+- consize model, simple
+- normalized, but materialized views is a solution.
+- standardized code
+
+3. CONTRIB
+
+
 # table populated with their mimic source table link
 The OMOP-CDM contains n data tables. We populated m tables.
 From MIMICIII we create a standardized model called MIMICIII-OMOP.

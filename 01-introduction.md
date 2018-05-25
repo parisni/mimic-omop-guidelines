@@ -111,6 +111,7 @@ In this article we provide a example of Extract Transform Load (ELT) implementat
 We’ll expose our methodology and we’ll discuss about modification we want to propose to the omop community.
 We’ll also discuss about potential loss of information links to this ETL.
 
+3 axes of evaluation : ETL, ANALITICS, Contribution.
 
 1. Vincent JL. Is the current management of severe sepsis and septic shock
 really evidence based? PLoS Med 2006; 3:e346

@@ -1,6 +1,18 @@
 
 # Discussion
 
+1. OMOP in international context
+- mapping
+- concensual guidelines
+
+2. OMOP in EHR context
+	- algorithm real life application
+	- juridic access
+	- validation algorithm
+ 	- i2b2 (omop) ; FHIR / omop why fhir not replace omop.
+
+-------------
+
 **database modelling**
 
 - advantages of normalized 
