@@ -101,6 +101,8 @@ Many has been developped, certains are open-source:
 	- is a standard for exchanging healthcare information electronically (https://www.hl7.org/fhir/overview.html)
 	- Some papers have showed that collaboration between FHIR  may provide both applicative software and analytic research and showed great promise(5, 13) nico
 
+- MIMIC !
+
 OMOP choice Justification: [TODO APA] Terminology standardized, analytics tools tool available, SQL Model (Justifier VS NO-SQL). 
 
 # Our study

@@ -1,0 +1,49 @@
+- Site utilise : http://sankeymatic.com/build/
+
+- Pour reproduire le schema:
+
+patients[2000] PERSON
+patients[2000] DEATH
+
+admissions[2000] PERSON
+admissions[2000] DEATH
+admissions[2000] VISIT_OCCURRENCE
+admissions[2000] VISIT_DETAIL
+admissions[2000] OBSERVATION
+admissions[2000] CONDITION_OCCURRENCE
+
+transfers[2000] VISIT_DETAIL
+service[2000] VISIT_DETAIL
+icustays[2000] VISIT_DETAIL
+
+labevents[2000] MEASUREMENT
+microbiologyevents[2000] MEASUREMENT
+chartevents[2000] MEASUREMENT
+outputevents[2000] MEASUREMENT
+inputevents_mv[2000] MEASUREMENT
+
+labevents[2000] SPECIMEN
+microbiologyevents[2000] SPECIMEN
+chartevents[2000] SPECIMEN
+
+chartevents[2000] OBSERVATION
+drgcodes[2000] OBSERVATION
+datetimeevents[2000] OBSERVATION
+
+prescriptions[2000] DRUG_EXPOSURE
+inputevents_cv[2000] DRUG_EXPOSURE
+inputevents_mv[2000] DRUG_EXPOSURE
+
+procedure_icd[2000] PROCEDURE_OCCURRENCE
+procedureevents_mv[2000] PROCEDURE_OCCURRENCE
+cptevents[2000] PROCEDURE_OCCURRENCE
+
+diagnosis_icd[2000] CONDITION_OCCURRENCE
+
+notevents[2000] NOTE
+notevents[2000] NOTE_NLP
+
+caregivers[2000] PROVIDER
+
+callout[2000] COHORT_ATTRIBUTES
+

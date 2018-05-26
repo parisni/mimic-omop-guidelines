@@ -1,4 +1,4 @@
-# data source
+# data source => intro
 
 - several other open-source databases
 	- eICU (3), freely-available comprising deidentified with more than hundreds of thousands of patients. Data are available to researchers via PhysioNet, similar to the MIMIC database
@@ -37,12 +37,16 @@ All the process is available freely on the github website.
 
 ## Technical specifications
 - To provide standard and reproductilable precess all the ETL used SQL script.
-- subset of 120 patients, 
+- subset of 100 patients, 
 - unit testing during the all process of extraction and SQL script production
 
 - we tried  not to infer results. For examens whereas it's logical to put a specimen for many labevents results (as one sample of blood may be used to multilple exams) we decided to create as many specimen row as laboratory exams because the information is not present. It was the same when date information were not provide ( start/end_datetime for drug_exposure)
 
 - concept-driven methodology : as the omop model did we adopt a "concept-driven methodology", domain of each local concept drive the concept to the right table.
+
+
+-mapping : omop model provide mapping between international classifications, such as gsn and rxnorm, icd9 and snomed thanks to concept_relationship table. We used it. 
+Because drugs, chartevents, specimen, gender, ethnicity are not linked to concept in mimic, concepts has been mapped by medical doctors. We will evaluate this mapping in the result section.
 
 - fact_relationship : for drug solution, microbiology / antibiograms, visit_detail and caresite
 		- for example : microorganism are links to their antibiogram thanks to fact_relationship
@@ -51,11 +55,13 @@ All the process is available freely on the github website.
 ## modification of OMOP model
 - the less possible
 - keep in mind the model of omop as a conceptual model
-- constant dialogue with omop community (omop github) 
+- constant dialogue with omop community (omop github, ETL community (bresilian)) 
 
 - modifications of OMOP model (few columns) 
 	- structural (columns type, columns name, new columns)
-		- visit_detail : visit_detail table adding of admitting_source_value, admitting_source_concept_id, admitting_concept_id, discharge_to_source_value, discharge_to_source_concept_id, discharge_to_concept_id
+ 		- visit_detail/visit_occurrence : add admitting_source_value, admitting_source_concept_id, admitting_concept_id, discharge_to_source_value, discharge_to_source_concept_id, discharge_to_concept_id
+               - drug_strength, drug_exposure, drug_era, dose_era: temporal columns.
+               - note_nlp
 
 	- conceptual (new concepts specific to ICU or general)
 		- measurement_type_concept_id
@@ -63,6 +69,7 @@ All the process is available freely on the github website.
 		<!-- Fournir un example de visit_detail-->
 
 - modification of MIMIC
+	- visit_detail : admitting_source_value, admitting_source_concept_id, admitting_concept_id, discharge_to_source_value, discharge_to_source_concept_id, discharge_to_concept_id provide redondant information from visit_occurrence. We did't populate it.
 	- observation_period provide duplicate information: we fill this table to respect the omop model and tools
 	- operators have been extracted to fill operator_concept_id
 	- units of measures have been extracted to fill unit_concept_id

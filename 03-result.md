@@ -32,7 +32,7 @@ From MIMICIII we create a standardized model called MIMICIII-OMOP.
 | OBSERVATION_PERIOD 	| patients, admissions |
 | SPECIMEN 	 	| chartevents, labevents, microbiologyevents |
 
-- observation_period provide duplicate information: we fill this table to respect the omop model and tools
+- observation_period provide duplicate informations from visit_occurrence : we fill this table to respect the omop model and tools
 
 # Quality evaluation
 
