@@ -83,3 +83,7 @@ Because drugs, chartevents, specimen, gender, ethnicity are not linked to concep
 	-[TODO APA] microbiology era table
 	- design specific table for: labs, microbiology, to split measurement table into smaller pieces.
 - [TODO NPA] derived data pipelines: methods based on uima.
+The note_nlp table allows to store NLP results derived from plain text notes. In order to evaluate this table we provided 3 pipelines based on apache UIMA [cite]
+The first pipeline "section extractor" splits the notes into sections in order to help analysts to choose or avoid some sections from their analysis. The sections patterns (such "Illness History") have been automatically extracted from texts from regular expressions, automatically filtered by keeping only one with frequency higher than 1 percent and manually filtered to exclude false positives with a total of 1200 sections. The resulting sections patterns candidate have been then manually regrouped into similar 400 groups. 
+The second pipeline "tokenizer pipeline" pre-splits sections into sentences and tokens. This allows analysts to simply get the tokens by splitting them by space character.
+The third pipeline "n2c2 mi" extracts information about myocardial infarction. It states if is negated, from a family member, and tries to date that fact. The overall performance of the method has resulted into a 0.97 recall and 0.60 precision measured during the n2c2 challenge [cite]

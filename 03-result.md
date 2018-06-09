@@ -8,6 +8,28 @@
 
 3. CONTRIB
 
+- sopha from dataforgood ?
+
+NLP: The
+
+Section evaluation: 
+|document_type|median_number_section|diversity_of_section
+---------------------------------------------------------
+|xx|12|18
+|xx|12|18
+|xx|12|18
+|xx|12|18
+|xx|12|18
+|xx|12|18
+|xx|12|18
+
+
+
+
+Tokenizer evaluation: The stanford parser have been evaluated in several studies. The ctakes parser has a specialized
+Myocardial infaction evaluation: Last but not least, this pipeline exploits two pipelines described above. It's evaluation thought a challenge testifies the approach works and might benefit from improvements.
+All those NLP pipelines are interdependent. Improving one step would result in general improvement. Community work might apply here and subsequent result be used into cohort discovery or data-science feature extraction by analyst without prior knowledge in NLP. In order to be able to improve NLP results, an evaluation framework need to be built up. The NOTE_NLP table might be populated with gold standard manually annotated notes too.
+While sections, sentences, and token are intermediary results, we believe that is is important to store them. This has several advantages: it helps text-miners. This has a severe drawback: the table becomes huge with potentially billions of rows POS tagging for each token.
 
 # table populated with their mimic source table link
 The OMOP-CDM contains n data tables. We populated m tables.
