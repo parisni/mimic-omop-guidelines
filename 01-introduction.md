@@ -1,5 +1,5 @@
 # ICU datas : a paradox
-- Reusing medical datas has historically been impossible for a large population and most of datas were simply wasted due data variability and quality challenges
+- Reusing medical datas has historically been impossible for a large population and most of datas were simply wasted due to data variability and quality challenges
 
 - Intensive care unit ICU are faced to a paradox
 	- The level of proof to guide most decisions is low, exacerbated with real-time bedsite decisions and the medical practices are sparse (1).
@@ -13,7 +13,7 @@
 
 ## aim 
 The multiple aims were
-- to create complete and highly detailed patient record
+- to create complete and highly detailed patient records
 - minimize costs while improving the clinical outcomes of individuals and populations thanks to observational clinical research and real time algorithms
 
 ## databases (7)
@@ -44,6 +44,7 @@ Several commercial or noncommercial, opensource or nonopensource ICU databases h
 - Non commercial MIMICIII (Medical Information Mart for Intensive Care) : our case study
 	- R. Marc
 	- freely-available database via PhysioNet : https://mimic.physionet.org/
+  	- A public github was created : https://github.com/MIT-LCP/mimic-code with many contributers around the world. 
 	- Data are collected each 5 years, semi automatically. 
 	- This database is de-identified and open, and one can exploit the data after passing an online exam on clinical ethic. 
 	- over 300 publications from international researchers independant from the MIT
@@ -52,7 +53,7 @@ Several commercial or noncommercial, opensource or nonopensource ICU databases h
 	- Three types of data are collected : 
 		- clinical data from hospital information system, 
 		- death data from the social security database
-		- High granulary data as the waveform of EKG, EEG.
+		- High granulary data as the waveform of EKG, EEG: In this article we won't speak about high frequency datas. 
 
 ## conclusion
 The MIMIC-III database is unique in capturing highly granular structured data. But the conception of this database was time consuming and  unfortunately only 45,000 unique patients’ data from a single center were captured. 
@@ -122,7 +123,7 @@ In this article we provide a example of Extract Transform Load (ELT) implementat
 We’ll expose our methodology and we’ll discuss about modification we want to propose to the omop community.
 We’ll also discuss about potential loss of information links to this ETL.
 
-3 axes of evaluation : ETL, ANALITICS, Contribution.
+3 axes of evaluation : ETL, ANALYTICS, Contribution.
 
 1. Vincent JL. Is the current management of severe sepsis and septic shock
 really evidence based? PLoS Med 2006; 3:e346
