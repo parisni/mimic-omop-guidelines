@@ -1,4 +1,5 @@
-# ICU datas : a paradox
+ICU datas : a paradox
+#######################
 - Reusing medical datas has historically been impossible for a large population and most of datas were simply wasted due data variability and quality challenges
 
 - Intensive care unit ICU are faced to a paradox
@@ -9,14 +10,17 @@
 
 - But the ICU demand of care is rising (3) and the mortality in ICU is up to 30 % which is a major health care problem
 
-# ICU databases
+ICU databases
+################
 
-## aim 
+aim 
+======
 The multiple aims were
 - to create complete and highly detailed patient record
 - minimize costs while improving the clinical outcomes of individuals and populations thanks to observational clinical research and real time algorithms
 
-## databases (7)
+databases (7)
+=============
 Several commercial or noncommercial, opensource or nonopensource ICU databases have been developed
 
 - Commercial eICU
@@ -54,25 +58,30 @@ Several commercial or noncommercial, opensource or nonopensource ICU databases h
 		- death data from the social security database
 		- High granulary data as the waveform of EKG, EEG.
 
-## conclusion
+conclusion
+==============
 The MIMIC-III database is unique in capturing highly granular structured data. But the conception of this database was time consuming and  unfortunately only 45,000 unique patients’ data from a single center were captured. 
 To produce analyse high number of patient we will have to merge heterogenous databases.
 
-# Data merging
+Data merging
+###############
 
-## aims
+aims
+=======
 Use of EHRs has been increasing world-wide, but most EHRs are different in their structure and not interchangeable.
 
 - more data : may provide better outcomes
 - interoperability may provide easy international research and improve reproductibily of it
 - decrease costs and investment in developing algorithms and help to performs transferable analyses
 
-## challenges
+challenges
+==============
 - but we know that simple merging of databases give poor quality level because of the heterogeneity of datas (9)
 - but sharing data creates legal/juridic problems
 - but merge may loss datas
 
-## databases modelling and datas exchanges
+databases modelling and datas exchanges
+===========================================
 
 Common data model (CDM) provides standardized definition of represent resources and their relationships.
 Many has been developped, certains are open-source:
@@ -105,7 +114,8 @@ Many has been developped, certains are open-source:
 
 OMOP choice Justification: [TODO APA] Terminology standardized, analytics tools tool available, SQL Model (Justifier VS NO-SQL). 
 
-# Our study
+Our study
+###########
 The aim of MIT with MIMIC-III is to provide open datas, more collaborative and reproductitible studies with shared codes.
 In this purpose the transformation from MIMICIII to MIMICIII-OMOP with standardized mapping concept is important and was hightly supported by the MIT. (4)
 

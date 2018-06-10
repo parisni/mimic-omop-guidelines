@@ -12,7 +12,8 @@
 
 NLP: The
 
-Section evaluation: 
+summary table of note and section mapping
+=========================================
 
 with tmp as (select count(1) as count,round(median(c)) as median, round(avg(c),1) as avg, max(c) as max, note_source_value as mimic_category, c1.concept_name as omop_category from note left join concept c1 on note_type_concept_id = c1.concept_id left join (select note_id, count(1) as c from note_nlp group by note_id) as note_nlp using (note_id)  group by note_source_value, c1.concept_name) select mimic_category, omop_category, count as  document_count, median as section_median, avg as section_mean, max as section_max from tmp order by 2 asc;
   mimic_category   |   omop_category   | document_count | section_median | section_mean | section_max 
@@ -40,7 +41,9 @@ Myocardial infaction evaluation: Last but not least, this pipeline exploits two 
 All those NLP pipelines are interdependent. Improving one step would result in general improvement. Community work might apply here and subsequent result be used into cohort discovery or data-science feature extraction by analyst without prior knowledge in NLP. In order to be able to improve NLP results, an evaluation framework need to be built up. The NOTE_NLP table might be populated with gold standard manually annotated notes too.
 While sections, sentences, and token are intermediary results, we believe that is is important to store them. This has several advantages: it helps text-miners. This has a severe drawback: the table becomes huge with potentially billions of rows POS tagging for each token.
 
-# table populated with their mimic source table link
+table populated with their mimic source table link
+=====================================================
+
 The OMOP-CDM contains n data tables. We populated m tables.
 From MIMICIII we create a standardized model called MIMICIII-OMOP.
 
@@ -130,29 +133,36 @@ Need colaborative work
 - we have mapped  many source concept to one standard concept
   is it the same meaning? distribution of values sometimes very different
 
-## ACHILLES evaluation
+ACHILLES evaluation
+#######################
+
 ACHILLES is open-source software application developped by OHDSI and Achilles Heel provided data quality checker
 Other team used this tool to practice data quality assess(4).
 Our result ...
 - Quality control
-- 18h 50k patients
+- 18h 50k patients: this testifies the model needs structural optimisations
 - difficulté pour ajoute fr. 
 - extension achilles how to ?
 - comparison with other paper about error/warnings.
 
-# Community sharing
+Community sharing
+===================
 
 We provided many derived values. Community is welcome to improve it
 - F/P, corrected Ca / K, BMI
 - Note_NLP with section splitting. The algorythm is freely accessible here
 - SOFA, SAPSII
 
-# Feedbacks of real MIMICIII-OMOP testing
+Feedbacks of real MIMICIII-OMOP testing
+=========================================
+
 - this work has been done with APHP to test OMOP model in real statistical condition. A datathon was organised in collaboration with the MIT.(3)
 We also test the big data APHP platforms.
 - most of queries under 30 second ; simplified model VS MIMIC ; to much normalized for data scientist)
 
-# others
+others
+========
+
 - estimation of number of work hours
 - ethnicity_concept_id : only two strange concept_name hispanic or non_hispanic
 - size of MIMIC OMOP, row number for the bigest relation (measurement)

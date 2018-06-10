@@ -1,5 +1,6 @@
 
-# Discussion
+Discussion
+############
 
 1. OMOP in international context
 - mapping
@@ -11,17 +12,20 @@
 	- validation algorithm
  	- i2b2 (omop) ; FHIR / omop why fhir not replace omop.
 
-NOTE_NLP table: At the time of this study, the table is presented by the OMOP
-community as an experimental table. It is clearly a powerful tool and this
-evaluation has shown some limitation and some proposal for this. While the
-initial idea of the authors clearly indicates that final results from nlp
-pipelines only should be stored in the table, we clearly ask the question
-wether storing intermediary results in the table such sections, pos tagging, is
-of interest for community work. At the very end, should final information such
-condition, heart rate extracted from notes may not be inserted as derived
-information in dedicated tables such condition_occurrence and measurement
-tables and the note_nlp table be used more as a working table for storing and
-evaluating intermediary results dedicated to text-miners.
+NOTE_NLP table
+---------------
+
+At the time of this study, the table is presented by the OMOP community as an
+experimental table. It is clearly a powerful tool and this evaluation has shown
+some limitation and some proposal for this. While the initial idea of the
+authors clearly indicates that final results from nlp pipelines only should be
+stored in the table, we clearly ask the question wether storing intermediary
+results in the table such sections, pos tagging, is of interest for community
+work. At the very end, should final information such condition, heart rate
+extracted from notes may not be inserted as derived information in dedicated
+tables such condition_occurrence and measurement tables and the note_nlp table
+be used more as a working table for storing and evaluating intermediary results
+dedicated to text-miners.
 
 The note_nlp group encourages to use CDO [cite] as a standard terminology to
 describe notes categories. Instead, we used the OMOP provided category that is

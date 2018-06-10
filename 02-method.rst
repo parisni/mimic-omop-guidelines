@@ -1,4 +1,5 @@
-# data source => intro
+data source => intro
+######################
 
 - several other open-source databases
 	- eICU (3), freely-available comprising deidentified with more than hundreds of thousands of patients. Data are available to researchers via PhysioNet, similar to the MIMIC database
@@ -19,24 +20,30 @@
   The mimic documentation is a available online physionet.org/about/mimic/. 
   A public github was created : https://github.com/MIT-LCP/mimic-code with many contributers around the world. 
 
-# ETL mapping specifications
+ETL mapping specifications
+#############################
+
 - The key table for omop is the concept table. The standard vocabulary of OMOP is mainly based on the Systematized Nomenclature of Medicine Clinical Terms (SNOMED-CT)
 - A mapping between many classification and the standard omop ones (ICD-9 and snomed-CT for examples) is already provides with concept_relationship.
 - Local code for mimiciii such as admission diagnoses, demographic status, drugs, signs and symptoms were manually mapped to OMOP standard models by several participants. For example local drug codes were mapped to the OMOP standardized vocabularies, which use RxNorm. This work was followed and check by a physician. All laboratory exams, exit diagnoses and procedures were already mapped to standard classication. All the csv files used for the mapping are available on github:  evaluation  + comments fields. => solution that can scale for medical users without database background. [TODO APA]
 - fuzzy match algorithm for mapping suggestion semi-automatic. [TODO: NPA]
 The manual terminology mapping has been catalized by using a naïve but flexible approach. Many mapping tools exist on the area RELMA provided by LOINC, USAGI provided by OHDSI. Most of those tools are based on linguistic mapping [cite], and the approach have been shown to be the most effective[cite]. Following our prime idea to build low dependency tools, we managed to build a light semi-automatic tool based on postgresql full-text feature. The concept table labels have been indexed, and a similarity can be constructed by a simple sql query. We kept the 10 most similar concepts, and this have been shown to be a quick way to map concepts, after having choosen the best domain.
 	
-# methodology of ETL
+methodology of ETL
+#####################
 
 All the process is available freely on the github website.
 
-## Preprocessing and modification of mimic
+Preprocessing and modification of mimic
+==========================================
 
 - We added emergency stays as as a normal locations for patients throughout their hospital stay.
 - Icustays mimic table was deleted as it is a derived table from transfers table (2) and we decided to assigne a new new visit_detail pour each stay in ICU (based of the transfers table) whereas mimic prefered to assgned new icustay stay if a new admissions occurs > 24h after the end of the previous stay
 - We decided to put unique number for each row of mimic database  called mimic_id. We think this is very helpful for ETLers
 
-## Technical specifications
+Technical specifications
+===========================
+
 - To provide standard and reproductilable precess all the ETL used SQL script.
 - subset of 100 patients, 
 - unit testing during the all process of extraction and SQL script production
@@ -53,7 +60,9 @@ Because drugs, chartevents, specimen, gender, ethnicity are not linked to concep
 		- for example : microorganism are links to their antibiogram thanks to fact_relationship
 		  <!-- fournir un exemple de SQL pour ca avec un resultat>
 
-## modification of OMOP model
+modification of OMOP model
+=============================
+
 - the less possible
 - keep in mind the model of omop as a conceptual model
 - constant dialogue with omop community (omop github, ETL community (bresilian)) 
@@ -78,7 +87,9 @@ Because drugs, chartevents, specimen, gender, ethnicity are not linked to concep
 1. A.E.W. Johnson, Tom J. Pollard and Al. MIMIC-III, a freely accessible critical care database. Scientific Data. 2016-5-24
 2. https://mimic.physionet.org/mimictables/icustays/
 
-## Additional structural contributions
+Additional structural contributions
+======================================
+
 - era/analytics material views
 	- adding concept_names everywhere for readibility
 	-[TODO APA] microbiology era table
