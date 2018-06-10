@@ -76,34 +76,43 @@ Use of EHRs has been increasing world-wide, but most EHRs are different in their
 
 Common data model (CDM) provides standardized definition of represent resources and their relationships.
 Many has been developped, certains are open-source:
-- OMOP model : Observational Medical Outcomes Partnership Common Data Model (OMOP-CDM) 
-	- incorpore validated standard classification (8) : SNOMED for diagnoses, RxNORM for drug ingredients and LOINC for laboratory results...
-	- provide tables for mapping beetween international classification (ex: ICD9 and SNOMED)
-	- provides more systematic analysis with analytic library from OMOP community : ACHILLES
-
-	- In this model all the data stay locally at the participant site, the primary analyses are carried locally (5)
-
-	- This model has been already adopted by more than 682 million patient records with databases from all over the world(9)
-	- Several examples of transforming source databases to CDM already exists (10-11)
+- MIMIC !
+	- Even if MIMIC is a large, freely-available database, its datamodel does not provide easy exchanges. 
+	- Its structure is "ICU centric" with many relations created in this purpose (icustays, microbiology table).
+	- Many terminologies used are american and are difficult to link to international classification
+	- Many concepts are not link to international terminology (free text)
+	- Moreover we need an international and common datamodel to put are algorithms in real life.
 
 - I2B2 :
 	- good interface for cohort selection     
 	- i2b2 has been described as being used by more than 200 hospitals6 over the world
 	- The central table is called observation_fact table. 
 	- Compare to OMOP-CDM the hierarchies are organise with a 'concept path' column. Two concepts are linked by a single relationship                                
-
-- PCORnet, the National Patient-Centered Clinical Research Network [TODO APA]
-	- PCORnet Common Data Model (CDM) hoping to integrate multiple data from different sources and leverages standard terminologies and coding systems for healthcare (including ICD, SNOMED, CPT, HCPSC, and LOINC) to enable interoperability with and responsiveness to evolving data standards.
-	- The first version of the CDM was released in 2014
-	- Compare to OMOP CDM, PCORNET is less effective for use with a longitudinal community registry (6)
-
+	
 - FHIR, Fast Healthcare Interoperability Resources 
 	- is a standard for exchanging healthcare information electronically (https://www.hl7.org/fhir/overview.html)
-	- Some papers have showed that collaboration between FHIR  may provide both applicative software and analytic research and showed great promise(5, 13) nico
+	- Some papers have showed that collaboration between FHIR  may provide both applicative software and analytic research and showed great promise(5, 13)
 
-- MIMIC !
+- PCORnet, the National Patient-Centered Clinical Research Network (http://pcornet.org/pcornet-common-data-model/)
+	- PCORnet Common Data Model (CDM) integrate multiple data from different sources and leverages standard terminologies and coding systems for healthcare (including ICD, SNOMED, CPT, HCPSC, and LOINC) to enable interoperability with and responsiveness to evolving data standards.
+	- The first version of the CDM was released in 2014, and there have been 3 major releases and one minor update since then (last release CDM v4.1: Released May 18, 2018 )
 
-OMOP choice Justification: [TODO APA] Terminology standardized, analytics tools tool available, SQL Model (Justifier VS NO-SQL). 
+- OMOP model : Observational Medical Outcomes Partnership Common Data Model (OMOP-CDM) 
+	- Incorpore validated standard classification (8) : SNOMED for diagnoses, RxNORM for drug ingredients and LOINC for laboratory results...
+	- Provide tables for mapping beetween international classification (ex: ICD9 and SNOMED)
+
+	- In this model all the data stay locally at the participant site, the primary analyses are carried locally (5)
+
+	- This model has been already adopted by more than 682 million patient records with databases from all over the world(9)
+	- Several examples of transforming source databases to CDM already exists (10-11)
+
+Compared to PCORnet CDM, OMOP (6) :
+- performes best in the evaluation database criteria compared with the other models (and PCORnet in particularly) : completeness, integrity, flexibility, simplicity of integration, and implementability.
+- seems to accommodates the broadest coverage of standard terminologies.
+- provides more systematic analysis with analytic library and visualizing tools from OMOP community : ACHILLES
+- provides easier SQL models 
+
+We limited the candidate data models to those designed and used for clinical researches
 
 # Our study
 The aim of MIT with MIMIC-III is to provide open datas, more collaborative and reproductitible studies with shared codes.
