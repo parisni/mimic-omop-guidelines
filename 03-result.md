@@ -13,16 +13,25 @@
 NLP: The
 
 Section evaluation: 
-|document_type|median_number_section|diversity_of_section
----------------------------------------------------------
-|xx|12|18
-|xx|12|18
-|xx|12|18
-|xx|12|18
-|xx|12|18
-|xx|12|18
-|xx|12|18
 
+with tmp as (select count(1) as count,round(median(c)) as median, round(avg(c),1) as avg, max(c) as max, note_source_value as mimic_category, c1.concept_name as omop_category from note left join concept c1 on note_type_concept_id = c1.concept_id left join (select note_id, count(1) as c from note_nlp group by note_id) as note_nlp using (note_id)  group by note_source_value, c1.concept_name) select mimic_category, omop_category, count as  document_count, median as section_median, avg as section_mean, max as section_max from tmp order by 2 asc;
+  mimic_category   |   omop_category   | document_count | section_median | section_mean | section_max 
+-------------------+-------------------+----------------+----------------+--------------+-------------
+ Case Management   | Ancillary report  |            953 |              5 |          6.3 |          16
+ Nutrition         | Ancillary report  |           9400 |              8 |          9.6 |          23
+ Pharmacy          | Ancillary report  |            101 |              3 |          2.3 |           3
+ Rehab Services    | Ancillary report  |           5408 |             20 |         23.5 |          74
+ Respiratory       | Ancillary report  |          31701 |             24 |         24.1 |          35
+ Social Work       | Ancillary report  |           2661 |              2 |          7.2 |          23
+ Discharge summary | Discharge summary |          59652 |             29 |         28.0 |          76
+ Physician         | Inpatient note    |         141281 |             56 |         56.3 |          98
+ General           | Inpatient note    |           8236 |              2 |          6.5 |          82
+ Consult           | Inpatient note    |             98 |             43 |         37.5 |          63
+ Nursing           | Nursing report    |         223182 |              1 |          3.2 |          49
+ Nursing/other     | Nursing report    |         822497 |              1 |          1.0 |           1
+ ECG               | Pathology report  |         209051 |              1 |          1.0 |           1
+ Echo              | Pathology report  |          45794 |             21 |         20.5 |          25
+ Radiology         | Radiology report  |         522279 |              5 |          5.7 |          
 
 
 
