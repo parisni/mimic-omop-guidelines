@@ -23,6 +23,17 @@ information in dedicated tables such condition_occurrence and measurement
 tables and the note_nlp table be used more as a working table for storing and
 evaluating intermediary results dedicated to text-miners.
 
+The note_nlp group encourages to use CDO [cite] as a standard terminology to
+describe notes categories. Instead, we used the OMOP provided category that is
+narrower than the MIMIC categorisation.
+
+The note_nop group encourages to use the LOINC document section from the CDO
+list as a standard terminolgy. However, the last release of the CDO announced
+they will remove the document sections. Second point is the omop concept do not
+release yet the document sections as standards code. For those reason we
+decided to wait until a consensual section terminology emerges before releasing
+any mapping for this.
+
 -------------
 
 **database modelling**
