@@ -51,7 +51,7 @@ Several commercial or noncommercial, opensource or nonopensource ICU databases h
 	- freely-available database via PhysioNet : https://mimic.physionet.org/
   	- A public github was created : https://github.com/MIT-LCP/mimic-code with many contributers around the world. 
 	- Data are collected each 5 years, semi automatically. 
-	- This database is de-identified and open, and one can exploit the data after passing an online exam on clinical ethic. 
+	- This database is de-identified and open, and anyone can exploit the data after passing an online exam on clinical ethic. 
 	- over 300 publications from international researchers independant from the MIT
 	- health-related data associated with over forty thousand patients who stayed in critical care units between 2001 and 2012(4).
 	- It includes both administrative data (demographic, ICD9, procedures) and clinical data (examination, laboratory results, medication administration and notes)
@@ -70,11 +70,12 @@ Data merging
 
 aims
 =======
-Use of EHRs has been increasing world-wide, but most EHRs are different in their structure and not interchangeable.
+Use of EHRs has been increasing world-wide, but most EHRs are differents in their structure and not interchangeable.
 
 - more data : may provide better outcomes
 - interoperability may provide easy international research and improve reproductibily of it
 - decrease costs and investment in developing algorithms and help to performs transferable analyses
+- their data structure should be the closest to the EHR, to transfer easily research in real life
 
 challenges
 ==============
@@ -95,13 +96,14 @@ Many has been developped, certains are open-source:
 	- Moreover we need an international and common datamodel to put are algorithms in real life.
 
 - I2B2 :
-	- good interface for cohort selection     
+        - https://www.i2b2.org/
+	- good interface for cohort selection
 	- i2b2 has been described as being used by more than 200 hospitals6 over the world
-	- The central table is called observation_fact table. 
+	- The central table is called observation_fact table
 	- Compare to OMOP-CDM the hierarchies are organise with a 'concept path' column. Two concepts are linked by a single relationship                                
 	
 - FHIR, Fast Healthcare Interoperability Resources 
-	- is a standard for exchanging healthcare information electronically (https://www.hl7.org/fhir/overview.html)
+	- is a standard for exchanging healthcare information electronically (https://www.hl7.org/fhir/overview.html/)
 	- Some papers have showed that collaboration between FHIR  may provide both applicative software and analytic research and showed great promise(5, 13)
 
 - PCORnet, the National Patient-Centered Clinical Research Network (http://pcornet.org/pcornet-common-data-model/)
