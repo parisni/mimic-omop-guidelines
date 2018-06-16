@@ -22,8 +22,8 @@ data source => intro
 
 # MIMIC and OMOP version
 ========================
-- MIMIC III
-- OHDSI CDM v 5.0.1 which defines 14 standardized clinical data tables, 5 health system data tables, 4 health economics data tables, 3 tables for derived elements and 8 tables for standardized vocabulary. 
+- MIMIC III version 1.4
+- OHDSI CDM v 5.0.1 which defines 15 standardized clinical data tables, 3 health system data tables, 2 health economics data tables, 5 tables for derived elements and 12 tables for standardized vocabulary. 
 
 ETL mapping specifications
 #############################
@@ -44,6 +44,7 @@ All the process is available freely on the github website : https://github.com/M
 Preprocessing and modification of mimic
 ==========================================
 
+- constant dialogue with mimic community via MIMIC github
 - We added emergency stays as a normal location for patients throughout their hospital stay.
 - Icustays mimic table was deleted as it is a derived table from transfers table (2) and we decided to assigne a new new visit_detail pour each stay in ICU (based of the transfers table) whereas mimic prefered to assigne new icustay stay if a new admissions occurs > 24h after the end of the previous stay
 - We decided to put unique number for each row of mimic database  called mimic_id. We think this is very helpful for ETLers
@@ -51,7 +52,7 @@ Preprocessing and modification of mimic
  Technical specifications
 ============================
 
-- To provide standard and reproductilable process all the ETL used SQL script.
+- To provide standard and reproductilable process all the ETL used SQL script with PostgreSQL-ETL implementation
 - to speed up our work we used a subset of 100 patients
 - unit testing during the all process of extraction and SQL script production
 
@@ -85,9 +86,23 @@ modification of OMOP model
 
 - modifications of OMOP model (few columns) 
 	- structural (columns type, columns name, new columns)
- 		- visit_detail/visit_occurrence : add admitting_source_value, admitting_source_concept_id, admitting_concept_id, discharge_to_source_value, discharge_to_source_concept_id, discharge_to_concept_id
-               - drug_strength, drug_exposure, drug_era, dose_era: temporal columns.
-               - note_nlp
+ 		- visit_detail/visit_occurrence proposal : add admitting_source_value, admitting_source_concept_id, admitting_concept_id, discharge_to_source_value, discharge_to_source_concept_id, discharge_to_concept_id
+|Field                       |Type      |required|
+|----------------------------|----------|---------|
+|admitting_concept_id        | Integer  |  No     |
+|admitting_source_value      | Varchar  |  No     |
+|admitting_source_concept_id | Integer  |  No     |
+|discharge_to_concept_id        | Integer  |  No     |
+|discharge_to_source_value      | Varchar  |  No     |
+|discharge_to_source_concept_id | Integer  |  No     |
+
+               - note_nlp proposal
+|Field                    |Type      |required|
+|-------------------------|----------|---------|
+|offset_begin             | Integer  |  No     |
+|offset_end               | Integer  |  No     |
+|section_source_value     | Text     |  No     |
+|section_source_concept_id| Integer  |  No     |
 
 	- conceptual (new concepts specific to ICU or general)
 		- measurement_type_concept_id
@@ -96,7 +111,7 @@ modification of OMOP model
 
 - modification of MIMIC
 	- visit_detail : admitting_source_value, admitting_source_concept_id, admitting_concept_id, discharge_to_source_value, discharge_to_source_concept_id, discharge_to_concept_id provide redondant information from visit_occurrence. We did't populate it.
-	- observation_period provide duplicate information : we fill this table to respect the omop model and tools
+	- observation_period provide duplicate informations with visit_occurrence : we fill this table to respect the omop model and tools
 	- operators have been extracted to fill operator_concept_id
 	- units of measures have been extracted to fill unit_concept_id
 	- numeric values have been extracted to fill value_as_number
