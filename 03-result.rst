@@ -16,6 +16,7 @@ summary table of note and section mapping
 =========================================
 
 with tmp as (select count(1) as count,round(median(c)) as median, round(avg(c),1) as avg, max(c) as max, note_source_value as mimic_category, c1.concept_name as omop_category from note left join concept c1 on note_type_concept_id = c1.concept_id left join (select note_id, count(1) as c from note_nlp group by note_id) as note_nlp using (note_id)  group by note_source_value, c1.concept_name) select mimic_category, omop_category, count as  document_count, median as section_median, avg as section_mean, max as section_max from tmp order by 2 asc;
+
   mimic_category   |   omop_category   | document_count | section_median | section_mean | section_max 
 -------------------+-------------------+----------------+----------------+--------------+-------------
  Case Management   | Ancillary report  |            953 |              5 |          6.3 |          16
