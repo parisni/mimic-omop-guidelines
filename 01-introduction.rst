@@ -169,6 +169,8 @@ This preliminary work is to transform the MIMIC DB into OMOP, and we evaluate
 here OMOP in term of data merging (multicentric, observational, clinical)
 Finally we will discuss how OMOP can address the early warning system challenge.
 
+This work is evaluated through 3 axes: ETL, Analytics and Contribution.
+
 
 1. Vincent JL. Is the current management of severe sepsis and septic shock
 really evidence based? PLoS Med 2006; 3:e346

@@ -1,45 +1,15 @@
-data source => intro
-######################
-
-- several other open-source databases
-	- eICU (3), freely-available comprising deidentified with more than hundreds of thousands of patients. Data are available to researchers via PhysioNet, similar to the MIMIC database
-	- OUTCOMEREA (http://outcomerea.fr/index.php)
-	- CUBREA (http://www.pifo.uvsq.fr/hebergement/cubrea/cr_index.htm), with many ICU from APHP with > 2000000 icu stays
-
-- presentation of mimicIII : our case study
-  MIMIC-III (Medical Information Mart for Intensive Care) is freely-available database comprising deidentified 
-  health-related data associated with over forty thousand patients who stayed in critical care units between 2001 and 2012(1).
-  It includes both administrative data (demographic, ICD9, procedures) and clinical data (examination, laboratory results, medication administration and notes)
-  Three types of data are collected : clinical data from hospital information system, death data from the social security database
-  and the high granulary data as the waveform of EKG, EEG.
-  In this article we won't speak about high frequency datas. 
-
-  The aim of MIT with MIMIC-III is to provide open datas, more collaborative and reproductitible studies with shared codes. 
-  MIMIC is a large used database with x number of publications.
-  In this purpose the transformation from MIMICIII to MIMICIII-OMOP with standardized mapping concept is important.
-  The mimic documentation is a available online physionet.org/about/mimic/. 
-  A public github was created : https://github.com/MIT-LCP/mimic-code with many contributers around the world. 
-
-# MIMIC and OMOP version
+MIMIC and OMOP version
 ========================
 - MIMIC III version 1.4
 - OHDSI CDM v 5.0.1 which defines 15 standardized clinical data tables, 3 health system data tables, 2 health economics data tables, 5 tables for derived elements and 12 tables for standardized vocabulary. 
-
-ETL mapping specifications
-#############################
-
-- The key table for omop is the concept table. The standard vocabulary of OMOP is mainly based on the Systematized Nomenclature of Medicine Clinical Terms (SNOMED-CT)
-- A mapping between many classifications and the standard omop ones (ICD-9 and snomed-CT for examples) is already provides with concept_relationship table.
-
-- Local code for mimiciii such as admission diagnoses, demographic status, drugs, signs and symptoms were manually mapped to OMOP standard models by several participants. This work was followed and check by a physician. For example local drug codes were mapped to the OMOP standardized vocabularies, which use RxNorm. All laboratory exams, exit diagnoses and procedures were already mapped to standard classication. 
-We had only use csv files for our manual mapping. All are available on github : https://github.com/MIT-LCP/mimic-omop/tree/master/extras/concept. This solution can scale for medical users without database engineering background. We tried to adopt the same methodology in their creation ; some obvious fields are needed : local and standard name, local and standard id. Moreover evaluation and comments fields are good practices and may help contributers
-- fuzzy match algorithm for mapping suggestion semi-automatic.
-The manual terminology mapping has been catalized by using a naïve but flexible approach. Many mapping tools exist on the area RELMA provided by LOINC, USAGI provided by OHDSI. Most of those tools are based on linguistic mapping [cite], and the approach have been shown to be the most effective[cite]. Following our prime idea to build low dependency tools, we managed to build a light semi-automatic tool based on postgresql full-text feature. The concept table labels have been indexed, and a similarity can be constructed by a simple sql query. We kept the 10 most similar concepts, and this have been shown to be a quick way to map concepts, after having choosen the best domain.
-	
-methodology of ETL
-#####################
-
 All the process is available freely on the github website : https://github.com/MIT-LCP/mimic-omop.
+
+1. ETL
+#######
+
+1.1 Data Transformation
++++++++++++++++++++++++
+
 
 Preprocessing and modification of mimic
 ==========================================
@@ -119,8 +89,28 @@ modification of OMOP model
 1. A.E.W. Johnson, Tom J. Pollard and Al. MIMIC-III, a freely accessible critical care database. Scientific Data. 2016-5-24
 2. https://mimic.physionet.org/mimictables/icustays/
 
-Additional structural contributions
-======================================
+1.2 Terminology Mapping
+++++++++++++++++++++++++
+
+- The key table for omop is the concept table. The standard vocabulary of OMOP is mainly based on the Systematized Nomenclature of Medicine Clinical Terms (SNOMED-CT)
+- A mapping between many classifications and the standard omop ones (ICD-9 and snomed-CT for examples) is already provides with concept_relationship table.
+
+- Local code for mimiciii such as admission diagnoses, demographic status, drugs, signs and symptoms were manually mapped to OMOP standard models by several participants. This work was followed and check by a physician. For example local drug codes were mapped to the OMOP standardized vocabularies, which use RxNorm. All laboratory exams, exit diagnoses and procedures were already mapped to standard classication. 
+We had only use csv files for our manual mapping. All are available on github : https://github.com/MIT-LCP/mimic-omop/tree/master/extras/concept. This solution can scale for medical users without database engineering background. We tried to adopt the same methodology in their creation ; some obvious fields are needed : local and standard name, local and standard id. Moreover evaluation and comments fields are good practices and may help contributers
+- fuzzy match algorithm for mapping suggestion semi-automatic.
+The manual terminology mapping has been catalized by using a naïve but flexible approach. Many mapping tools exist on the area RELMA provided by LOINC, USAGI provided by OHDSI. Most of those tools are based on linguistic mapping [cite], and the approach have been shown to be the most effective[cite]. Following our prime idea to build low dependency tools, we managed to build a light semi-automatic tool based on postgresql full-text feature. The concept table labels have been indexed, and a similarity can be constructed by a simple sql query. We kept the 10 most similar concepts, and this have been shown to be a quick way to map concepts, after having choosen the best domain.
+	
+
+2. ANALYTICS
+############
+
+- datathon
+- technical architechure
+- organization
+
+
+3. CONTRIBUTION
+################
 
 - era / analytics material views
 	- To help datascientists we provide a denormalized models. We added concept_names everywhere for readibility
@@ -129,6 +119,6 @@ Additional structural contributions
 - derived data pipelines: methods based on uima.
 The note_nlp table allows to store NLP results derived from plain text notes. In order to evaluate this table we provided 3 pipelines based on apache UIMA [cite]
 The first pipeline "section extractor" splits the notes into sections in order to help analysts to choose or avoid some sections from their analysis. The sections patterns (such "Illness History") have been automatically extracted from texts from regular expressions, automatically filtered by keeping only one with frequency higher than 1 percent and manually filtered to exclude false positives with a total of 1200 sections. The resulting sections patterns candidate have been then manually regrouped into similar 400 groups. 
-The second pipeline "tokenizer pipeline" pre-splits sections into sentences and tokens. This allows analysts to simply get the tokens by splitting them by space character.
+The second pipeline "tokenizer pipeline" pre-splits sections into sentences and tokens. This allows analysts to simply get the tokens by splitting them by space character and ease free text search.
 The third pipeline "n2c2 mi" extracts information about myocardial infarction. It states if is negated, from a family member, and tries to date that fact. The overall performance of the method has resulted into a 0.97 recall and 0.60 precision measured during the n2c2 challenge [cite]
 The extracted sections have not been mapped to the any standard terminology such LOINC CDO. The reason is the CDO LOINC has decided to stop to maintain and to remove it's sections from its standard arguing it is too difficult to maintain, and this sections are not widely used [https://loinc.org/news/loinc-version-2-63-and-relma-version-6-22-are-now-available/].

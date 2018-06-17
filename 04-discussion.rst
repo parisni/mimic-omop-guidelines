@@ -49,6 +49,20 @@ any mapping for this.
 - need to propose an optimized version of OMOP -> ==XT: is that the idea of flattenning the tables to improve query-ability? OMOP Analytics? technical performances == -> ==NP: indeed, precalcul most of joins so that queries are focused on one or two table instead of 5 and more ; in this case, replicating information is not a problem because it is a frozen dataset and replicated field all come from one unique field and this is then no error prone by design==
 ==XT: What are the pros and cons of this solution against keeping the structure but producing some "query plans" for the frequent accesses? Several participants at dat-icu told me that at the end of the end, most of the teams struggled to finally produce queries that were very similar to their neighbors' queries==
 
+
+There is an ongoing debate around database modeling for data analytics. The CAP
+theorem argues that. However in the field ofb. When comes analysis, the dataset
+needs to be static so that reproducible research, algorithms performances
+measurement can be done. Moreover, the batch analysis needs to be fast and
+allow multiple person to run queries concurrently. Last the query syntax needs
+to be wide enough to let the analyst explore in a fluent try/error process. A-P
+
+Once the model has learn on the data and is ready to infer new informations
+from new examples. It is of utmost importance that the new examples is
+consistent. C- Moreover, the dataset needs to have been made with the same
+process and share the same structure with the learning dataset.
+
+
 **terminology mapping**
 
 - athena existing standard mapping

@@ -1,12 +1,15 @@
 1. ETL
+#######
 
 2. ANALYTICS
+############
 
 - consize model, simple
 - normalized, but materialized views is a solution.
 - standardized code
 
 3. CONTRIB
+###########
 
 - sopha from dataforgood ?
 
