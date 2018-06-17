@@ -1,6 +1,21 @@
+General objectives of medical database
+######################################
+
+What are the expectations.
+On the basis of Heterogeneous patient medical informations (clinical,
+physiologic, genemomic, laboratory, imaging, reports, environement):
+- At international multicentric 
+- Observational studies
+- Clinical research
+- Personalized medecine 
+- Early warning systems
+Last we will discuss an architecture that allows near real time AI on medical
+dataset, that would allow early warning system.
+
 ICU datas : a paradox
 #######################
 
+ICU has all of the expectation, because all kind of data...
 - Reusing medical datas has historically been impossible for a large population and most of datas were simply wasted due data variability and quality challenges
 
 - Intensive care unit ICU are faced to a paradox
@@ -10,6 +25,7 @@ ICU datas : a paradox
 - The practice’s variability is due to lack of adherence to best practices, but the vast majority occurs simply because no evidence has been established for the issue in question (2) or because the effects of interventions in the ICU are subject to the exceptional complexity of patient physiology and the variation beetween unique patient and clinical studies
 
 - But the ICU demand of care is rising (3) and the mortality in ICU is up to 30 % which is a major health care problem
+
 
 ICU databases
 ################
@@ -65,6 +81,8 @@ conclusion
 The MIMIC-III database is unique in capturing highly granular structured data. But the conception of this database was time consuming and  unfortunately only 45,000 unique patients’ data from a single center were captured. 
 To produce analyse high number of patient we will have to merge heterogenous databases.
 
+=> early warning system
+
 Data merging
 ###############
 
@@ -76,12 +94,16 @@ Use of EHRs has been increasing world-wide, but most EHRs are differents in thei
 - interoperability may provide easy international research and improve reproductibily of it
 - decrease costs and investment in developing algorithms and help to performs transferable analyses
 - their data structure should be the closest to the EHR, to transfer easily research in real life
+- data pipeline need to be the same to apply and confirm results accross multiple centers (algorithm performance)
 
 challenges
 ==============
 - but we know that simple merging of databases give poor quality level because of the heterogeneity of datas (9)
 - but sharing data creates legal/juridic problems
 - but merge may loss datas
+
+=>  multicentric
+
 
 databases modelling and datas exchanges
 ===========================================
@@ -129,14 +151,24 @@ We limited the candidate data models to those designed and used for clinical res
 
 Our study
 ###########
-The aim of MIT with MIMIC-III is to provide open datas, more collaborative and reproductitible studies with shared codes.
-In this purpose the transformation from MIMICIII to MIMICIII-OMOP with standardized mapping concept is important and was hightly supported by the MIT. (4)
 
-In this article we provide a example of Extract Transform Load (ELT) implementation of electronic health records (EHR) in intensive care unit by transforming the all MIMIC-III database (expected high frequency datas) to OMOP CDM version 5.3 (last version in date).
-We’ll expose our methodology and we’ll discuss about modification we want to propose to the omop community.
+The aim of MIT with MIMIC-III is to provide open datas, more collaborative and
+reproductitible studies with shared codes.  In this purpose the transformation
+from MIMICIII to MIMICIII-OMOP with standardized mapping concept is important
+and was hightly supported by the MIT. (4)
+
+In this article we provide a example of Extract Transform Load (ELT)
+implementation of electronic health records (EHR) in intensive care unit by
+transforming the all MIMIC-III database (expected high frequency datas) to OMOP
+CDM version 5.3 (last version in date).
+We’ll expose our methodology and we’ll discuss about modification we want to
+propose to the omop community.
 We’ll also discuss about potential loss of information links to this ETL.
 
-3 axes of evaluation : ETL, ANALYTICS, Contribution.
+This preliminary work is to transform the MIMIC DB into OMOP, and we evaluate
+here OMOP in term of data merging (multicentric, observational, clinical)
+Finally we will discuss how OMOP can address the early warning system challenge.
+
 
 1. Vincent JL. Is the current management of severe sepsis and septic shock
 really evidence based? PLoS Med 2006; 3:e346
