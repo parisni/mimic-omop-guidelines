@@ -1,50 +1,6 @@
 1. ETL
 #######
 
-2. ANALYTICS
-############
-
-- consize model, simple
-- normalized, but materialized views is a solution.
-- standardized code
-
-3. CONTRIB
-###########
-
-- sopha from dataforgood ?
-
-NLP: The
-
-summary table of note and section mapping
-=========================================
-
-with tmp as (select count(1) as count,round(median(c)) as median, round(avg(c),1) as avg, max(c) as max, note_source_value as mimic_category, c1.concept_name as omop_category from note left join concept c1 on note_type_concept_id = c1.concept_id left join (select note_id, count(1) as c from note_nlp group by note_id) as note_nlp using (note_id)  group by note_source_value, c1.concept_name) select mimic_category, omop_category, count as  document_count, median as section_median, avg as section_mean, max as section_max from tmp order by 2 asc;
-
-  mimic_category   |   omop_category   | document_count | section_median | section_mean | section_max 
--------------------+-------------------+----------------+----------------+--------------+-------------
- Case Management   | Ancillary report  |            953 |              5 |          6.3 |          16
- Nutrition         | Ancillary report  |           9400 |              8 |          9.6 |          23
- Pharmacy          | Ancillary report  |            101 |              3 |          2.3 |           3
- Rehab Services    | Ancillary report  |           5408 |             20 |         23.5 |          74
- Respiratory       | Ancillary report  |          31701 |             24 |         24.1 |          35
- Social Work       | Ancillary report  |           2661 |              2 |          7.2 |          23
- Discharge summary | Discharge summary |          59652 |             29 |         28.0 |          76
- Physician         | Inpatient note    |         141281 |             56 |         56.3 |          98
- General           | Inpatient note    |           8236 |              2 |          6.5 |          82
- Consult           | Inpatient note    |             98 |             43 |         37.5 |          63
- Nursing           | Nursing report    |         223182 |              1 |          3.2 |          49
- Nursing/other     | Nursing report    |         822497 |              1 |          1.0 |           1
- ECG               | Pathology report  |         209051 |              1 |          1.0 |           1
- Echo              | Pathology report  |          45794 |             21 |         20.5 |          25
- Radiology         | Radiology report  |         522279 |              5 |          5.7 |          
-
-
-
-Tokenizer evaluation: The stanford parser have been evaluated in several studies. The ctakes parser has a specialized
-Myocardial infaction evaluation: Last but not least, this pipeline exploits two pipelines described above. It's evaluation thought a challenge testifies the approach works and might benefit from improvements.
-All those NLP pipelines are interdependent. Improving one step would result in general improvement. Community work might apply here and subsequent result be used into cohort discovery or data-science feature extraction by analyst without prior knowledge in NLP. In order to be able to improve NLP results, an evaluation framework need to be built up. The NOTE_NLP table might be populated with gold standard manually annotated notes too.
-While sections, sentences, and token are intermediary results, we believe that is is important to store them. This has several advantages: it helps text-miners. This has a severe drawback: the table becomes huge with potentially billions of rows POS tagging for each token.
-
 table populated with their mimic source table link
 =====================================================
 
@@ -72,15 +28,29 @@ As OMOP is a conceptual model, a same type of data goes in the same table. The b
 | OBSERVATION_PERIOD 	|58976 |patients, admissions |
 | SPECIMEN 	 	|39874171 |chartevents, labevents, microbiologyevents |
 
-Ajouter schema
+Ajouter schema : MIMIC-OMOP_equivalence.png
 
 Quality evaluation
 ====================
 
+Following the mapping process, different assessments were made to measure the quality of the mapping
+process. 
+1) During the all ETL process we created a lot of unit tests thanks to pgTap library. All are available on our github. All the test passed.
+2) We compared our population on MIMIC-III and on OMOP-MIMIC.
+3) As did previous authors (5) we did a distinction between the ‘structural’ mapping quality and the ‘semantic’ mapping quality.
+The first one tried to evalute to how the row data elements fits to the target CDM
+The second tries to qualify our mapping variables to a standard OMOP concept 
+and if there is a potential loss of data in thisprocess.
+
+A many previous authors, we used Achilles 0sofware to evaluate the data quality(4). It is open-source analytics software produced by OHDSI (6).
+This tool is used for data characterization, quality assessment, and the visualization of observational health data (6). 
+ACHILLES calculates summary statistics and includes a unique function for checking data quality, named Achilles Heel. 
+
 comparison MIMICIII / MIMIC OMOP (basic statistics)
 ***************************************************
 
-The table lists the baseline characterization of the population of MIMICIII-OMOP compared with MIMICIII.
+The following table lists the baseline characterization of the population of MIMICIII-OMOP compared with MIMICIII.
+The MIMIC-III database contains 45.520 individuals and 58.976 single admissions.
 
 | items					|OMOP-MIMIC 			| MIMICIII |
 |---------------------------------------|-------------------------------|----------|
@@ -88,12 +58,29 @@ The table lists the baseline characterization of the population of MIMICIII-OMOP
 | Admissions (Number) 			| 58.976 			| 58.976 |
 | Icustays (Number)   			| 61.532 			| 71.576 |
 | Age (Mean)  				| 64 ans, 4 months 		| 64 years, 4 monts |
+| 0-5  				        | 		| |
+| 6-15  				        | 		| |
+| 16-25			        | 		| |
+| 26-45  				        | 		| |
+| 46-65				        | 		| |
+| 66-80				        | 		| |
+| >80				        | 		| |
+| Emergency				        | 		| |
+| Elective				        | 		| |
+| Surgical patients				        | 		| |
+| Surgical patients				        | 		| |
 | Gender, Female (Number, %) 	       	| 20.399 (43 %)               	| 20.399 |
 | Length of stay, hospital (median) 	| 6.59 (Q1-Q3 : 3.84 - 11.88) 	| 6.46 (Q1-Q3 : 3.74 -11.79) |
 | Length of stay, ICU (median)      	| 1.87 (Q1-Q3 : 0.95 - 3.87)  	| 2.09 (Q1-Q3 : 1.10 - 4.48) |
 | Mortality, ICU (Number, %)        	| 5815 (9%)                   	| 5814 (9%) |
 | Mortality, hospital (Number, %)   	| 4559 (6%)                   	| 4511 (7%) |
-| Lab measurement per admissions (mean) | 678  (from labevents + charevents) | 478 (from labevents)|
+| Lab measurements per admissions (mean) | 678  (from labevents + charevents) | 478 (from labevents)|
+| Procedures per admissions (mean) |||
+| Drugs per admissions (mean) | ||
+| Exit dignosis per admissions (mean) |||
+
+MIMIC-III contains 61.532 stays in ICU whereas OMOP-MIMIC contains 71.576 unique stays.
+That is a 116% increase in stays due to our ETL methodology as we explained in the methods.
 
 We can see that we increase the number of laboratory measurement per admissions.
 This is because the laboratory datas from chartevents has been extract and treated as laboratory
@@ -105,22 +92,49 @@ We tried to evaluate the percentage  of records loaded from the source database 
 We evaluate the percentage of columns and the percentage of rows as have done other studies (1) 
 
 - for the rows no data were lost. 
-Two main remarks. 
-        - We erased the error rows are deleted (inputevents_mv, chartevents, procedureevents_mv, note). As MIMIC team told us that they will remove it in the next release because this datas are poor quality we decided to do the same. 
-| Table              | Error Percentage |
+We erased the error rows are deleted (inputevents_mv, chartevents, procedureevents_mv, note). As MIMIC team told us that they will remove it in the next release because this datas are poor quality we decided to do the same. 
+The following table shows the number of rows with errors.
+| Relations              | Error Percentage |
 | inputevents_mv     | 10% |
 | chartevents        | 0.04% |
 | procedureevents_mv | 3% |
 | Note               | 0.04% |
-        - We incresed the number of ICU stay by 116% (71.576 vs 61.532). This is because our ETL methodology as we explained in the methods.
 
 - Columns
-50 % of sources columns which doesn't fits to CDM where erased. Almost all the removed columns are useless or redundant with other. In mimic for some datas there are two timestamps. One called storetime the other called charttime. The OMOP model can't store two timestamp for one data. The storetime was deleted
-storetime!!
+Depending the tables between 40 % and 80% of sources columns which doesn't fits to CDM where erased. 
+The exact removed columns are provided in the appendix (cf extras)
+Almost all the removed columns are redundant with others or provide derived informations. 
+The main concern could be the timestamp when the measurements contain a lot of it.
+For example the chartevents MIMIC tables provide the storetime and charttime columns. 
+The storetime was deleted during the ETL
 
 
 terminology mapping coverage
 ***************************
+| Omop tables    	    |Mapping coverages|
+|-----------------------|--------------|
+| PERSONS 		        |100%|
+| DEATH 		        |100%|
+| VISIT_OCCURRENCE 	    |100%|
+| VISIT_DETAIL 		    |100%|
+| MEASUREMENT 		    |70%|
+| OBSERVATION 		    |70%|
+| DRUG_EXPOSURE 	    |62%|
+| PROCEDURE_OCCURRENCE 	|99%|
+| CONDITION_OCCURRENCE 	|94%|
+| NOTE 			        |0%|
+| NOTE_NLP 		        |NA|
+| COHORT_ATTRIBUTE 	    |0%|
+| CARE_SITE 		    |100%|
+| PROVIDER 		        |100%|
+| OBSERVATION_PERIOD 	|NA|
+| SPECIMEN 	 	        |71%|
+
+These results include automatic and manual mapping.
+We check 100 items for each mapping used (NDC, ICD9 and CPT4). ICD9 and CPT4 are correcly mapped to SNOMED. But only 85% of NDC are
+linked to a correct RxNorm code. In part due to incorrect NDC code (from MIMIC), in
+part because only 78% of NDC codes are mapped to Rxnorm
+
 - ICD-9-CM 
    A part of source data for condition_occurrence was ICD-9 codes. 
    The OMOP common standard vocabulary, SNOMED-CT, did not cover all ICD-9-CM codes (95%)
@@ -137,14 +151,18 @@ Need colaborative work
 - we have mapped  many source concept to one standard concept
   is it the same meaning? distribution of values sometimes very different
 
+Achilles for quality assessment
+***************************
+Achilles Heel issued x errors andy warnings.
+
 ANALYTICS
 ###########
 - consize model, simple
 - normalized, but materialized views is a solution.
 - standardized code
 
-ACHILLES evaluation
-===================
+ACHILLES for analytics assessment
+================================
 
 ACHILLES is open-source software application developped by OHDSI and Achilles Heel provided data quality checker
 Other team used this tool to practice data quality assess(4).
@@ -199,15 +217,14 @@ Community sharing
 ===================
 
 We provided many derived values. Community is welcome to improve it
-- F/P, corrected Ca / K, BMI
-- Note_NLP with section splitting. The algorythm is freely accessible here
-- SOFA, SAPSII
+- From noteevents : weight, heigth, LVEF
+- From measurement : SOFA, IGSII, F/P, corrected Ca / K, BMI, corrected osmolarity
 
 
 others
 ######
 
-- estimation of number of work hours
+- estimation of number of work hours : Data transformation was done by 2 developers and praticians in 500 hours
 - ethnicity_concept_id : only two strange concept_name hispanic or non_hispanic
 - size of MIMIC OMOP, row number for the bigest relation (measurement)
 - chartevents and lavents provide many number field as a string which is not handy for statistical analyse. We provide a standard and easy improval by the community model to extract numerical value from string
@@ -219,3 +236,5 @@ others
 2. https://www.nlm.nih.gov/research/umls/mapping_projects/icd9cm_to_snomedct.html
 3. http://blogs.aphp.fr/dat-icu/
 4. Y.Dukyong and Al.Conversion and Data Quality Assessment of Electronic Health Record Data at a Korean Tertiary Teaching Hospital to a Common Data Model for Distributed Network Research.Healthcare Informatics Research 2016; 54
+   5. http://www.ohdsi-europe.org/images/symposium-2018/posters/20_Michel_Speybroeck.pdf
+         6. https://www.ohdsi.org/analytic-tools/

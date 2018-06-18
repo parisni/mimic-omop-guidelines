@@ -1,8 +1,12 @@
 MIMIC and OMOP version
 ========================
-- MIMIC III version 1.4
+- MIMIC III version 1.4 21 clinical data tables and 5 tables for vocabulary
 - OHDSI CDM v 5.0.1 which defines 15 standardized clinical data tables, 3 health system data tables, 2 health economics data tables, 5 tables for derived elements and 12 tables for standardized vocabulary. 
+  We didn’t use the health economics data tables (not provided in MIMIC)
+
 All the process is available freely on the github website : https://github.com/MIT-LCP/mimic-omop.
+
+Ajouter les deux schemas de database design
 
 1. ETL
 #######
@@ -93,10 +97,11 @@ modification of OMOP model
 ++++++++++++++++++++++++
 
 - The key table for omop is the concept table. The standard vocabulary of OMOP is mainly based on the Systematized Nomenclature of Medicine Clinical Terms (SNOMED-CT)
-- A mapping between many classifications and the standard omop ones (ICD-9 and snomed-CT for examples) is already provides with concept_relationship table.
+- A mapping between many classifications and the standard omop ones (ICD-9 and snomed-CT for examples) is already provides with concept_relationship table. We have used this to the maximum extent possible (laboratory exams, exit diagnoses and procedures)
+  For the prescritions MIMIC-III table 75% (a verifier) of drugs had a gsn code. The conept_relationship table provide mapping between gsn and RxNorm classsifications. To improve the mapping we then proceeded to a manual mapping
 
-- Local code for mimiciii such as admission diagnoses, demographic status, drugs, signs and symptoms were manually mapped to OMOP standard models by several participants. This work was followed and check by a physician. For example local drug codes were mapped to the OMOP standardized vocabularies, which use RxNorm. All laboratory exams, exit diagnoses and procedures were already mapped to standard classication. 
-We had only use csv files for our manual mapping. All are available on github : https://github.com/MIT-LCP/mimic-omop/tree/master/extras/concept. This solution can scale for medical users without database engineering background. We tried to adopt the same methodology in their creation ; some obvious fields are needed : local and standard name, local and standard id. Moreover evaluation and comments fields are good practices and may help contributers
+- Local code for mimiciii such as admission diagnoses, demographic status, drugs, signs and symptoms were manually mapped to OMOP standard models by several participants. This work was followed and check by a physician. 
+We had only used csv files for our manual mapping. All are available on github : https://github.com/MIT-LCP/mimic-omop/tree/master/extras/concept. This solution can scale for medical users without database engineering background. We tried to adopt the same methodology in their creation ; some obvious fields are needed : local and standard name, local and standard id. Moreover evaluation and comments fields are good practices and may help contributers
 - fuzzy match algorithm for mapping suggestion semi-automatic.
 The manual terminology mapping has been catalized by using a naïve but flexible approach. Many mapping tools exist on the area RELMA provided by LOINC, USAGI provided by OHDSI. Most of those tools are based on linguistic mapping [cite], and the approach have been shown to be the most effective[cite]. Following our prime idea to build low dependency tools, we managed to build a light semi-automatic tool based on postgresql full-text feature. The concept table labels have been indexed, and a similarity can be constructed by a simple sql query. We kept the 10 most similar concepts, and this have been shown to be a quick way to map concepts, after having choosen the best domain.
 	
