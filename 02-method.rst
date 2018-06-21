@@ -14,6 +14,28 @@ Ajouter les deux schemas de database design
 1.1 Data Transformation
 +++++++++++++++++++++++
 
+Extract-Transformation-Load (ETL) processes is a methodology that allow
+migrating data from a source location to a target location. ETL first extract
+the data from the source location, and then apply transformations such
+structural modifications or conceptual modifications generaly on a dedicated
+computer and technology. The last step is to load the resulting data into the
+target location. Transformation program are generally written in a programming
+language such java, c++ or python.
+Extract-Load-Transform (ELT) processes is a slightly different methodology. The
+data is extracted and directly loaded into the target location. It is
+transformed afterwards in place. ELT allows to factorize both computer
+resources, and people knowledges. Indeed transformations are then written in a
+database dialect such SQL, as well as source and target location. Improving
+database resources will then benefit for both ETLers and end users.  Since
+RDBMS computer resources cannot scale well and does not provide a good support
+for procedural language, ETL have been for long time used in conjonction with
+RDBMS. The emmergence of distributed platform such hadoop allows to take part
+of ELT because they both allow to scale well horizontally and write java
+procedural user defined function that are used in conjonction with SQL queries.
+In this work, we decided to transform MIMIC into OMOP thought a ELT to limit
+the programming knowledges needed for code maintenance and to allow end users
+to participate in this process.
+
 
 Preprocessing and modification of mimic
 ==========================================
@@ -36,6 +58,7 @@ Preprocessing and modification of mimic
 
 - the fact_relationship table was used to link drugs in a solution, for  microbiology / antibiograms and for visit_detail and caresite
 The SQL following query shows how a microorganism is linked to its antibiogram thanks to fact_relationship
+
 SELECT measurement_source_value, value_as_concept_id, concept_name
 FROM measurement
 JOIN concept resistance ON value_as_concept_id = concept_id
