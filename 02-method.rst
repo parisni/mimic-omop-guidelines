@@ -36,10 +36,26 @@ user defined function that are used in conjonction with SQL queries.
 In this work, we decided to transform MIMIC into OMOP thought a ELT to limit
 the programming knowledges needed for code maintenance and to allow end users
 to participate in this process. PostgreSQL has been choosen as the database
-support for ELT because it allows community to run the ETL on limited resources
-without licensing need. Finally PostgreSQL have recently made huge effort to
-handle data-processing better.
+support for ELT because it is the primary support of MIMIC database and allows
+community to run the ETL on limited resources without licensing need. Finally
+PostgreSQL have recently made huge effort to handle data-processing better.
 
+Structural data transformation
+==============================
+
+The structural transformation have been done in few iteration of several phases.
+The first phase consists of looping over each MIMIC table and choose for each
+columns an equivalent location in OMOP. In general, the MIMIC documentation and
+the OMOP documentation were sufficient to choose. In several cases, we needed
+to get clarrification from the MIMIC contributors on the dedicated github
+repository, or from the OMOP community on the dedicated forum.
+During this work the OMOP forum was very active. Working groups. It is a
+challenge to manage such large community from all moderator, contributors and
+from a user perspective. It appears it is not doable for most of people to get
+involved. The forum is full of details and information. It contrast with the
+implementation guide that suffer from not being as well detailled. We think the
+OMOP community would greatly benefit from systematic and synthetic
+synchronisation between forum, github and end user documentation.
 
 Preprocessing and modification of mimic
 ==========================================
