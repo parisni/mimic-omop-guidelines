@@ -21,20 +21,24 @@ structural modifications or conceptual modifications generaly on a dedicated
 computer and technology. The last step is to load the resulting data into the
 target location. Transformation program are generally written in a programming
 language such java, c++ or python.
-Extract-Load-Transform (ELT) processes is a slightly different methodology. The
-data is extracted and directly loaded into the target location. It is
-transformed afterwards in place. ELT allows to factorize both computer
-resources, and people knowledges. Indeed transformations are then written in a
-database dialect such SQL, as well as source and target location. Improving
-database resources will then benefit for both ETLers and end users.  Since
-RDBMS computer resources cannot scale well and does not provide a good support
-for procedural language, ETL have been for long time used in conjonction with
-RDBMS. The emmergence of distributed platform such hadoop allows to take part
-of ELT because they both allow to scale well horizontally and write java
-procedural user defined function that are used in conjonction with SQL queries.
+Extract-Load-Transform (ELT) processes is a slightly different methodology that
+does not use a transformation server and limits data transfers. The data is
+extracted and directly loaded into the target location. It is transformed
+afterwards in place. ELT allows to factorize both computer resources, and
+people knowledges. Indeed transformations are then written in a database
+dialect such SQL, as well as source and target location. Improving database
+resources will then benefit for both ETLers and end users. Since RDBMS computer
+resources cannot scale well and does not provide a good support for procedural
+language, ETL have been for long time used in conjonction with RDBMS. The
+emmergence of distributed platform such hadoop allows to take part of ELT
+because they both allow to scale well horizontally and write java procedural
+user defined function that are used in conjonction with SQL queries.
 In this work, we decided to transform MIMIC into OMOP thought a ELT to limit
 the programming knowledges needed for code maintenance and to allow end users
-to participate in this process.
+to participate in this process. PostgreSQL has been choosen as the database
+support for ELT because it allows community to run the ETL on limited resources
+without licensing need. Finally PostgreSQL have recently made huge effort to
+handle data-processing better.
 
 
 Preprocessing and modification of mimic
