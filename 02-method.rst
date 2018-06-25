@@ -49,13 +49,17 @@ columns an equivalent location in OMOP. In general, the MIMIC documentation and
 the OMOP documentation were sufficient to choose. In several cases, we needed
 to get clarrification from the MIMIC contributors on the dedicated github
 repository, or from the OMOP community on the dedicated forum.
-During this work the OMOP forum was very active. Working groups. It is a
-challenge to manage such large community from all moderator, contributors and
-from a user perspective. It appears it is not doable for most of people to get
-involved. The forum is full of details and information. It contrast with the
-implementation guide that suffer from not being as well detailled. We think the
-OMOP community would greatly benefit from systematic and synthetic
-synchronisation between forum, github and end user documentation.
+All choices have been discussed in the MIMIC-OMOP github issues, and can be
+tracked into the commit log. The resulting table to table workflow is
+materialized in the repository as bi-directional documentation: from MIMIC
+table to OMOP table and vice-versa.
+[DISCUSSION?] During this work the OMOP forum was very active. Working groups.
+It is a challenge to manage such large community from all moderator,
+contributors and from a user perspective. It appears it is not doable for most
+of people to get involved. The forum is full of details and information. It
+contrast with the implementation guide that suffer from not being as well
+detailled. We think the OMOP community would greatly benefit from systematic
+and synthetic synchronisation between forum, github and end user documentation.
 
 Preprocessing and modification of mimic
 ==========================================
