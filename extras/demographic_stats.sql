@@ -312,3 +312,245 @@ WITH tmp AS
   AND t.visit_detail_type_concept_id = 2000000006
 )
 SELECT dead AS  dead_icu_omop, total AS total_icu_omop, dead * 100 / total AS dead_percent_icu_omop FROM tmp;
+
+
+-- ----------------------------------------------------------------------------------
+-- AGE (mean at admission time)
+-- https://my.vertica.com/docs/7.0.x/HTML/Content/Authoring/SQLReferenceManual/Functions/Mathematical/WIDTH_BUCKET.htm
+-- ----------------------------------------------------------------------------------
+-- mimiciii
+WITH tmp AS
+(
+	SELECT EXTRACT(epoch FROM admittime -dob)/3600/24/365 AS age
+	FROM mimiciii.admissions
+	LEFT JOIN mimiciii.patients USING (subject_id)
+
+
+),
+bucket AS
+(
+	SELECT width_bucket(cast (age as numeric), 0, 100, 20) as age_bucket
+	from tmp
+
+
+),
+readable AS
+(
+/*
+Rmq: with width_bucket, if age < 0 => age_bucket == 0
+                        if age between 0 et 5 => age_bucket == 1
+			if age > 100 => age_bucket == 21
+ 1 2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 19 20  21
+0 5 10 15 20 25 30 35 40 45 50 55 60 65 70 75 80 85 90 100
+*/
+	SELECT
+		CASE
+			WHEN age_bucket <=1 THEN '0-5'
+			WHEN age_bucket <=3 THEN '6-15'
+			WHEN age_bucket <=5 THEN '16-25'
+			WHEN age_bucket <=9 THEN '26-45'
+			WHEN age_bucket <=13 THEN '45-65'
+			WHEN age_bucket <=16 THEN '66-80'
+			ELSE '>81'
+			END AS age
+	FROM bucket
+
+)
+SELECT age, count(*)
+FROM readable
+GROUP BY age
+ORDER BY age;
+
+--omop
+WITH tmp AS
+(
+	SELECT EXTRACT(epoch FROM visit_start_datetime - birth_datetime)/3600/24/365 AS age
+	FROM omop.visit_occurrence
+	LEFT JOIN omop.person USING (person_id)
+
+),
+bucket AS
+(
+	SELECT width_bucket(cast (age as numeric), 0, 100, 20) as age_bucket
+	from tmp
+
+),
+readable AS
+(
+/*
+Rmq: with width_bucket, if age < 0 => age_bucket == 0
+                        if age between 0 et 5 => age_bucket == 1
+			if age > 100 => age_bucket == 21
+ 1 2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 19 20  21
+0 5 10 15 20 25 30 35 40 45 50 55 60 65 70 75 80 85 90 100
+*/
+	SELECT
+		CASE
+			WHEN age_bucket <=1 THEN '0-5'
+			WHEN age_bucket <=3 THEN '6-15'
+			WHEN age_bucket <=5 THEN '16-25'
+			WHEN age_bucket <=9 THEN '26-45'
+			WHEN age_bucket <=13 THEN '45-65'
+			WHEN age_bucket <=16 THEN '66-80'
+			ELSE '>81'
+			END AS age
+	FROM bucket
+
+)
+SELECT age, count(*)
+FROM readable
+GROUP BY age
+ORDER BY age;
+
+-- ----------------------------------------------------------------------------------
+-- type_admission
+-- ----------------------------------------------------------------------------------
+-- mimiciii
+SELECT admission_type, count(*) from mimiciii.admissions group by 1 order by 2 desc;
+
+--omop
+SELECT visit_source_value, visit_source_concept_id, count(*)
+FROM visit_occurrence v
+GROUP BY visit_source_value, visit_source_concept_id;
+
+-- ----------------------------------------------------------------------------------
+-- surgical_patient
+-- ----------------------------------------------------------------------------------
+-- mimic
+WITH first_services AS
+(
+	SELECT hadm_id, min(transfertime) as transfertime
+	FROM mimiciii.services
+	-- WHERE prev_service is null
+	Group by hadm_id
+
+),
+tmp AS
+(
+	SELECT curr_service
+	FROM mimiciii.services s
+	JOIN first_services fs
+	ON s.hadm_id = fs.hadm_id
+	AND s.transfertime = fs.transfertime
+
+),
+admission_type AS
+(
+	SELECT
+		CASE
+			WHEN curr_service IN ('CMED', 'MED', 'NMED', 'OMED') THEN 'General medical service'
+			WHEN curr_service IN (
+						'CSURG', 'DENT', 'ENT', 'GU', 'GYN'
+						, 'NSURG', 'OBS', 'ORTHO', 'PSURG'
+						, 'SURG', 'TRAUM', 'TSURG', 'VSURG'
+					     
+				) THEN 'Surgical service'
+			WHEN curr_service IN ('NB', 'NBB') THEN 'Newborn care service'
+			WHEN curr_service IN ('PSYCH') THEN 'Psychiatry service'
+			ELSE NULL
+			END AS concept_name
+	FROM tmp
+
+)
+SELECT concept_name, count(*)
+FROM admission_type
+GROUP BY concept_name
+ORDER BY count(*) DESC;
+
+--omop
+WITH first_services AS
+(
+	SELECT visit_occurrence_id, min(visit_start_datetime) AS visit_start_datetime
+	FROM visit_detail
+	WHERE visit_type_concept_id = 45770670
+	group by visit_occurrence_id
+
+),
+tmp AS
+(
+	SELECT visit_detail_concept_id
+	FROM visit_detail vd
+	JOIN first_services fs
+	ON fs.visit_occurrence_id = vd.visit_occurrence_id
+	AND vd.visit_start_datetime = fs.visit_start_datetime
+	AND vd.visit_type_concept_id = 45770670
+
+
+)
+
+SELECT concept_name, concept_id, count(1)
+FROM tmp
+JOIN concept ON visit_detail_concept_id = concept_id
+GROUP BY 1, 2 ORDER BY count(1) desc;
+
+-- -------------------------------------------------
+-- procedures par admissions
+-- ------------------------------------------------
+-- mimic
+WITH tmp AS
+(
+	SELECT hadm_id, count(*)
+	FROM mimiciii.procedures_icd
+	GROUP BY hadm_id
+
+)
+SELECT avg(count) AS mimic_procedures FROM tmp;
+
+-- omop
+WITH tmp AS
+(
+	SELECT visit_occurrence_id, count(*)
+	FROM omop.procedure_occurrence
+	WHERE procedure_type_concept_id = 38003622
+	GROUP BY visit_occurrence_id
+
+)
+SELECT avg(count) AS omop_procedures FROM tmp;
+
+-- -------------------------------------------------
+-- diagnostics de sortie par admissions
+-- ------------------------------------------------
+-- mimic
+WITH tmp AS
+(
+	SELECT hadm_id, count(*)
+	FROM mimiciii.diagnoses_icd
+	GROUP BY hadm_id
+
+)
+SELECT avg(count) AS mimic_diagnoses FROM tmp;
+
+-- omop
+WITH tmp AS
+(
+	SELECT visit_occurrence_id, count(*)
+	FROM omop.condition_occurrence
+	WHERE condition_type_concept_id != 42894222
+	GROUP BY visit_occurrence_id
+
+)
+SELECT avg(count) AS omop_diagnoses FROM tmp;
+
+-- -------------------------------------------------
+-- drugs par admissions
+-- ------------------------------------------------
+-- mimic
+WITH tmp AS
+(
+	SELECT hadm_id, count(*)
+	FROM mimiciii.prescriptions
+	GROUP BY hadm_id
+
+)
+SELECT avg(count) AS mimic_drugs FROM tmp;
+
+-- omop
+WITH tmp AS
+(
+	SELECT visit_occurrence_id, count(*)
+	FROM omop.drug_exposure
+	WHERE drug_type_concept_id = 38000177
+	GROUP BY visit_occurrence_id
+
+)
+SELECT avg(count) AS omop_drugs FROM tmp;

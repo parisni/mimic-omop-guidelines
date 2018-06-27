@@ -108,8 +108,11 @@ challenges
 databases modelling and datas exchanges
 ===========================================
 
-Common data model (CDM) provides standardized definition of represent resources and their relationships.
-Many has been developped, certains are open-source:
+As said Kahn and all, "databases modelling is the process of determining how data are to be stored in a database".
+It specifies data types, constraints, relationship and metadata definitions.
+Common data model (CDM) provides a standardized ways to represent resources/datas and their relationships.
+The databases have been designed to facilitate exchanges and store data from multiple sources.
+Several have been developed, certains are open-source:
 - MIMIC !
 	- Even if MIMIC is a large, freely-available database, its datamodel does not provide easy exchanges. 
 	- Its structure is "ICU centric" with many relations created in this purpose (icustays, microbiology table).
@@ -119,22 +122,28 @@ Many has been developped, certains are open-source:
 
 - I2B2 :
         - https://www.i2b2.org/
+        - have been created as a framework to investigate genetic disease
 	- good interface for cohort selection
 	- i2b2 has been described as being used by more than 200 hospitals6 over the world
 	- The central table is called observation_fact table
 	- Compare to OMOP-CDM the hierarchies are organise with a 'concept path' column. Two concepts are linked by a single relationship                                
 	
 - FHIR, Fast Healthcare Interoperability Resources 
+        - have been created to support healthcare uses of data like clinical decision support
 	- is a standard for exchanging healthcare information electronically (https://www.hl7.org/fhir/overview.html/)
 	- Some papers have showed that collaboration between FHIR  may provide both applicative software and analytic research and showed great promise(5, 13)
 
 - PCORnet, the National Patient-Centered Clinical Research Network (http://pcornet.org/pcornet-common-data-model/)
+        - have been created to monitore the safety of FDA-regulated medical products.
 	- PCORnet Common Data Model (CDM) integrate multiple data from different sources and leverages standard terminologies and coding systems for healthcare (including ICD, SNOMED, CPT, HCPSC, and LOINC) to enable interoperability with and responsiveness to evolving data standards.
 	- The first version of the CDM was released in 2014, and there have been 3 major releases and one minor update since then (last release CDM v4.1: Released May 18, 2018 )
 
 - OMOP model : Observational Medical Outcomes Partnership Common Data Model (OMOP-CDM) 
 	- Incorpore validated standard classification (8) : SNOMED for diagnoses, RxNORM for drug ingredients and LOINC for laboratory results...
 	- Provide tables for mapping beetween international classification (ex: ICD9 and SNOMED)
+
+	- Public-private partnership as members of academics and industry are working on it
+        - have been created to compare drug outcomes studies
 
 	- In this model all the data stay locally at the participant site, the primary analyses are carried locally (5)
 
@@ -188,3 +197,4 @@ JAMA 2000;284:2762–2770
 11. S. Bayzid and Al. Conversion of MIMIC to OHDSI CDM. National Center for Biomedical Communications, Bethesda, Maryland
 12. T. Gruber. Toward principles for the design of ontologies used for knowledge sharing?, International journal of human-computer studies, 1995
 13. Nicolas Paris and Al. i2b2 implemented over SMART-on-FHIR
+14. Kahn and Al. Data model considerations for clinical effectiveness researchers, Med Care, 2012

@@ -9,24 +9,25 @@ From MIMICIII we create a standardized model called MIMICIII-OMOP.
 This table shows where the informations goes. 
 As OMOP is a conceptual model, a same type of data goes in the same table. The best example may be the measurement table which is field by 4 source tables. Is is because of the numerics datas should go to this table.
 
-| Omop tables    	|Number of rows| Source tables|
-|-----------------------|--------------|--------------|
-| PERSONS 		|46520 |patients, admissions |
-| DEATH 		|14849 |patients, admissions |
-| VISIT_OCCURRENCE 	|58976 |admissions |
-| VISIT_DETAIL 		|271808 |transfers, service |
-| MEASUREMENT 		|366272371 |chartevents, labevents, microbiologyevents, outputevents |
-| OBSERVATION 		|6721040|admissions, chartevents, datetimevvents, drgcodes |
-| DRUG_EXPOSURE 	|24934758 |prescriptions, inputevents_cv, inputevents_mv|
-| PROCEDURE_OCCURRENCE 	|1063525 |cptevents, procedureevents_mv, procedure_icd|
-| CONDITION_OCCURRENCE 	|716595 |admissions, diagnosis_icd |
-| NOTE 			|2082294 |notevents|
-| NOTE_NLP 		|16350855 |noteevents |
-| COHORT_ATTRIBUTE 	| 2628838|callout |
-| CARE_SITE 		|93 |trasnfers, service |
-| PROVIDER 		|7567 |caregivers |
-| OBSERVATION_PERIOD 	|58976 |patients, admissions |
-| SPECIMEN 	 	|39874171 |chartevents, labevents, microbiologyevents |
+
+| Omop tables    	| Number of rows | Source tables |
+|-----------------------|---------------|--------------|
+| PERSONS 		| 46520         | patients, admissions |
+| DEATH 		| 14849         | patients, admissions |
+| VISIT_OCCURRENCE 	| 58976         | admissions |
+| VISIT_DETAIL 		| 271808        | transfers, service |
+| MEASUREMENT 		| 366272371     | chartevents, labevents, microbiologyevents, outputevents |
+| OBSERVATION 		| 6721040       | admissions, chartevents, datetimevvents, drgcodes |
+| DRUG_EXPOSURE 	| 24934758      | prescriptions, inputevents_cv, inputevents_mv|
+| PROCEDURE_OCCURRENCE 	| 1063525       | cptevents, procedureevents_mv, procedure_icd|
+| CONDITION_OCCURRENCE 	| 716595        | admissions, diagnosis_icd |
+| NOTE 			| 2082294       | notevents|
+| NOTE_NLP 		| 16350855      | noteevents |
+| COHORT_ATTRIBUTE 	| 2628838       | callout |
+| CARE_SITE 		| 93            | trasnfers, service |
+| PROVIDER 		| 7567          | caregivers |
+| OBSERVATION_PERIOD 	| 58976         | patients, admissions |
+| SPECIMEN 	 	| 39874171      | chartevents, labevents, microbiologyevents |
 
 Ajouter schema : MIMIC-OMOP_equivalence.png
 
@@ -40,9 +41,9 @@ process.
 3) As did previous authors (5) we did a distinction between the ‘structural’ mapping quality and the ‘semantic’ mapping quality.
 The first one tried to evalute to how the row data elements fits to the target CDM
 The second tries to qualify our mapping variables to a standard OMOP concept 
-and if there is a potential loss of data in thisprocess.
+and if there is a potential loss of data in this process.
 
-A many previous authors, we used Achilles 0sofware to evaluate the data quality(4). It is open-source analytics software produced by OHDSI (6).
+A many previous authors, we used Achilles sofware to evaluate the data quality(4). It is open-source analytics software produced by OHDSI (6).
 This tool is used for data characterization, quality assessment, and the visualization of observational health data (6). 
 ACHILLES calculates summary statistics and includes a unique function for checking data quality, named Achilles Heel. 
 
@@ -52,32 +53,31 @@ comparison MIMICIII / MIMIC OMOP (basic statistics)
 The following table lists the baseline characterization of the population of MIMICIII-OMOP compared with MIMICIII.
 The MIMIC-III database contains 45.520 individuals and 58.976 single admissions.
 
-| items					|OMOP-MIMIC 			| MIMICIII |
-|---------------------------------------|-------------------------------|----------|
-| Persons (Number) 			| 46.520 			| 46.520 |
-| Admissions (Number) 			| 58.976 			| 58.976 |
-| Icustays (Number)   			| 61.532 			| 71.576 |
-| Age (Mean)  				| 64 ans, 4 months 		| 64 years, 4 monts |
-| 0-5  				        | 		| |
-| 6-15  				        | 		| |
-| 16-25			        | 		| |
-| 26-45  				        | 		| |
-| 46-65				        | 		| |
-| 66-80				        | 		| |
-| >80				        | 		| |
-| Emergency				        | 		| |
-| Elective				        | 		| |
-| Surgical patients				        | 		| |
-| Surgical patients				        | 		| |
-| Gender, Female (Number, %) 	       	| 20.399 (43 %)               	| 20.399 |
-| Length of stay, hospital (median) 	| 6.59 (Q1-Q3 : 3.84 - 11.88) 	| 6.46 (Q1-Q3 : 3.74 -11.79) |
-| Length of stay, ICU (median)      	| 1.87 (Q1-Q3 : 0.95 - 3.87)  	| 2.09 (Q1-Q3 : 1.10 - 4.48) |
-| Mortality, ICU (Number, %)        	| 5815 (9%)                   	| 5814 (9%) |
-| Mortality, hospital (Number, %)   	| 4559 (6%)                   	| 4511 (7%) |
-| Lab measurements per admissions (mean) | 678  (from labevents + charevents) | 478 (from labevents)|
-| Procedures per admissions (mean) |||
-| Drugs per admissions (mean) | ||
-| Exit dignosis per admissions (mean) |||
+| items					|OMOP-MIMIC 			        | MIMICIII |
+|---------------------------------------|---------------------------------------|----------|
+| Persons (Number) 			| 46.520 			        | 46.520 |
+| Admissions (Number) 			| 58.976 			        | 58.976 |
+| Icustays (Number)   			| 61.532 			        | 71.576 |
+| Gender, Female (Number, %) 	       	| 20.399 (43 %)               	        | 20.399 |
+| Age (Mean)  				| 64 ans, 4 months 		        | 64 years, 4 months |
+| 0-5  				        |   8110		                |   8110 |
+| 6-15                                  |      1		                |      1 |
+| 16-25			                |   1434		                |   1434 |
+| 26-45  	                        |   5962		                |   5962 |
+| 46-65				        |  17375		                |  17375 |
+| 66-80				        |  15793		                |  15793 |
+| >80				        |  10301		                |  10301 |
+| Emergency                             |  42071	                        | 42071 |
+| Elective		                |   7706                                | 7706 |
+| Surgical patients		        | 19246 		                | 19246 |
+| Length of stay, hospital (median) 	| 6.59 (Q1-Q3 : 3.84 - 11.88) 	        | 6.46 (Q1-Q3 : 3.74 -11.79) |
+| Length of stay, ICU (median)      	| 1.87 (Q1-Q3 : 0.95 - 3.87)  	        | 2.09 (Q1-Q3 : 1.10 - 4.48) |
+| Mortality, ICU (Number, %)        	| 5815 (9%)                   	        | 5814 (9%) |
+| Mortality, hospital (Number, %)   	| 4559 (6%)                   	        | 4511 (7%) |
+| Lab measurements per admissions (mean)| 678  (from labevents + charevents)    | 478 (from labevents) |
+| Procedures per admissions (mean)      | 4.6                                   | 4.6 |
+| Drugs per admissions (mean)           | 82.8                                  | 82.8 |
+| Exit dignosis per admissions (mean)   | 11.0                                  | 11.0 |
 
 MIMIC-III contains 61.532 stays in ICU whereas OMOP-MIMIC contains 71.576 unique stays.
 That is a 116% increase in stays due to our ETL methodology as we explained in the methods.
@@ -111,24 +111,24 @@ The storetime was deleted during the ETL
 
 terminology mapping coverage
 ***************************
-| Omop tables    	    |Mapping coverages|
+| Omop tables    	    | Mapping coverages|
 |-----------------------|--------------|
-| PERSONS 		        |100%|
-| DEATH 		        |100%|
-| VISIT_OCCURRENCE 	    |100%|
-| VISIT_DETAIL 		    |100%|
-| MEASUREMENT 		    |70%|
-| OBSERVATION 		    |70%|
-| DRUG_EXPOSURE 	    |62%|
-| PROCEDURE_OCCURRENCE 	|99%|
-| CONDITION_OCCURRENCE 	|94%|
-| NOTE 			        |0%|
-| NOTE_NLP 		        |NA|
-| COHORT_ATTRIBUTE 	    |0%|
-| CARE_SITE 		    |100%|
-| PROVIDER 		        |100%|
-| OBSERVATION_PERIOD 	|NA|
-| SPECIMEN 	 	        |71%|
+| PERSONS 		        | 100%|
+| DEATH 		        | 100%|
+| VISIT_OCCURRENCE 	    | 100%|
+| VISIT_DETAIL 		    | 100%|
+| MEASUREMENT 		    | 70%|
+| OBSERVATION 		    | 70%|
+| DRUG_EXPOSURE 	    | 62%|
+| PROCEDURE_OCCURRENCE 	| 99%|
+| CONDITION_OCCURRENCE 	| 94%|
+| NOTE 			        | 0%|
+| NOTE_NLP 		        | NA|
+| COHORT_ATTRIBUTE 	    | 0%|
+| CARE_SITE 		    | 100%|
+| PROVIDER 		        | 100%|
+| OBSERVATION_PERIOD 	| NA|
+| SPECIMEN 	 	        | 71%|
 
 These results include automatic and manual mapping.
 We check 100 items for each mapping used (NDC, ICD9 and CPT4). ICD9 and CPT4 are correcly mapped to SNOMED. But only 85% of NDC are
@@ -157,7 +157,7 @@ Achilles Heel issued x errors andy warnings.
 
 ANALYTICS
 ###########
-- consize model, simple
+- consize model, simple: numbers of joins
 - normalized, but materialized views is a solution.
 - standardized code
 

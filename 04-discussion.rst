@@ -78,3 +78,11 @@ What else could have been done instead?
 OMOP model
 - enables observational studies to be conducted using multiple data sources
 -  while confidential personal health data remain with the original data holders
+
+
+
+
+- De-identification : OMOP is quite an easy model to deindentifate. This is a important use case for sharing datas
+        HIPAA, RGPD
+
+- Collaborative work : excel files
