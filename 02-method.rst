@@ -80,25 +80,6 @@ Preprocessing and modification of mimic
 
 - concept-driven methodology : as the omop model did we adopt a "concept-driven methodology", domain of each local concept drive the concept to the right table.
 
-- the fact_relationship table which is a important part of the OMOP CDM. It is used to represente the relationship between datas. 
-We used to link drugs in a solution, for  microbiology / antibiograms and for visit_detail and caresite
-The SQL following query shows how a microorganism is linked to its antibiogram thanks to fact_relationship
-
-SELECT measurement_source_value, value_as_concept_id, concept_name
-FROM measurement
-JOIN concept resistance ON value_as_concept_id = concept_id
-JOIN fact_relationship ON measurement_id =  fact_id_2
-JOIN
-(
-	SELECT measurement_id AS id_is_staph
-	FROM measurement m
-	WHERE measurement_type_concept_id = 2000000007        			-- concept.concept_name = 'Labs - Culture Organisms'
-	AND value_as_concept_id = 4149419                     			-- concept.concept_name = 'staph aureus coag +'
-	AND measurement_concept_id = 46235217               			-- concept.concept_name = 'Bacteria identified in Blood product unit.autologous by Culture';
-
-) staph ON id_is_staph = fact_id_1;
-WHERE measurement_type_concept_id = 2000000008        			        -- concept.concept_name = 'Labs - Culture Sensitivity'
-
 modification of OMOP model
 =============================
 

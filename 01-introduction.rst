@@ -1,6 +1,5 @@
 General objectives of medical database
 ######################################
-
 What are the expectations.
 On the basis of Heterogeneous patient medical informations (clinical,
 physiologic, genemomic, laboratory, imaging, reports, environement):
@@ -24,7 +23,7 @@ ICU has all of the expectation, because all kind of data...
  
 - The practice’s variability is due to lack of adherence to best practices, but the vast majority occurs simply because no evidence has been established for the issue in question (2) or because the effects of interventions in the ICU are subject to the exceptional complexity of patient physiology and the variation beetween unique patient and clinical studies
 
-- But the ICU demand of care is rising (3) and the mortality in ICU is up to 30 % which is a major health care problem
+- But the ICU demand of care is rising (3) and the mortality in ICU is up to 30 % which is a major health care problem (15)
 
 
 ICU databases
@@ -156,7 +155,7 @@ Compared to PCORnet CDM, OMOP (6) :
 - provides more systematic analysis with analytic library and visualizing tools from OMOP community : ACHILLES
 - provides easier SQL models 
 
-We limited the candidate data models to those designed and used for clinical researches
+We limited the candidate data models to those designed and used for clinical researches, and those freely available in the public domains without restrictions.
 
 Our study
 ###########
@@ -166,7 +165,7 @@ reproductitible studies with shared codes.  In this purpose the transformation
 from MIMICIII to MIMICIII-OMOP with standardized mapping concept is important
 and was hightly supported by the MIT. (4)
 
-In this article we provide a example of Extract Transform Load (ELT)
+In this article we provide a example of Freely postgreSQL Extract Transform Load (ELT)
 implementation of electronic health records (EHR) in intensive care unit by
 transforming the all MIMIC-III database (expected high frequency datas) to OMOP
 CDM version 5.3 (last version in date).
@@ -198,3 +197,4 @@ JAMA 2000;284:2762–2770
 12. T. Gruber. Toward principles for the design of ontologies used for knowledge sharing?, International journal of human-computer studies, 1995
 13. Nicolas Paris and Al. i2b2 implemented over SMART-on-FHIR
 14. Kahn and Al. Data model considerations for clinical effectiveness researchers, Med Care, 2012
+15. Azoulay E, Alberti C, Legendre I, Brun Buisson C, Le Gall J-R, for the European Sepsis Group Post-ICU mortality in critically ill infected patients: an international study. Intensive Care Med. 2005;31:56–63. doi: 10.1007/s00134-004-2532-x
