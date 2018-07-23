@@ -83,7 +83,7 @@ To produce analyse high number of patient we will have to merge heterogenous dat
 => early warning system
 
 Data merging
-###############
+############
 
 aims
 =======
@@ -104,14 +104,15 @@ challenges
 =>  multicentric
 
 
-databases modelling and datas exchanges
-===========================================
+
+Common Data Model: databases modelling and datas exchanges
+==========================================================
 
 As said Kahn and all, "databases modelling is the process of determining how data are to be stored in a database".
 It specifies data types, constraints, relationship and metadata definitions.
 Common data model (CDM) provides a standardized ways to represent resources/datas and their relationships.
 The databases have been designed to facilitate exchanges and store data from multiple sources.
-Several have been developed, certains are open-source:
+Several have been developed, some are open-source:
 - MIMIC !
 	- Even if MIMIC is a large, freely-available database, its datamodel does not provide easy exchanges. 
 	- Its structure is "ICU centric" with many relations created in this purpose (icustays, microbiology table).
@@ -148,6 +149,13 @@ Several have been developed, certains are open-source:
 
 	- This model has been already adopted by more than 682 million patient records with databases from all over the world(9)
 	- Several examples of transforming source databases to CDM already exists (10-11)
+
+Sharing Protocole but not data model nor data
+=============================================
+The European initiative PROTECT has demonstrated that CDM are not mandatory to
+make multicentric analysis[16]. One of the major feedback it claims that
+studies without CDM are more powerful in finding Adverse Event as compared to
+OMOP.
 
 Compared to PCORnet CDM, OMOP (6) :
 - performes best in the evaluation database criteria compared with the other models (and PCORnet in particularly) : completeness, integrity, flexibility, simplicity of integration, and implementability.
@@ -198,3 +206,4 @@ JAMA 2000;284:2762–2770
 13. Nicolas Paris and Al. i2b2 implemented over SMART-on-FHIR
 14. Kahn and Al. Data model considerations for clinical effectiveness researchers, Med Care, 2012
 15. Azoulay E, Alberti C, Legendre I, Brun Buisson C, Le Gall J-R, for the European Sepsis Group Post-ICU mortality in critically ill infected patients: an international study. Intensive Care Med. 2005;31:56–63. doi: 10.1007/s00134-004-2532-x
+16. Olaf H. Klungel et al. Multi-centre, multi-database studies with common protocols: lessons learnt from the IMI PROTECT project 2016
