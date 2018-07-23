@@ -12,6 +12,18 @@ Discussion
 	- validation algorithm
  	- i2b2 (omop) ; FHIR / omop why fhir not replace omop.
 
+TODO: 
+
+- Inference with FHIR AND API 
+- Diversity programming (language API are good)
+- Ideally all in one (EHR) but two problems:
+  - CAP theorem
+  - human experize (medical, datascience, database scientist)
+Implementation of this Ternaire model: 
+- implementation of FHIR/EHR
+- implementation of OMOP/EHR
+- implementation of FHIR/OMOP (at least concepts mapping)
+
 NOTE_NLP table
 ---------------
 

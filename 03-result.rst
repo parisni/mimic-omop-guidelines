@@ -18,7 +18,7 @@ Our study doesn't want to evaluate the quality of CDM. But we adapt these criter
 | Integrity                                     | "Meaningful data relationships and constraints that uphold th eintent of the data-s original purpose" Khan and Al |
 | Flexibility                                   | The ease to expand the standard model for new datatypes, concepts |
 | Integration                                   | The capacity of the standard model to use multiples terminology and links its to standard one|
-| Implementability                              | The stability of the models, the comminity, the cost of adoption |
+| Implementability                              | The stability of the models, the community, the cost of adoption |
 | Understandability                             | The ease of the standard model to be easily understood |
 | Simplicity                                    | The ease of querying the standard model - the model should contains the minimum of concepts and relationship |
 
@@ -150,6 +150,7 @@ The terminology mapping has been evaluated by a physician.
 
 - we have mapped  many source concept to one standard concept_id. This is because MIMIC provide a lots of equivalent free text concepts.
   For example for the body temperature MIMIC provide 11 distinct concept (Temperature F, Temperature C (calc), Temp Skin [C], Temperature Fahrenheit, Temp Axillary [F], Temperature C, Temperature F (calc), Temperature Celsius, Temp Rectal [F], Temp Rectal, Blood Temperature CCO (C)). Our mapping links all of it to one single concept called temperature. All the units have been converted to celcius.
+  TODO: give example of generalisation (admission_location_to_concept)
 
 Flexibility  
 ===========
@@ -194,6 +195,7 @@ Implementability
 Minor versions (V5.1, 5.2 etc.) are not guaranteed to be backwards compatible though an effort is made to make sure that current queries will not break. 
 Micro versions (V5.1.1, V5.1.2 etc.) are released irregularly and often, and contain small hot fixes or backward compatible changes to the last minor version.
 (7)
+TODO: forum centric + github + themis -> confusing
 
 Achilles for quality assessment
 ==============================
@@ -203,14 +205,15 @@ Achilles Heel issued x errors and y warnings.
 - 18h 50k patients: this testifies the model needs structural optimisations
 - difficulté pour ajoute fr. 
 - extension achilles how to ?
-- comparison with other paper about error/warnings.
+- comparison with other paper about error/warnings. (Korean Yoon 36->28 errors)
+TODO: minimize achille errors  (12->? errors)
 
 2 ANALYTICS
 ###########
 
 Understandability and simplicity
 ================================
-- OMOP is quite consise and simple model. 
+- OMOP is quite consise and simple model.
 The number of table joins 2-11. OMOP is quite a normalized model. We don't think it is a problem if we use materialized views as a solution (cf contribution section)
 THis may help datascientists and statisticians to analyse datas
 - standardized code
@@ -230,6 +233,12 @@ schema big data platform
 
 Dataforgood.fr
 **************
+
+- 2 projects
+- Comparison of two models
+- mimic is far more advanced (views derived data) however both teams
+- two teams envisage to work on omop
+
 
 ACHILLES for analytics assessment
 ================================

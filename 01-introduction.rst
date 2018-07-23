@@ -132,6 +132,7 @@ Several have been developed, some are open-source:
         - have been created to support healthcare uses of data like clinical decision support
 	- is a standard for exchanging healthcare information electronically (https://www.hl7.org/fhir/overview.html/)
 	- Some papers have showed that collaboration between FHIR  may provide both applicative software and analytic research and showed great promise(5, 13)
+        - is not a relational model but a graph model (quite complexe relations between resources)
 
 - PCORnet, the National Patient-Centered Clinical Research Network (http://pcornet.org/pcornet-common-data-model/)
         - have been created to monitore the safety of FDA-regulated medical products.
@@ -157,11 +158,30 @@ make multicentric analysis[16]. One of the major feedback it claims that
 studies without CDM are more powerful in finding Adverse Event as compared to
 OMOP.
 
+Choice
+======
 Compared to PCORnet CDM, OMOP (6) :
 - performes best in the evaluation database criteria compared with the other models (and PCORnet in particularly) : completeness, integrity, flexibility, simplicity of integration, and implementability.
 - seems to accommodates the broadest coverage of standard terminologies.
 - provides more systematic analysis with analytic library and visualizing tools from OMOP community : ACHILLES
 - provides easier SQL models 
+FHIR:
+- does specify a common structural model
+- does not specify a common terminology model, for most of the attributes
+- has the descendent of HL7, it primary goal is data sharing at low granularity (eg: patient, device level)
+- implementation may vary substancialy from one to other instance
+- XML and JSON are both not optimized in a computational or user friendly to make queries
+- API on production EHR are not able to export large amount of data while some work are in the process (FHIR bulk export)
+- transformation from FHIR dataset to datascientist ready to process dataset may be one ETL per instance
+
+OMOP shares the advantages of all above models. It allows local analysis with
+raw values, and local terminologies as it stores. It adds values by using a
+simple and common structural model. It allows standard analysis when needed,
+and makes possible to compare. However, question still are:
+- how transforming real datasets to OMOP is complicated
+- how much dataset lose information
+- how performances are affected 
+- how well OMOP handle ICU database specificities
 
 We limited the candidate data models to those designed and used for clinical researches, and those freely available in the public domains without restrictions.
 
@@ -173,12 +193,11 @@ reproductitible studies with shared codes.  In this purpose the transformation
 from MIMICIII to MIMICIII-OMOP with standardized mapping concept is important
 and was hightly supported by the MIT. (4)
 
-In this article we provide a example of Freely postgreSQL Extract Transform Load (ELT)
-implementation of electronic health records (EHR) in intensive care unit by
-transforming the all MIMIC-III database (expected high frequency datas) to OMOP
-CDM version 5.3 (last version in date).
-We’ll expose our methodology and we’ll discuss about modification we want to
-propose to the omop community.
+In this article we provide an example of Freely postgreSQL Extract Transform
+Load (ELT) implementation of electronic health records (EHR) in intensive care
+unit by transforming the all MIMIC-III database (expected high frequency datas)
+to OMOP CDM version 5.3 (last version in date).  We’ll expose our methodology
+and we’ll discuss about modification we want to propose to the omop community.
 We’ll also discuss about potential loss of information links to this ETL.
 
 This preliminary work is to transform the MIMIC DB into OMOP, and we evaluate
