@@ -40,8 +40,8 @@ support for ELT because it is the primary support of MIMIC database and allows
 community to run the ETL on limited resources without licensing need. Finally
 PostgreSQL have recently made huge effort to handle data-processing better.
 
-Structural data transformation
-==============================
+1.2 Structural data transformation
+++++++++++++++++++++++++++++++++++
 
 The structural transformation have been done in few iteration of several phases.
 The first phase consists of looping over each MIMIC table and choose for each
@@ -61,27 +61,38 @@ contrast with the implementation guide that suffer from not being as well
 detailled. We think the OMOP community would greatly benefit from systematic
 and synthetic synchronisation between forum, github and end user documentation.
 
-Preprocessing and modification of mimic
-==========================================
+1.3 Preprocessing and modification of mimic
++++++++++++++++++++++++++++++++++++++++++++
 
 - constant dialogue with mimic community via MIMIC github
-- We added emergency stays as a normal location for patients throughout their hospital stay.
-- Icustays mimic table was deleted as it is a derived table from transfers table (2) and we decided to assigne a new new visit_detail pour each stay in ICU (based of the transfers table) whereas mimic prefered to assigne new icustay stay if a new admissions occurs > 24h after the end of the previous stay
-- We decided to put unique number for each row of mimic database  called mimic_id. We think this is very helpful for ETLers
+- We added emergency stays as a normal location for patients throughout their
+  hospital stay.
+- Icustays mimic table was deleted as it is a derived table from transfers
+  table (2) and we decided to assigne a new new visit_detail pour each stay in
+  ICU (based of the transfers table) whereas mimic prefered to assigne new
+  icustay stay if a new admissions occurs > 24h after the end of the previous
+  stay
+- We decided to put unique number for each row of mimic database  called
+  mimic_id. We think this is very helpful for ETLers
 
  Technical specifications
 ============================
 
-- To provide standard and reproductilable process all the ETL used SQL script with PostgreSQL-ETL implementation
+- To provide standard and reproductilable process all the ETL used SQL script
+  with PostgreSQL-ETL implementation
 - to speed up our work we used a subset of 100 patients
 - unit testing during the all process of extraction and SQL script production
-
-- we tried  not to infer results. For examens whereas it's logical to put a specimen for many labevents results (as one sample of blood may be used to multilple exams) we decided to create as many specimen row as laboratory exams because the information is not present in MIMIC. It was the same when date information were not provide (start/end_datetime for drug_exposure)
-
-- concept-driven methodology : as the omop model did we adopt a "concept-driven methodology", domain of each local concept drive the concept to the right table.
+- we tried  not to infer results. For examens whereas it's logical to put a
+  specimen for many labevents results (as one sample of blood may be used to
+  multilple exams) we decided to create as many specimen row as laboratory
+  exams because the information is not present in MIMIC. It was the same when
+  date information were not provide (start/end_datetime for drug_exposure)
+- concept-driven methodology : as the omop model did we adopt a "concept-driven
+  methodology", domain of each local concept drive the concept to the right
+  table.
 
 modification of OMOP model
-=============================
+==========================
 
 - the less possible
 - keep in mind that OMOP is a conceptual model
@@ -122,7 +133,7 @@ modification of OMOP model
 1. A.E.W. Johnson, Tom J. Pollard and Al. MIMIC-III, a freely accessible critical care database. Scientific Data. 2016-5-24
 2. https://mimic.physionet.org/mimictables/icustays/
 
-1.2 Terminology Mapping
+1.3 Terminology Mapping
 ++++++++++++++++++++++++
 
 - The key table for omop is the concept table. The standard vocabulary of OMOP is mainly based on the Systematized Nomenclature of Medicine Clinical Terms (SNOMED-CT)
@@ -132,15 +143,33 @@ modification of OMOP model
 - Local code for mimiciii such as admission diagnoses, demographic status, drugs, signs and symptoms were manually mapped to OMOP standard models by several participants. This work was followed and check by a physician. 
 We had only used csv files for our manual mapping. All are available on github : https://github.com/MIT-LCP/mimic-omop/tree/master/extras/concept. This solution can scale for medical users without database engineering background. We tried to adopt the same methodology in their creation ; some obvious fields are needed : local and standard name, local and standard id. Moreover evaluation and comments fields are good practices and may help contributers
 - fuzzy match algorithm for mapping suggestion semi-automatic.
-The manual terminology mapping has been catalized by using a naïve but flexible approach. Many mapping tools exist on the area RELMA provided by LOINC, USAGI provided by OHDSI. Most of those tools are based on linguistic mapping [cite], and the approach have been shown to be the most effective[cite]. Following our prime idea to build low dependency tools, we managed to build a light semi-automatic tool based on postgresql full-text feature. The concept table labels have been indexed, and a similarity can be constructed by a simple sql query. We kept the 10 most similar concepts, and this have been shown to be a quick way to map concepts, after having choosen the best domain.
+The manual terminology mapping has been catalized by using a naïve but flexible
+approach. Many mapping tools exist on the area RELMA provided by LOINC, USAGI
+provided by OHDSI. Most of those tools are based on linguistic mapping [cite],
+and the approach have been shown to be the most effective[cite]. Following our
+prime idea to build low dependency tools, we managed to build a light
+semi-automatic tool based on postgresql full-text feature. The concept table
+labels have been indexed, and a similarity score can be constructed by a simple
+sql query. We kept the 10 most similar concepts, and this have been shown to be
+a quick way to map concepts, after having choosen the best domain.
 	
 
 2. ANALYTICS
 ############
 
-- datathon
+- datathon / organization
+A total of 150 person and 20 teams from X countries were present for the two
+days event. 20 projects had been prepared thought a forum.
 - technical architechure
-- organization
+OMOP have been loaded into apache HIVE 1.2.1. into ORC format. Users had access
+to the ORC dataset from jupyter notebooks with, python or scala. A SQL
+webclient allowed teams to write SQL from presto on the same dataset. The
+hadoop cluster was a based on 5 computers with 16 cores and 220GO ram.
+The MIMIC-OMOP dataset has been loaded from a PostgreSQL instance to HIVE
+thought apache SQOOP 1.4.6. directly into the ORC format. 
+Participants had also access to the physical modeling of the database thought
+schemaspy to have access to both table/column comments and primary/foreign key
+materialising tables relations.
 
 
 3. CONTRIBUTION
