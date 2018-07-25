@@ -1,51 +1,60 @@
-General objectives of medical database
-######################################
-What are the expectations.
+
+Evaluation of OMOP as a CDM for the MIMICiii ICU database
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+# two way:
+# way 1:
+# - ICU research is crucial how to save lifes with data - many ICU database, not much open-source - multi-centric research is crucial
+# - multicentric research approaches - OMOP appears to offer all in one - evaluate OMOP for ICU
+# way 2:
+# - Reasearch on MIMIC is crucial - MIMIC lacks of multicentric - MIMIC lacks of terminology and structure standardisation
+# - multicentric research approaches - data standardisation approaches
+
+
+
+ICU data : a paradox
+####################
+ICU has all of the expectation, because all kind of data...
+- Reusing medical datas has historically been impossible for a large population
+  and most of datas were simply wasted due data variability and quality
+  challenges
+- Intensive care unit ICU are faced to a paradox
+        - The level of proof to guide most decisions is low, exacerbated with
+          real-time bedsite decisions and the medical practices are sparse (1).
+        - High density environment for data production : prescriptions systems,
+          monitoring (waves), ventilators and large number of exams done in
+          this units
+- The practice's variability is due to lack of adherence to best practices, but
+  the vast majority occurs simply because no evidence has been established for
+  the issue in question (2) or because the effects of interventions in the ICU
+  are subject to the exceptional complexity of patient physiology and the
+  variation beetween unique patient and clinical studies
+- But the ICU demand of care is rising (3) and the mortality in ICU is up to 30
+  % which is a major health care problem (15)
+
+=> How to save more lifes ?
+
+General expectations of medical database
+########################################
 On the basis of Heterogeneous patient medical informations (clinical,
-physiologic, genemomic, laboratory, imaging, reports, environement):
+physiologic, genemomic, laboratory, imaging, reports, environement)
+expectations are:
+- to create complete and highly detailed patient records
+- minimize costs while improving the clinical outcomes of individuals and
+  populations thanks to observational clinical research and real time
+  algorithms
 - At international multicentric 
 - Observational studies
+- Adverse Event
+- Drug/Drug Interaction
 - Clinical research
 - Personalized medecine 
+- Medical Decision Guidance
 - Early warning systems
-Last we will discuss an architecture that allows near real time AI on medical
-dataset, that would allow early warning system.
 
-ICU datas : a paradox
-#######################
-
-ICU has all of the expectation, because all kind of data...
-- Reusing medical datas has historically been impossible for a large population and most of datas were simply wasted due data variability and quality challenges
-
-- Intensive care unit ICU are faced to a paradox
-	- The level of proof to guide most decisions is low, exacerbated with real-time bedsite decisions and the medical practices are sparse (1).
-	- High density environment for data production : prescriptions systems, monitoring (waves), ventilators and large number of exams done in this units
- 
-- The practice’s variability is due to lack of adherence to best practices, but the vast majority occurs simply because no evidence has been established for the issue in question (2) or because the effects of interventions in the ICU are subject to the exceptional complexity of patient physiology and the variation beetween unique patient and clinical studies
-
-- But the ICU demand of care is rising (3) and the mortality in ICU is up to 30 % which is a major health care problem (15)
-
-
-ICU databases
-################
-
-aim 
-======
-The multiple aims were
-- to create complete and highly detailed patient records
-- minimize costs while improving the clinical outcomes of individuals and populations thanks to observational clinical research and real time algorithms
-
-databases (7)
-=============
+Existing ICU databases
+======================
 Several commercial or noncommercial, opensource or nonopensource ICU databases have been developed
-
-- Commercial eICU
-	- developped in partenariat with Philips
-	- available via PhysioNet
-	- over 1.5 million ICU stays
-	- and is adding 400,000 patient records per year from over 180 subscribing hospitals in the country. 
-	- patients who were admitted to critical care units in 2014 and 2015.
-	- Data are heterogenous and high granularity signal as waveform is not record
 
 - Non commercial CUB-REA database
 	- B. Guidet, P. Aegerte
@@ -60,6 +69,14 @@ Several commercial or noncommercial, opensource or nonopensource ICU databases h
 	- collected since 20 years around 20k ICU patients stays medium granularity data from 20 distinct ICUs in France
 	- Data are daily collected manually by senior trained intensivists,
 	- This database has been subject of 50 publications.
+
+- Commercial eICU
+	- developped in partenariat with Philips
+	- available via PhysioNet
+	- over 1.5 million ICU stays
+	- and is adding 400,000 patient records per year from over 180 subscribing hospitals in the country. 
+	- patients who were admitted to critical care units in 2014 and 2015.
+	- Data are heterogenous and high granularity signal as waveform is not record
 
 - Non commercial MIMICIII (Medical Information Mart for Intensive Care) : our case study
 	- R. Marc
@@ -76,17 +93,25 @@ Several commercial or noncommercial, opensource or nonopensource ICU databases h
 		- High granulary data as the waveform of EKG, EEG: In this article we won't speak about high frequency datas. 
 
 conclusion
-==============
-The MIMIC-III database is unique in capturing highly granular structured data. But the conception of this database was time consuming and  unfortunately only 45,000 unique patients’ data from a single center were captured. 
-To produce analyse high number of patient we will have to merge heterogenous databases.
+==========
+The MIMIC-III database is unique in capturing highly granular structured data.
+But the conception of this database was time consuming and unfortunately only
+45,000 unique patients' data from a single center were captured. 
+To produce analyse high number of patient we will have to merge heterogenous
+databases.
 
-=> early warning system
+How research might be improved ?
+- reproducibility (algorithm can be reused and shared) [AE paper] 
+- readaptability (algorithm can be applied on other dataset)
+- complexity (limiting the data processing, transformations to limit errors)
+- share same concepts to be able to compare and improve care internationally
+- share tools, packages, visualisation, practices and expertise
 
 Data merging
 ############
 
 aims
-=======
+====
 Use of EHRs has been increasing world-wide, but most EHRs are differents in their structure and not interchangeable.
 
 - more data : may provide better outcomes
@@ -96,14 +121,12 @@ Use of EHRs has been increasing world-wide, but most EHRs are differents in thei
 - data pipeline need to be the same to apply and confirm results accross multiple centers (algorithm performance)
 
 challenges
-==============
+==========
 - but we know that simple merging of databases give poor quality level because of the heterogeneity of datas (9)
 - but sharing data creates legal/juridic problems
 - but merge may loss datas
 
-=>  multicentric
-
-
+=>  multicentric ?
 
 Common Data Model: databases modelling and datas exchanges
 ==========================================================
@@ -114,7 +137,7 @@ Common data model (CDM) provides a standardized ways to represent resources/data
 The databases have been designed to facilitate exchanges and store data from multiple sources.
 Several have been developed, some are open-source:
 - MIMIC !
-	- Even if MIMIC is a large, freely-available database, its datamodel does not provide easy exchanges. 
+	- Even if MIMIC is a large, freely-available database, its datamodel does not provide easy sharing. 
 	- Its structure is "ICU centric" with many relations created in this purpose (icustays, microbiology table).
 	- Many terminologies used are american and are difficult to link to international classification
 	- Many concepts are not link to international terminology (free text)
@@ -124,7 +147,7 @@ Several have been developed, some are open-source:
         - https://www.i2b2.org/
         - have been created as a framework to investigate genetic disease
 	- good interface for cohort selection
-	- i2b2 has been described as being used by more than 200 hospitals6 over the world
+	- i2b2 has been described as being used by more than 200 hospitals over the world
 	- The central table is called observation_fact table
 	- Compare to OMOP-CDM the hierarchies are organise with a 'concept path' column. Two concepts are linked by a single relationship                                
 	
@@ -139,21 +162,18 @@ Several have been developed, some are open-source:
 	- PCORnet Common Data Model (CDM) integrate multiple data from different sources and leverages standard terminologies and coding systems for healthcare (including ICD, SNOMED, CPT, HCPSC, and LOINC) to enable interoperability with and responsiveness to evolving data standards.
 	- The first version of the CDM was released in 2014, and there have been 3 major releases and one minor update since then (last release CDM v4.1: Released May 18, 2018 )
 
-- OMOP model : Observational Medical Outcomes Partnership Common Data Model (OMOP-CDM) 
+- OMOP: Observational Medical Outcomes Partnership Common Data Model (OMOP-CDM) 
 	- Incorpore validated standard classification (8) : SNOMED for diagnoses, RxNORM for drug ingredients and LOINC for laboratory results...
 	- Provide tables for mapping beetween international classification (ex: ICD9 and SNOMED)
-
 	- Public-private partnership as members of academics and industry are working on it
         - have been created to compare drug outcomes studies
-
 	- In this model all the data stay locally at the participant site, the primary analyses are carried locally (5)
-
 	- This model has been already adopted by more than 682 million patient records with databases from all over the world(9)
 	- Several examples of transforming source databases to CDM already exists (10-11)
 
 Sharing Protocole but not data model nor data
 =============================================
-The European initiative PROTECT has demonstrated that CDM are not mandatory to
+The European project IMI PROTECT has demonstrated that CDM are not mandatory to
 make multicentric analysis[16]. One of the major feedback it claims that
 studies without CDM are more powerful in finding Adverse Event as compared to
 OMOP.
@@ -161,18 +181,26 @@ OMOP.
 Choice
 ======
 Compared to PCORnet CDM, OMOP (6) :
-- performes best in the evaluation database criteria compared with the other models (and PCORnet in particularly) : completeness, integrity, flexibility, simplicity of integration, and implementability.
+- performes best in the evaluation database criteria compared with the other
+  models (and PCORnet in particularly) : completeness, integrity, flexibility,
+  simplicity of integration, and implementability.
 - seems to accommodates the broadest coverage of standard terminologies.
-- provides more systematic analysis with analytic library and visualizing tools from OMOP community : ACHILLES
+- provides more systematic analysis with analytic library and visualizing tools
+  from OMOP community : ACHILLES
 - provides easier SQL models 
+  
 FHIR:
 - does specify a common structural model
 - does not specify a common terminology model, for most of the attributes
-- has the descendent of HL7, it primary goal is data sharing at low granularity (eg: patient, device level)
+- has the descendent of HL7, it primary goal is data sharing at low granularity
+  (eg: patient, device level)
 - implementation may vary substancialy from one to other instance
-- XML and JSON are both not optimized in a computational or user friendly to make queries
-- API on production EHR are not able to export large amount of data while some work are in the process (FHIR bulk export)
-- transformation from FHIR dataset to datascientist ready to process dataset may be one ETL per instance
+- XML and JSON are both not optimized in a computational or user friendly to
+  make queries
+- API on production EHR are not able to export large amount of data while some
+  work are in the process (FHIR bulk export)
+- transformation from FHIR dataset to datascientist ready to process dataset
+  may be one ETL per instance
 
 OMOP shares the advantages of all above models. It allows local analysis with
 raw values, and local terminologies as it stores. It adds values by using a
@@ -183,7 +211,9 @@ and makes possible to compare. However, question still are:
 - how performances are affected 
 - how well OMOP handle ICU database specificities
 
-We limited the candidate data models to those designed and used for clinical researches, and those freely available in the public domains without restrictions.
+We limited the candidate data models to those designed and used for clinical
+researches, and those freely available in the public domains without
+restrictions.
 
 Our study
 ###########
@@ -207,6 +237,16 @@ Finally we will discuss how OMOP can address the early warning system challenge.
 This work is evaluated through 3 axes: ETL, Analytics and Contribution.
 
 
+Contributions
+#############
+The first major contribution of this study is to evaluate OMOP in a real life
+and well known freely accessible database.
+The second major contribution is to provide a freely accessible dataset in the
+OMOP format that might be usefull for researchers.
+The third major contribution is to provide the OMOP community some usefull
+transformations dedicated to ICU and that can be reused in any OMOP dataset.
+
+
 1. Vincent JL. Is the current management of severe sepsis and septic shock
 really evidence based? PLoS Med 2006; 3:e346
 2. Vincent JL, Singer M. Critical care: advances and future perspectives.
@@ -226,3 +266,6 @@ JAMA 2000;284:2762–2770
 14. Kahn and Al. Data model considerations for clinical effectiveness researchers, Med Care, 2012
 15. Azoulay E, Alberti C, Legendre I, Brun Buisson C, Le Gall J-R, for the European Sepsis Group Post-ICU mortality in critically ill infected patients: an international study. Intensive Care Med. 2005;31:56–63. doi: 10.1007/s00134-004-2532-x
 16. Olaf H. Klungel et al. Multi-centre, multi-database studies with common protocols: lessons learnt from the IMI PROTECT project 2016
+
+
+
