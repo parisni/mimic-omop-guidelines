@@ -69,6 +69,16 @@ measurement can be done. Moreover, the batch analysis needs to be fast and
 allow multiple person to run queries concurrently. Last the query syntax needs
 to be wide enough to let the analyst explore in a fluent try/error process. A-P
 
+SQL has proven it's flexibility and lisibility. OLAP oriented RDBMS have made
+technical progresses that allows to have both advantages of SQL and scalable
+performances. Some improvement of OMOP such denormalization would increase the
+performances and reduce the verbosity of some queries. However, it would
+complicate the ETL work. We think instead of denormalization, MIMIC-OMOP needs
+specialized derived tables, such materialized views. It allows scientists to
+both simplify the data model and adapt it to ther needs. Finally, such practice
+is still valid in terms of standardisation because it is always possible to get
+those derived tables from a basic OMOP format.
+
 Once the model has learn on the data and is ready to infer new informations
 from new examples. It is of utmost importance that the new examples is
 consistent. C- Moreover, the dataset needs to have been made with the same
@@ -98,6 +108,4 @@ OMOP model
         HIPAA, RGPD
 
 - Collaborative work : excel files
-
-
 

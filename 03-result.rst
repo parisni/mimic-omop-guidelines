@@ -118,7 +118,7 @@ The following table shows the number of rows with errors.
 | Note               | 0.04% |
 
 - Columns
-Depending the tables between 40 % and 80% of sources columns which doesn't fits to CDM where erased. 
+Depending on tables between 40 % and 80% of sources columns which doesn't fits to CDM where erased. 
 The exact removed columns are provided in the appendix (cf extras)
 Almost all the removed columns are redundant with others or provide derived informations. 
 The main concern could be the timestamp when the measurements contain a lot of it.
@@ -230,6 +230,11 @@ This datahon had tested OMOP model in real statistical condition. A datathon was
 - AP-HP calculation clusters, able to access to the data pre-loaded in Jupyter environments, where will be installed the most popular tools and libraries in R and Python, with Hadoop Spark
 
 schema big data platform
+
+MIMIC-OMOP dataset was 10 GO sized as ORC format. On the other side the same
+dataset is sized 400 GO on a postgreSQL instance. Generating the indexes
+ORC automatically generates indexing. However these are much light than the
+postgreSQL btree indexes specified by the OMOP DDL.
 
 Dataforgood.fr
 **************
