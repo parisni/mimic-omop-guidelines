@@ -69,14 +69,18 @@ database for research leads to better outcomes, a dozen of common data model
 %	- PCORnet Common Data Model (CDM) integrate multiple data from different sources and leverages standard terminologies and coding systems for healthcare (including ICD, SNOMED, CPT, HCPSC, and LOINC) to enable interoperability with and responsiveness to evolving data standards.
 %	- The first version of the CDM was released in 2014, and there have been 3 major releases and one minor update since then (last release CDM v4.1: Released May 18, 2018 )
 
-\cite{Observational Medical Outcomes Partnership Common Data Model} (OMOP) 
-	- Incorpore validated standard classification (8) : SNOMED for diagnoses, RxNORM for drug ingredients and LOINC for laboratory results...
-	- Provide tables for mapping beetween international classification (ex: ICD9 and SNOMED)
-	- Public-private partnership as members of academics and industry are working on it
-        - have been created to compare drug outcomes studies
-	- In this model all the data stay locally at the participant site, the primary analyses are carried locally (5)
-	- This model has been already adopted by more than 682 million patient records with databases from all over the world(9)
-	- Several examples of transforming source databases to CDM already exists (10-11)
+\textbf{Observational Medical Outcomes Partnership Common Data Model} (OMOP) is a
+CDM designed for multicentric Drug adverse Event and now enlarges to medical,
+clinical and also genomic use cases. OMOP provides both structural (as as set
+of relational tables) and conceptual (as a set of standard terminologies) such
+SNOMED for diagnoses, RxNORM for drug ingredients and LOINC for laboratory
+results.  While OMOP has proven its fiability \cite{omop-eval} the fact that
+concept mapping process is known to have impact on results \cite{omop-concept-impact} and that
+applying the same protocol on different data sources leads to different results
+\cite{omop-replicability} reveals the importance of keeping the local codes to allow local
+analysis. Several example of transforming databases into OMOP have been
+published \cite{omop-german,omop-nashville} and yet OMOP stores 682 milion
+patients records from all over the world\cite{omop-bigboy}.
 
 Compared to PCORnet CDM, OMOP (6) :
 - performes best in the evaluation database criteria compared with the other
