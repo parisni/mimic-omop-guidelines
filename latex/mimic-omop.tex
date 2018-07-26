@@ -70,6 +70,44 @@ environement) expectations are:
 - Early warning systems
 
 % Existing ICU databses
+Several commercial or noncommercial, opensource or nonopensource ICU databases have been developed
+
+- Non commercial CUB-REA database
+	- B. Guidet, P. Aegerte
+	- http://www.pifo.uvsq.fr/hebergement/cubrea/cr_index.htm
+	- collected since 25 years around 300k ICU patients stays low granularity data from 30 distinct ICUs in Paris region.
+	- Data are collected semi automatically annually
+	- 15 international publications.
+
+- Non commercial OutcomeREA database
+	- JF Timsit
+	- http://outcomerea.fr/index.php
+	- collected since 20 years around 20k ICU patients stays medium granularity data from 20 distinct ICUs in France
+	- Data are daily collected manually by senior trained intensivists,
+	- This database has been subject of 50 publications.
+
+- Commercial eICU
+	- developped in partenariat with Philips
+	- available via PhysioNet
+	- over 1.5 million ICU stays
+	- and is adding 400,000 patient records per year from over 180 subscribing hospitals in the country. 
+	- patients who were admitted to critical care units in 2014 and 2015.
+	- Data are heterogenous and high granularity signal as waveform is not record
+
+- Non commercial MIMICIII (Medical Information Mart for Intensive Care) : our case study
+	- R. Marc
+	- freely-available database via PhysioNet : https://mimic.physionet.org/
+  	- A public github was created : https://github.com/MIT-LCP/mimic-code with many contributers around the world. 
+	- Data are collected each 5 years, semi automatically. 
+	- This database is de-identified and open, and anyone can exploit the data after passing an online exam on clinical ethic. 
+	- over 300 publications from international researchers independant from the MIT
+	- health-related data associated with over forty thousand patients who stayed in critical care units between 2001 and 2012(4).
+	- It includes both administrative data (demographic, ICD9, procedures) and clinical data (examination, laboratory results, medication administration and notes)
+	- Three types of data are collected : 
+		- clinical data from hospital information system, 
+		- death data from the social security database
+		- High granulary data as the waveform of EKG, EEG: In this article we won't speak about high frequency datas. 
+
 % Common Data Models
 All those databases do have their own dedicated model. Their structural model
 are all based on relational database but all do have tables and columns with
