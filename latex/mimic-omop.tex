@@ -42,8 +42,43 @@ response, are introduced.}
 
 %Head 1
 \section{INTRODUCTION}
-% ICU: a paradox
-% Medical database hopes 
+% Medical database hopes TODO/ syntetise
+The increasing adoption of Electronic Health Records (EHR) systems worldwide
+makes it possible to capture large amounts of clinical data
+\cite{bigdata-promise} and big data mining has the potential to play an
+important role in clinical medicine \cite{bigdata-mining}. Indeed on the basis
+of various patient medical
+informations (clinical, physiologic, genemomic, laboratory, imaging, reports,
+environement) expectations are:
+- minimize costs while improving the clinical outcomes of individuals and
+  populations thanks to observational clinical research and real time
+  algorithms
+- Drug Adverse Event
+- Drug/Drug Interaction
+- Clinical research
+- Personalized medicine 
+- Medical Decision Guidance
+- Early warning systems
+% ICU: a paradox TODO: synthetise 
+Intensive Care Units (ICU) has all of the expectation, because all kind of data.
+- Reusing medical data has historically been impossible for a large population
+  and most of data were simply wasted due data variability and quality
+  challenges
+- Intensive care unit ICU are faced to a paradox
+        - The level of proof to guide most decisions is low, exacerbated with
+          real-time bedsite decisions and the medical practices are sparse (1).
+        - High density environment for data production : prescriptions systems,
+          monitoring (waves), ventilators and large number of exams done in
+          this units
+- The practice's variability is due to lack of adherence to best practices, but
+  the vast majority occurs simply because no evidence has been established for
+  the issue in question (2) or because the effects of interventions in the ICU
+  are subject to the exceptional complexity of patient physiology and the
+  variation between unique patient and clinical studies
+- But the ICU demand of care is rising(3) and the mortality is up to 30pourcent
+which is a major health care problem (15)
+
+=> How to save more lifes ?
 % Existing ICU databses
 % Common Data Models
 All those databases do have their own dedicated model. Their structural model
@@ -59,34 +94,52 @@ local conceptual model \cite{fhir-deep} and structure \cite{imi-protect} of
 database for research leads to better outcomes, a dozen of common data model
 (CDM) have emerged.
 
+We limited the candidate data models to those designed and used for clinical
+researches, and those freely available in the public domains without
+restrictions.
 % Choice of OMOP + Existing OMOP
+\textbf{Observational Medical Outcomes Partnership Common Data Model} (OMOP) is
+a CDM designed for multicentric Drug adverse Event and now enlarges to medical,
+clinical and also genomic use cases. OMOP provides both structural (as as set
+of relational tables) and conceptual (as a set of standard terminologies) such
+SNOMED for diagnoses, RxNORM for drug ingredients and LOINC for laboratory
+results. While OMOP has proven its fiability \cite{omop-eval} the fact that
+concept mapping process is known to have impact on results
+\cite{omop-concept-impact} and that applying the same protocol on different
+data sources leads to different results \cite{omop-replicability} reveals the
+importance of keeping the local codes to allow local analysis. Several example
+of transforming databases into OMOP have been published
+\cite{omop-german,omop-nashville} and yet OMOP stores 682 milion patients
+records from all over the world\cite{omop-bigboy}. OMOP had 5 versions, and
+prones its strong backward compatibility.
+
 \textbf{i2b2/SHRINE} is a medical cohort discovery tool used in more than 200 hospitals over the world. SHRINE is one of the attempt to federate multiple instances of i2b2. The i2b2 star schema has proven its high flexibility thanks to the modular design of the fact tables allowing storing numerics, characters or concepts. Its single terminology model is a path based hierarchical table does not allow to modelise graph ontology (such snomed). While i2b2 is highly efficient for cohort discovery, it's model wasn't designed for ad-hoc analysis. The n*n terminology mapping initiated in SHRINE has been described time consuming and inefficient.
 	
-\textbf{Fast Healthcare Interoperability Resources} (HL7-FHIR) is a medical data exchange API specification. FHIR provides a structural CDM that can be materialized as JSON, XML or RDF format. FHIR is flexible and does not specify a standard conceptual model so that each hospital can add extension to implement specific data or share within it's local terminology making each FHIR implementation sensibly divergent. While some research show it as a promising CDM for ad-hoc analysis \cite{fhir-google} or cohort discovery \cite{fhir-paris}, its graph nature adds a layer of transformation making usage complicated for data-scientists as well as difficult to create standardized analysis. 
+\textbf{Fast Healthcare Interoperability Resources} (HL7-FHIR) is a medical data exchange API specification. FHIR provides a structural CDM that can be materialized as JSON, XML or RDF format. FHIR is flexible and does not specify a standard conceptual model so that each hospital can add extension to implement specific data or share within it's local terminology making each FHIR implementation sensibly divergent. While some research show it as a promising CDM for ad-hoc analysis \cite{fhir-google} or cohort discovery \cite{fhir-paris}, its graph nature adds a layer of transformation making usage complicated for data-scientists as well as difficult to create standardized analysis. Finally the model envolves and does not make the asumption of backward compatibilities along the versions.
 
 %- PCORnet, the National Patient-Centered Clinical Research Network (http://pcornet.org/pcornet-common-data-model/)
 %        - have been created to monitore the safety of FDA-regulated medical products.
 %	- PCORnet Common Data Model (CDM) integrate multiple data from different sources and leverages standard terminologies and coding systems for healthcare (including ICD, SNOMED, CPT, HCPSC, and LOINC) to enable interoperability with and responsiveness to evolving data standards.
 %	- The first version of the CDM was released in 2014, and there have been 3 major releases and one minor update since then (last release CDM v4.1: Released May 18, 2018 )
 
-\textbf{Observational Medical Outcomes Partnership Common Data Model} (OMOP) is a
-CDM designed for multicentric Drug adverse Event and now enlarges to medical,
-clinical and also genomic use cases. OMOP provides both structural (as as set
-of relational tables) and conceptual (as a set of standard terminologies) such
-SNOMED for diagnoses, RxNORM for drug ingredients and LOINC for laboratory
-results.  While OMOP has proven its fiability \cite{omop-eval} the fact that
-concept mapping process is known to have impact on results \cite{omop-concept-impact} and that
-applying the same protocol on different data sources leads to different results
-\cite{omop-replicability} reveals the importance of keeping the local codes to allow local
-analysis. Several example of transforming databases into OMOP have been
-published \cite{omop-german,omop-nashville} and yet OMOP stores 682 milion
-patients records from all over the world\cite{omop-bigboy}.
+Among the other CDM, OMOP looks like the best fit as it allows both
+multicentric standardised analysis as well as monocentric specific modeling and
+analysis. Still some questions remains that we propose to answer such the
+difficulty of transforming/maintaining an OMOP dataset from an existing one,
+how well the initial dataset is integrated and how much data is lost in the
+process, how clear and simple the model is to be queried simply and efficiently
+by scientists, how well design it is to be enriched by collaborative work , and
+finally in what extend OMOP can integrate and makes feedbacks to intensivists
+in a realtime context.
 
+However OMOP is very ambitious in the level of work preprocessing and
+mapping work needed.
+In this study we decided to evaluate
 Compared to PCORnet CDM, OMOP (6) :
 - performes best in the evaluation database criteria compared with the other
   models (and PCORnet in particularly) : completeness, integrity, flexibility,
   simplicity of integration, and implementability.
-- seems to accommodates the broadest coverage of standard terminologies.
+- seems to accommodate the broadest coverage of standard terminologies.
 - provides more systematic analysis with analytic library and visualizing tools
   from OMOP community : ACHILLES
 - provides easier SQL models 
@@ -113,9 +166,6 @@ and makes possible to compare. However, question still are:
 - how performances are affected 
 - how well OMOP handle ICU database specificities
 
-We limited the candidate data models to those designed and used for clinical
-researches, and those freely available in the public domains without
-restrictions.
 % Evaluation
 Filtering an audio signal with an allpass filter does not usually have a major effect on the signal's timbre. The allpass filter does not change the frequency content of the signal, but only introduces a phase shift or delay. Audibility of the phase distortion caused by an allpass filter in a sound reproduction system has been a topic of many studies, see, e.g., \cite{DEK1}, \cite{DEK2}. In this paper, we investigate audio effects processing using high-order allpass filters that consist of many cascaded low-order allpass filters. These filters have long chirp-like impulse responses. When audio and music signals are processed with such a filter, remarkable changes are obtained that are similar to the spectral delay effect  \cite{DEK3}, \cite{DEK4}.
 
