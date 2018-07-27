@@ -48,8 +48,8 @@ care is rising\cite{angus2000} and mortality is up to 30\% which is a major
 health care problem \cite{icu-mortality}. Studies have shown that intensivists
 use a limited number of clinical information concepts to guide the
 decision\cite{icu-evidence} and that the medical practices are sparse and
-variable. Knowing that ICU patients' health record are highly detailed and
-that they are monitored with connected devices this is a paradox.
+variable. Knowing that ICU patients' health record are highly detailed
+including connected devices this is a paradox.
 
 % Medical database hopes TODO/ syntetise
 The increasing adoption of Electronic Health Records (EHR) systems worldwide
@@ -70,48 +70,31 @@ environement) expectations are:
 - Early warning systems
 
 % Existing ICU databses
-Several commercial or noncommercial, opensource or nonopensource ICU databases have been developed
+Several commercial or noncommercial, opensource or nonopensource ICU databases
+have been developed
 
-- Non commercial CUB-REA database
-	- B. Guidet, P. Aegerte
-	- http://www.pifo.uvsq.fr/hebergement/cubrea/cr_index.htm
-	- collected since 25 years around 300k ICU patients stays low granularity data from 30 distinct ICUs in Paris region.
-	- Data are collected semi automatically annually
-	- 15 international publications.
+\textbf{CUB-REA} is a semi-automatic collection of 25 years and over 300k ICU
+patients stays from 30 distinct ICUs in Paris region and covers administrative
+data only \cite{cubrea-descr,cubrea-website}. Yet it is subject of 15
+international publication and access is under conditions.
 
-- Non commercial OutcomeREA database
-	- JF Timsit
-	- http://outcomerea.fr/index.php
-	- collected since 20 years around 20k ICU patients stays medium granularity data from 20 distinct ICUs in France
-	- Data are daily collected manually by senior trained intensivists,
-	- This database has been subject of 50 publications.
+\textbf{OutcomeREA} is a manual collection of 20 years over 20k UCU patients
+stays with medium granularity data from 20 distinct ICUs in France. Yet it is
+subject of 50 international publications and access is under conditions.
 
-- Commercial eICU
-	- developped in partenariat with Philips
-	- available via PhysioNet
-	- over 1.5 million ICU stays
-	- and is adding 400,000 patient records per year from over 180 subscribing hospitals in the country. 
-	- patients who were admitted to critical care units in 2014 and 2015.
-	- Data are heterogenous and high granularity signal as waveform is not record
+\textbf{eICU} \cite{eicu-website} is an automatic collection of 2 years of 1.5M
+ICU patients stays from 180 hospitals in the USA and covers high granularity
+data. It is a commercial database.
 
-- Non commercial MIMICIII (Medical Information Mart for Intensive Care) : our case study
-	- R. Marc
-	- freely-available database via PhysioNet : https://mimic.physionet.org/
-  	- A public github was created : https://github.com/MIT-LCP/mimic-code with many contributers around the world. 
-	- Data are collected each 5 years, semi automatically. 
-	- This database is de-identified and open, and anyone can exploit the data after passing an online exam on clinical ethic. 
-	- over 300 publications from international researchers independant from the MIT
-	- health-related data associated with over forty thousand patients who stayed in critical care units between 2001 and 2012(4).
-	- It includes both administrative data (demographic, ICD9, procedures) and clinical data (examination, laboratory results, medication administration and notes)
-	- Three types of data are collected : 
-		- clinical data from hospital information system, 
-		- death data from the social security database
-		- High granulary data as the waveform of EKG, EEG: In this article we won't speak about high frequency datas. 
+\textbf{MIMIC} (Medical Information Mart for Intensive Care) is a
+semi-automatic collection of 10 years and over 60k ICU patients stays with very
+high granularity (including EKG) from 1 ICU in Boston. Yet it is subject of 300
+international publication. It is a freely-available database.
 
 % Common Data Models
 All those databases do have their own dedicated model. Their structural model
 are all based on relational database but all do have tables and columns with
-different meaning and different granularity. As an example MIMIC do have two
+different meaning and granularity. As an example MIMIC do have two
 inputevents tables reflecting its source center changed its EHR. Also their
 conceptual model are mostly different. For example MIMIC do have ICD9 for
 condition terminology, while french database CUBREA do have both CIM9 and
@@ -122,9 +105,6 @@ local conceptual model \cite{fhir-deep} and structure \cite{imi-protect} of
 database for research leads to better outcomes, a dozen of common data model
 (CDM) have emerged.
 
-We limited the candidate data models to those designed and used for clinical
-researches, and those freely available in the public domains without
-restrictions.
 % Choice of OMOP + Existing OMOP
 \textbf{Observational Medical Outcomes Partnership Common Data Model} (OMOP) is
 a CDM designed for multicentric Drug adverse Event and now enlarges to medical,
@@ -141,9 +121,27 @@ of transforming databases into OMOP have been published
 records from all over the world\cite{omop-bigboy}. OMOP had 5 versions, and
 prones its strong backward compatibility.
 
-\textbf{i2b2/SHRINE} is a medical cohort discovery tool used in more than 200 hospitals over the world. SHRINE is one of the attempt to federate multiple instances of i2b2. The i2b2 star schema has proven its high flexibility thanks to the modular design of the fact tables allowing storing numerics, characters or concepts. Its single terminology model is a path based hierarchical table does not allow to modelise graph ontology (such snomed). While i2b2 is highly efficient for cohort discovery, it's model wasn't designed for ad-hoc analysis. The n*n terminology mapping initiated in SHRINE has been described time consuming and inefficient.
+\textbf{i2b2/SHRINE} is a medical cohort discovery tool used in more than 200
+hospitals over the world. SHRINE is one of the attempt to federate multiple
+instances of i2b2. The i2b2 star schema has proven its high flexibility thanks
+to the modular design of the fact tables allowing storing numerics, characters
+or concepts. Its single terminology model is a path based hierarchical table
+does not allow to modelise graph ontology (such snomed). While i2b2 is highly
+efficient for cohort discovery, it's model wasn't designed for ad-hoc analysis.
+The n*n terminology mapping initiated in SHRINE has been described time
+consuming and inefficient.
 	
-\textbf{Fast Healthcare Interoperability Resources} (HL7-FHIR) is a medical data exchange API specification. FHIR provides a structural CDM that can be materialized as JSON, XML or RDF format. FHIR is flexible and does not specify a standard conceptual model so that each hospital can add extension to implement specific data or share within it's local terminology making each FHIR implementation sensibly divergent. While some research show it as a promising CDM for ad-hoc analysis \cite{fhir-google} or cohort discovery \cite{fhir-paris}, its graph nature adds a layer of transformation making usage complicated for data-scientists as well as difficult to create standardized analysis. Finally the model envolves and does not make the asumption of backward compatibilities along the versions.
+\textbf{Fast Healthcare Interoperability Resources} (HL7-FHIR) is a medical
+data exchange API specification. FHIR provides a structural CDM that can be
+materialized as JSON, XML or RDF format. FHIR is flexible and does not specify
+a standard conceptual model so that each hospital can add extension to
+implement specific data or share within it's local terminology making each FHIR
+implementation sensibly divergent. While some research show it as a promising
+CDM for ad-hoc analysis \cite{fhir-google} or cohort discovery
+\cite{fhir-paris}, its graph nature adds a layer of transformation making usage
+complicated for data-scientists as well as difficult to create standardized
+analysis. Finally the model envolves and does not make the asumption of
+backward compatibilities along the versions.
 
 %- PCORnet, the National Patient-Centered Clinical Research Network (http://pcornet.org/pcornet-common-data-model/)
 %        - have been created to monitore the safety of FDA-regulated medical products.
@@ -194,6 +192,9 @@ and makes possible to compare. However, question still are:
 - how performances are affected 
 - how well OMOP handle ICU database specificities
 
+We limited the candidate data models to those designed and used for clinical
+researches, and those freely available in the public domains without
+restrictions.
 % Evaluation
 Filtering an audio signal with an allpass filter does not usually have a major effect on the signal's timbre. The allpass filter does not change the frequency content of the signal, but only introduces a phase shift or delay. Audibility of the phase distortion caused by an allpass filter in a sound reproduction system has been a topic of many studies, see, e.g., \cite{DEK1}, \cite{DEK2}. In this paper, we investigate audio effects processing using high-order allpass filters that consist of many cascaded low-order allpass filters. These filters have long chirp-like impulse responses. When audio and music signals are processed with such a filter, remarkable changes are obtained that are similar to the spectral delay effect  \cite{DEK3}, \cite{DEK4}.
 
