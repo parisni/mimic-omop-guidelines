@@ -42,6 +42,7 @@ response, are introduced.}
 
 %Head 1
 \section{INTRODUCTION}
+
 % ICU: a paradox 
 Intensive Care Units (ICUs) are particularly sensitive units  where demand of
 care is rising\cite{angus2000} and mortality is up to 30\% which is a major
@@ -50,63 +51,50 @@ use a limited number of clinical information concepts to guide the
 decision\cite{icu-evidence} and that the medical practices are sparse and
 variable. Knowing that ICU patients' health record are highly detailed
 including connected devices this is a paradox.
-
-% Medical database hopes TODO/ syntetise
+% Medical database hopes 
 The increasing adoption of Electronic Health Records (EHR) systems worldwide
 makes it possible to capture large amounts of clinical data
 \cite{bigdata-promise} and big data mining has the potential to play an
 important role in clinical medicine \cite{bigdata-mining}. Indeed on the basis
-of various patient medical
-informations (clinical, physiologic, genemomic, laboratory, imaging, reports,
-environement) expectations are:
-- minimize costs while improving the clinical outcomes of individuals and
-  populations thanks to observational clinical research and real time
-  algorithms
-- Drug Adverse Event
-- Drug/Drug Interaction
-- Clinical research
-- Personalized medicine 
-- Medical Decision Guidance
-- Early warning systems
+of broad patient medical informations expectations are to improve clinical
+outcomes and practices, allow personalized medicine and guide decision thought
+early warning systems, and also enrol large and multicentric cohort easily
+while minimizing costs.
 
 % Existing ICU databses
-Several commercial or noncommercial, opensource or nonopensource ICU databases
-have been developed
-
-\textbf{CUB-REA} is a semi-automatic collection of 25 years and over 300k ICU
+By now several commercial or noncommercial, opensource or nonopensource ICU
+databases have been developed.
+\emph{CUB-REA} is a semi-automatic collection of 25 years and over 300k ICU
 patients stays from 30 distinct ICUs in Paris region and covers administrative
 data only \cite{cubrea-descr,cubrea-website}. Yet it is subject of 15
 international publication and access is under conditions.
-
-\textbf{OutcomeREA} is a manual collection of 20 years over 20k UCU patients
+\emph{OutcomeREA} is a manual collection of 20 years over 20k UCU patients
 stays with medium granularity data from 20 distinct ICUs in France. Yet it is
 subject of 50 international publications and access is under conditions.
-
-\textbf{eICU} \cite{eicu-website} is an automatic collection of 2 years of 1.5M
+\emph{eICU} \cite{eicu-website} is an automatic collection of 2 years of 1.5M
 ICU patients stays from 180 hospitals in the USA and covers high granularity
 data. It is a commercial database.
-
-\textbf{MIMIC} (Medical Information Mart for Intensive Care) is a
+\emph{MIMIC} (Medical Information Mart for Intensive Care) is a
 semi-automatic collection of 10 years and over 60k ICU patients stays with very
 high granularity (including EKG) from 1 ICU in Boston. Yet it is subject of 300
 international publication. It is a freely-available database.
+All those databases have their own dedicated model. Their structural model
+are all based on relational database but all do have tables and columns with
+different meaning and granularity. As an example MIMIC do have two inputevents
+tables reflecting its source center changed its EHR. Also their conceptual
+model are mostly different. For example MIMIC do have ICD9 for condition
+terminology, while CUB-REA do have both CIM9 and CIM10. 
 
 % Common Data Models
-All those databases do have their own dedicated model. Their structural model
-are all based on relational database but all do have tables and columns with
-different meaning and granularity. As an example MIMIC do have two
-inputevents tables reflecting its source center changed its EHR. Also their
-conceptual model are mostly different. For example MIMIC do have ICD9 for
-condition terminology, while french database CUBREA do have both CIM9 and
-CIM10. A lot of research have been made on each of these databases
-independently. While some studies have shown that results are not replicable
-from one to another database \cite{omop-replicability} and that keeping the
-local conceptual model \cite{fhir-deep} and structure \cite{imi-protect} of
-database for research leads to better outcomes, a dozen of common data model
-(CDM) have emerged.
-
+Some studies have shown that using a common data model (CDM) for databases
+allows multicentric research and catalyse research in general by allowing
+sharing practices, code, and tools \cite{todo}.  On the other hand some studies
+have shown that results are not replicable from one to another database
+\cite{omop-replicability} and that keeping the local conceptual model
+\cite{fhir-deep} and structure \cite{imi-protect} of database for research
+leads to better outcomes, a dozen of CDM have emerged.
 % Choice of OMOP + Existing OMOP
-\textbf{Observational Medical Outcomes Partnership Common Data Model} (OMOP) is
+\emph{OMOP} (Observational Medical Outcomes Partnership Common Data Model) is
 a CDM designed for multicentric Drug adverse Event and now enlarges to medical,
 clinical and also genomic use cases. OMOP provides both structural (as as set
 of relational tables) and conceptual (as a set of standard terminologies) such
@@ -120,8 +108,7 @@ of transforming databases into OMOP have been published
 \cite{omop-german,omop-nashville} and yet OMOP stores 682 milion patients
 records from all over the world\cite{omop-bigboy}. OMOP had 5 versions, and
 prones its strong backward compatibility.
-
-\textbf{i2b2/SHRINE} is a medical cohort discovery tool used in more than 200
+\emph{i2b2/SHRINE} is a medical cohort discovery tool used in more than 200
 hospitals over the world. SHRINE is one of the attempt to federate multiple
 instances of i2b2. The i2b2 star schema has proven its high flexibility thanks
 to the modular design of the fact tables allowing storing numerics, characters
@@ -130,8 +117,7 @@ does not allow to modelise graph ontology (such snomed). While i2b2 is highly
 efficient for cohort discovery, it's model wasn't designed for ad-hoc analysis.
 The n*n terminology mapping initiated in SHRINE has been described time
 consuming and inefficient.
-	
-\textbf{Fast Healthcare Interoperability Resources} (HL7-FHIR) is a medical
+\emph{HL7-FHIR} (Fast Healthcare Interoperability Resources) is a medical
 data exchange API specification. FHIR provides a structural CDM that can be
 materialized as JSON, XML or RDF format. FHIR is flexible and does not specify
 a standard conceptual model so that each hospital can add extension to
@@ -148,6 +134,7 @@ backward compatibilities along the versions.
 %	- PCORnet Common Data Model (CDM) integrate multiple data from different sources and leverages standard terminologies and coding systems for healthcare (including ICD, SNOMED, CPT, HCPSC, and LOINC) to enable interoperability with and responsiveness to evolving data standards.
 %	- The first version of the CDM was released in 2014, and there have been 3 major releases and one minor update since then (last release CDM v4.1: Released May 18, 2018 )
 
+% CHOICE (OMOP & MIMIC)
 Among the other CDM, OMOP looks like the best fit as it allows both
 multicentric standardised analysis as well as monocentric specific modeling and
 analysis. Still some questions remains that we propose to answer such the
@@ -195,7 +182,8 @@ and makes possible to compare. However, question still are:
 We limited the candidate data models to those designed and used for clinical
 researches, and those freely available in the public domains without
 restrictions.
-% Evaluation
+
+% Evaluation of MIMIC-OMOP
 Filtering an audio signal with an allpass filter does not usually have a major effect on the signal's timbre. The allpass filter does not change the frequency content of the signal, but only introduces a phase shift or delay. Audibility of the phase distortion caused by an allpass filter in a sound reproduction system has been a topic of many studies, see, e.g., \cite{DEK1}, \cite{DEK2}. In this paper, we investigate audio effects processing using high-order allpass filters that consist of many cascaded low-order allpass filters. These filters have long chirp-like impulse responses. When audio and music signals are processed with such a filter, remarkable changes are obtained that are similar to the spectral delay effect  \cite{DEK3}, \cite{DEK4}.
 
 \section{CHIRP-LIKE IMPULSE RESPONSES AND GROUP DELAY}
