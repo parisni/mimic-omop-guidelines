@@ -137,7 +137,21 @@ backward compatibilities along the versions.
 % CHOICE (OMOP & MIMIC)
 Among the other CDM, OMOP looks like the best fit as it allows both
 multicentric standardised analysis as well as monocentric specific modeling and
-analysis. Still some questions remains that we propose to answer such the
+analysis. 
+Compared to PCORnet \cite{omop-vs-pcornet} OMOP performs better in the
+evaluation database criteria compared with the other models (and PCORnet in
+particularly) : completeness, integrity, flexibility, simplicity of
+integration, and implementability, accommodate the broadest coverage of
+standard terminologies, provides more systematic analysis with analytic library
+and visualizing tools, provides easier SQL models.
+Compared to i2b2/SHRINE, the unilateral mapping methodology of OMOP looks
+simplier and more effective and propose a broader set of standardised concepts.
+Compared to FHIR, OMOP performs better as a conceptual CDM as FHIR does not
+specify which terminology to implement. In terms of structural CDM 
+OMOP relational model can be materialized into csv format and stored in any relational database when FHIRlast but
+not least its graph nature complicates the end user preprocessing skills.
+
+Still some questions remains that we propose to answer such the
 difficulty of transforming/maintaining an OMOP dataset from an existing one,
 how well the initial dataset is integrated and how much data is lost in the
 process, how clear and simple the model is to be queried simply and efficiently
@@ -147,15 +161,6 @@ in a realtime context.
 
 However OMOP is very ambitious in the level of work preprocessing and
 mapping work needed.
-In this study we decided to evaluate
-Compared to PCORnet CDM, OMOP (6) :
-- performes best in the evaluation database criteria compared with the other
-  models (and PCORnet in particularly) : completeness, integrity, flexibility,
-  simplicity of integration, and implementability.
-- seems to accommodate the broadest coverage of standard terminologies.
-- provides more systematic analysis with analytic library and visualizing tools
-  from OMOP community : ACHILLES
-- provides easier SQL models 
   
 FHIR:
 - does specify a common structural model
