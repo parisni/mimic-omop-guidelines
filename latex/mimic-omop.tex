@@ -92,9 +92,13 @@ sharing practices, code, and tools \cite{todo}. On the other hand some studies
 have shown that results are not replicable from one to another database
 \cite{omop-replicability} and that keeping the local conceptual model
 \cite{fhir-deep} and structure \cite{imi-protect} of database for research
-leads to better outcomes, a dozen of CDM have emerged. Last but not least,
-studies have show that CDM can lead to different results \cite{cdm-comparison}.
-% Choice of OMOP + Existing OMOP
+leads to better outcomes. Last but not least, studies have show that CDM can
+lead to different results \cite{cdm-comparison}.
+
+% Existing CDM
+A dozen of CDM have emerged but we limited the candidate data models to those
+designed and used for clinical researches, and those freely available in the
+public domains without restrictions.
 \emph{OMOP} (Observational Medical Outcomes Partnership Common Data Model) is
 a CDM designed for multicentric Drug adverse Event and now enlarges to medical,
 clinical and also genomic use cases. OMOP provides both structural (as as set
@@ -129,13 +133,20 @@ CDM for ad-hoc analysis \cite{fhir-google} or cohort discovery
 complicated for data-scientists as well as difficult to create standardized
 analysis. Finally the model envolves and does not make the asumption of
 backward compatibilities along the versions.
-
 %- PCORnet, the National Patient-Centered Clinical Research Network (http://pcornet.org/pcornet-common-data-model/)
 %        - have been created to monitore the safety of FDA-regulated medical products.
 %	- PCORnet Common Data Model (CDM) integrate multiple data from different sources and leverages standard terminologies and coding systems for healthcare (including ICD, SNOMED, CPT, HCPSC, and LOINC) to enable interoperability with and responsiveness to evolving data standards.
 %	- The first version of the CDM was released in 2014, and there have been 3 major releases and one minor update since then (last release CDM v4.1: Released May 18, 2018 )
 
 % CHOICE (OMOP & MIMIC)
+% choice of mimic
+To demonstrate the feasibility and the opportunity to use a CDM for ICU
+databases, we choose MIMIC since it is freely accessible and then the result of
+this work will be accessible for subsequent improvement, analysis, and
+demonstration. Secondly, MIMIC does have the most broad and high granularity
+database leading to evaluate the ability of the CDM to ingest such complex
+dataset.
+% choice of omop
 Among the other CDM, OMOP looks like the best fit as it allows both
 multicentric standardised analysis as well as monocentric specific modeling and
 analysis. 
@@ -156,26 +167,19 @@ specify which terminology to implement. In terms of structural CDM OMOP
 relational model can be materialized into csv format and stored in any
 relational database when FHIR materialised as json needs some processing and
 more skills to be exploited.
-OMOP shares the advantages of all above models. 
-Still some questions remains that we propose to answer such the
-difficulty of transforming/maintaining an OMOP dataset from an existing one,
-how well the initial dataset is integrated and how much data is lost in the
-process, how clear and simple the model is to be queried simply and efficiently
-by scientists, how well design it is to be enriched by collaborative work , and
-finally in what extend OMOP can integrate and makes feedbacks to intensivists
-in a realtime context.
-In order to evaluate OMOP
-
-However OMOP is very ambitious in the level of work preprocessing and
-mapping work needed.
-  
-
-
-We limited the candidate data models to those designed and used for clinical
-researches, and those freely available in the public domains without
-restrictions.
+OMOP shares the advantages of all above models. Still some questions remains
+that we propose to answer such the difficulty of transforming/maintaining an
+OMOP dataset from an existing one, how well the initial dataset is integrated
+and how much data is lost in the process, how clear and simple the model is to
+be queried simply and efficiently by scientists, how well design it is to be
+enriched by collaborative work , and finally in what extend OMOP can integrate
+and makes feedbacks to intensivists in a realtime context.
 
 % Evaluation of MIMIC-OMOP
+In order to evaluate the MIMIC-OMOP transformation, we based our work on \cite{kahn}
+
+
+
 Filtering an audio signal with an allpass filter does not usually have a major effect on the signal's timbre. The allpass filter does not change the frequency content of the signal, but only introduces a phase shift or delay. Audibility of the phase distortion caused by an allpass filter in a sound reproduction system has been a topic of many studies, see, e.g., \cite{DEK1}, \cite{DEK2}. In this paper, we investigate audio effects processing using high-order allpass filters that consist of many cascaded low-order allpass filters. These filters have long chirp-like impulse responses. When audio and music signals are processed with such a filter, remarkable changes are obtained that are similar to the spectral delay effect  \cite{DEK3}, \cite{DEK4}.
 
 \section{CHIRP-LIKE IMPULSE RESPONSES AND GROUP DELAY}
