@@ -49,10 +49,31 @@ community to run the ETL on limited resources without licensing need. Finally
 PostgreSQL have recently made huge effort to handle data-processing better.
 
 % Structural Transformations
+
+% creating tables (only with constraints, no indexes, subset, sequences)
+The MIMIC source data have been loaded with the provided scripts into a
+PostgreSQL (PG) instance and a subset of 100 patient selectioned upon their
+broad representativity in terms of data have been cloned into a second instance
+to serve as a light, representative development set.
+Each tables of the source have been added a global sequence incremented from 0
+that would serve as primary key and link into the OMOP target tables. The
+target tables have been created from the provided script exept the indexes
+that would have slow down the data migration with useless computations. The
+integrity constraints (primary keys, foreign keys, non nullable columns) have
+been included to apply sanity checks at runtime. Some tricky transformations
+have been implemented as PGsql functions.
+% unit testing
+Each ETL part have been tested thought PGtap, a unit testing framework for PG.
+This allows to make sure there is no loss of informations, or code regression
+during the ETL development or for further updates of the source code.
+% DDL modification
+A SQL script updates the OMOP tables when needed (the list of the modifications
+is detailed bellow). 
+
 The structural transformation have been done in few iteration of several phases.
 The first phase consists of looping over each MIMIC table and choose for each
 columns an equivalent location in OMOP. In general, the MIMIC documentation and
-the OMOP documentation were sufficient to choose. In several cases, we needed
+the OMOP documentation were sufficient informative. In several cases, we needed
 to get clarification from the MIMIC contributors on the dedicated github
 repository, or from the OMOP community on the dedicated forum.
 All choices have been discussed in the MIMIC-OMOP github issues, and can be
@@ -64,13 +85,12 @@ It is a challenge to manage such large community from all moderator,
 contributors and from a user perspective. It appears it is not doable for most
 of people to get involved. The forum is full of details and information. It
 contrast with the implementation guide that suffer from not being as well
-detailled. We think the OMOP community would greatly benefit from systematic
+detailed. We think the OMOP community would greatly benefit from systematic
 and synthetic synchronisation between forum, github and end user documentation.
 
 1.3 Preprocessing and modification of mimic
 +++++++++++++++++++++++++++++++++++++++++++
 
-- constant dialogue with mimic community via MIMIC github
 - We added emergency stays as a normal location for patients throughout their
   hospital stay.
 - Icustays mimic table was deleted as it is a derived table from transfers
@@ -78,9 +98,6 @@ and synthetic synchronisation between forum, github and end user documentation.
   ICU (based of the transfers table) whereas mimic prefered to assigne new
   icustay stay if a new admissions occurs > 24h after the end of the previous
   stay
-- We decided to put unique number for each row of mimic database  called
-  mimic_id. We think this is very helpful for ETLers
-
 
 	- conceptual (new concepts specific to ICU or general)
 		- measurement_type_concept_id
@@ -93,13 +110,41 @@ and synthetic synchronisation between forum, github and end user documentation.
 	- operators have been extracted to fill operator_concept_id
 	- units of measures have been extracted to fill unit_concept_id
 	- numeric values have been extracted to fill value_as_number
+
 % Conceptual Transformations
+
+% local coding
+The conceptual transformation consists on both loading OMOP with the MIMIC
+local concepts, and mapping them to the standards concepts. 
+The local codes have been loaded in the concept table starting from 2 billion
+as specifided in the OMOP documentation \cite{omop-documentation-pdf}. The
+MIMIC local codes are then added to the OMOP provided code (starting from 1 to
+2 billion) and can be distinguished with the domain_id equals to MIMIC code. As
+much as possible information from the MIMIC coding table have been loaded in
+order to allow analytics with the local code without loosing information as
+compared to the MIMIC original model (worst case we concatened information as
+free text in the concept_name column).
+%concept mapping
+To deal with concept mapping for each domain a csv file have been built as a
+support for manual standard mapping. Those csv file are automatically loaded
+into PG and get the sequence added too. There were four distinct cases.
+In the \emph{first} case MIMIC is already in the OMOP standard terminology (eg:
+LOINC laboratory results), the work is already made.
+In the \emph{second} case the mapping is already provided by OMOP (eg:
+ICD9/SNOMED-CT) then the data tables have been loaded accordingly.  In the
+\emph{third} case the mapping is not provided, but is small enough to be done
+manually in few hours. The mapping tool (described below) is then used to help.
+In the \emph{fourth} case the mapping is not provided and the terminology is
+huge. Then we decided to only map the subset of the code that are the most
+represented.
+
 - The key table for omop is the concept table. The standard vocabulary of OMOP is mainly based on the Systematized Nomenclature of Medicine Clinical Terms (SNOMED-CT)
-- A mapping between many classifications and the standard omop ones (ICD-9 and snomed-CT for examples) is already provides with concept_relationship table. We have used this to the maximum extent possible (laboratory exams, exit diagnoses and procedures)
+- A mapping between many classifications and the standard omop ones (ICD-9 and snomed-CT for examples) is already provided with concept_relationship table. We have used this to the maximum extent possible (laboratory exams, exit diagnoses and procedures)
   For the prescritions MIMIC-III table 75% (a verifier) of drugs had a gsn code. The conept_relationship table provide mapping between gsn and RxNorm classsifications. To improve the mapping we then proceeded to a manual mapping
 
 - Local code for mimiciii such as admission diagnoses, demographic status, drugs, signs and symptoms were manually mapped to OMOP standard models by several participants. This work was followed and check by a physician. 
 We had only used csv files for our manual mapping. All are available on github : https://github.com/MIT-LCP/mimic-omop/tree/master/extras/concept. This solution can scale for medical users without database engineering background. We tried to adopt the same methodology in their creation ; some obvious fields are needed : local and standard name, local and standard id. Moreover evaluation and comments fields are good practices and may help contributers
+
 - fuzzy match algorithm for mapping suggestion semi-automatic.
 The manual terminology mapping has been catalized by using a naïve but flexible
 approach. Many mapping tools exist on the area RELMA provided by LOINC, USAGI
