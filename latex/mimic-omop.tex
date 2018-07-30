@@ -87,13 +87,14 @@ terminology, while CUB-REA do have both CIM9 and CIM10.
 
 % Common Data Models
 Some studies have shown that using a common data model (CDM) for databases
-allows multicentric research and catalyse research in general by allowing
-sharing practices, code, and tools \cite{todo}. On the other hand some studies
-have shown that results are not replicable from one to another database
-\cite{omop-replicability} and that keeping the local conceptual model
-\cite{fhir-deep} and structure \cite{imi-protect} of database for research
-leads to better outcomes. Last but not least, studies have show that CDM can
-lead to different results \cite{cdm-comparison}.
+allows multicentric research, allow mining rare disease  and
+catalyse research in general by allowing sharing practices, code, and
+tools \cite{cdm-review}. On the other hand some studies have shown that results are
+not replicable from one to another database \cite{omop-replicability} and that
+keeping the local conceptual model \cite{fhir-deep} and structure
+\cite{imi-protect} of database for research leads to better outcomes. Last but
+not least, studies have show that CDM can lead to different results
+\cite{cdm-comparison}.
 
 % Existing CDM
 A dozen of CDM have emerged but we limited the candidate data models to those
@@ -148,7 +149,7 @@ database leading to evaluate the ability of the CDM to ingest such complex
 dataset. More importantly, MIMIC stated they would think of a
 CDM\cite{mimic-nature}, that would solve some structure and conceptual
 weaknesses of MIMIC mentionned above and this work should help MIMIC in it's
-goal to build a international ICU database
+goal to build a international ICU database \cite{mimic-i2b2}.
 % choice of omop
 Among the other CDM, OMOP looks like the best fit as it allows both
 multicentric standardised analysis as well as monocentric specific modeling and
@@ -164,7 +165,10 @@ simplier and more effective and propose a broader set of standardised concepts.
 In terms of structural CDM OMOP is highly rigourous in how data shall be loaded
 in a particular table when i2b2 is highly flexible with a one general table
 that that solution every data domains. This rigourous approach is necessary for
-standardisation.
+standardisation. Previous work have loaded i2b2 with MIMICiii \cite{mimic-i2b2}
+- however, the concept mapping step have limited the results since i2b2 design
+do not store the local ontology or information where OMOP design allows to keep
+the concept mapping unfinished.
 Compared to FHIR, OMOP performs better as a conceptual CDM as FHIR does not
 specify which terminology to implement. In terms of structural CDM OMOP
 relational model can be materialized into csv format and stored in any
@@ -175,8 +179,11 @@ that we propose to answer such the difficulty of transforming/maintaining an
 OMOP dataset from an existing one, how well the initial dataset is integrated
 and how much data is lost in the process, how clear and simple the model is to
 be queried simply and efficiently by scientists, how well design it is to be
-enriched by collaborative work , and finally in what extend OMOP can integrate
-and makes feedbacks to intensivists in a realtime context.
+enriched by collaborative work, and finally in what extend OMOP can integrate
+and makes feedbacks to intensivists in a realtime context. Previous preliminary
+work have been made on translating MIMIC into OMOP \cite{mimic-omop-previous}
+and still work remains to be affined and upgraded.
+
 
 % Evaluation of MIMIC-OMOP
 In order to evaluate the MIMIC-OMOP transformation, we based our work on
