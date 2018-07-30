@@ -72,8 +72,8 @@ international publication and access is under conditions.
 stays with medium granularity data from 20 distinct ICUs in France. Yet it is
 subject of 50 international publications and access is under conditions.
 \emph{eICU} \cite{eicu-website} is an automatic collection of 2 years of 1.5M
-ICU patients stays from 180 hospitals in the USA and covers high granularity
-data. It is a commercial database.
+ICU patients stays from 500 ICU in the USA and covers high granularity
+data \cite{mimic-i2b2}. It is a commercial database.
 \emph{MIMIC} (Medical Information Mart for Intensive Care) is a
 semi-automatic collection of 10 years and over 60k ICU patients stays with very
 high granularity (including EKG) from 1 ICU in Boston. Yet it is subject of 300
@@ -121,8 +121,9 @@ to the modular design of the fact tables allowing storing numerics, characters
 or concepts. Its single terminology model is a path based hierarchical table
 does not allow to modelise graph ontology (such snomed). While i2b2 is highly
 efficient for cohort discovery, it's model wasn't designed for ad-hoc analysis.
-The n*n terminology mapping initiated in SHRINE has been described time
-consuming and inefficient.
+A bidirectional terminology mapping \cite{shrine-design} between local concepts
+and the SHRINE core set of standard concepts is a prerequirement to participate
+to a SHRINE network.
 \emph{HL7-FHIR} (Fast Healthcare Interoperability Resources) is a medical
 data exchange API specification. FHIR provides a structural CDM that can be
 materialized as JSON, XML or RDF format. FHIR is flexible and does not specify
@@ -160,35 +161,42 @@ particularly) : completeness, integrity, flexibility, simplicity of
 integration, and implementability, accommodate the broadest coverage of
 standard terminologies, provides more systematic analysis with analytic library
 and visualizing tools, provides easier SQL models.
-Compared to i2b2/SHRINE, the unilateral mapping methodology of OMOP looks
-simplier and more effective and propose a broader set of standardised concepts.
-In terms of structural CDM OMOP is highly rigourous in how data shall be loaded
-in a particular table when i2b2 is highly flexible with a one general table
-that that solution every data domains. This rigourous approach is necessary for
-standardisation. Previous work have loaded i2b2 with MIMICiii \cite{mimic-i2b2}
-- however, the concept mapping step have limited the results since i2b2 design
-do not store the local ontology or information where OMOP design allows to keep
-the concept mapping unfinished.
-Compared to FHIR, OMOP performs better as a conceptual CDM as FHIR does not
-specify which terminology to implement. In terms of structural CDM OMOP
-relational model can be materialized into csv format and stored in any
-relational database when FHIR materialised as json needs some processing and
-more skills to be exploited.
-OMOP shares the advantages of all above models. Still some questions remains
-that we propose to answer such the difficulty of transforming/maintaining an
-OMOP dataset from an existing one, how well the initial dataset is integrated
-and how much data is lost in the process, how clear and simple the model is to
-be queried simply and efficiently by scientists, how well design it is to be
-enriched by collaborative work, and finally in what extend OMOP can integrate
-and makes feedbacks to intensivists in a realtime context. Previous preliminary
-work have been made on translating MIMIC into OMOP \cite{mimic-omop-previous}
-and still work remains to be affined and upgraded.
-
+Compared to i2b2/SHRINE, the unilateral mapping methodology of OMOP is more
+effective than the bidirectional \cite{shrine-design} SHRINE mapping. Hence
+OMOP proposes a broader set of standardised concepts. In terms of structural
+CDM OMOP is highly rigourous in how data shall be loaded in a particular table
+when i2b2 is highly flexible with a one general table that solution every data
+domains. This rigourous approach is necessary for standardisation. Previous
+work have loaded i2b2 with MIMICiii \cite{mimic-i2b2} - however, the concept
+mapping step have limited the results since i2b2 design do not store the local
+ontology or information where OMOP design allows to keep the concept mapping
+unfinished. OMOP has this advantage to keep the terminology mapping step not
+mandatory by keeping the local codes in a usable format.  As compared to FHIR,
+OMOP performs better as a conceptual CDM as FHIR does not specify which
+terminology to implement. In terms of structural CDM OMOP relational model can
+be materialized into csv format and stored in any relational database when FHIR
+materialised as json needs some processing and more skills to be exploited.
+OMOP shares the advantages of all above models. 
+Previous preliminary work have been made on translating MIMIC into OMOP
+\cite{mimic-omop-previous} and still work remains to be affined and upgraded to
+be furthermore evaluated.
 
 % Evaluation of MIMIC-OMOP
-In order to evaluate the MIMIC-OMOP transformation, we based our work on
-\cite{kahn}. 
+In order to evaluate the MIMIC-OMOP transformation we propose to answer to
+remaining question such the difficulty of transforming/maintaining an OMOP
+dataset from an existing one, how well the initial dataset is integrated and
+how much data is lost in the process, how clear and simple the model is to be
+queried simply and efficiently by scientists, how well design it is to be
+enriched by collaborative work, and finally in what extend OMOP can integrate
+and makes feedbacks to intensivists in a realtime context.  This work is then
+evaluated through 3 axes: ETL, Analytics and Contribution.
 
+The \emph{first} major contribution of this study is to evaluate OMOP in a real
+life and well known freely accessible database. The \emph{second} major
+contribution is to provide a freely accessible dataset in the OMOP format that
+might be useful for researchers. The \emph{third} major contribution is to
+provide the OMOP community some useful transformations dedicated to ICU and
+that can be reused in any OMOP dataset.
 
 
 Filtering an audio signal with an allpass filter does not usually have a major effect on the signal's timbre. The allpass filter does not change the frequency content of the signal, but only introduces a phase shift or delay. Audibility of the phase distortion caused by an allpass filter in a sound reproduction system has been a topic of many studies, see, e.g., \cite{DEK1}, \cite{DEK2}. In this paper, we investigate audio effects processing using high-order allpass filters that consist of many cascaded low-order allpass filters. These filters have long chirp-like impulse responses. When audio and music signals are processed with such a filter, remarkable changes are obtained that are similar to the spectral delay effect  \cite{DEK3}, \cite{DEK4}.
