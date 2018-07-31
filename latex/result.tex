@@ -1,4 +1,11 @@
 \subsection{Transformation}
+% effectiveness of the transformation
+The ETL (including unit tests, and generation of the ready to load archive) on
+the 100 patient subset takes five minutes and allows fast cycles of
+developments. On the full MIMIC dataset the ETL last 3 hours. 
+
+
+
   For the prescritions MIMIC-III table 75% (a verifier) of drugs had a gsn code. The conept_relationship table provide mapping between gsn and RxNorm classsifications. To improve the mapping we then proceeded to a manual mapping
 
 \subsection{Analytics}
@@ -13,6 +20,5 @@ data scientist by adding some redonduncy in the data while not breaking
 existing SQL queries. The drawback is it would make it more tricky to update
 and keep the dataset consistent - which is non applicable because OMOP is
 generally a static dataset.
-The \emph{microbiology derived} table simplifies the experience for data-scientists.
-
-
+The \emph{microbiology derived} table simplifies the experience for
+data-scientists.

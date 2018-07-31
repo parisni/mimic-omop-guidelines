@@ -11,11 +11,14 @@ Ajouter les deux schemas de database design
   date information were not provide (start/end_datetime for drug_exposure)
 
 % ETL
-- MIMIC III version 1.4 21 clinical data tables and 5 tables for vocabulary
-- OHDSI CDM v 5.0.1 which defines 15 standardized clinical data tables, 3 health system data tables, 2 health economics data tables, 5 tables for derived elements and 12 tables for standardized vocabulary. 
-  We didn’t use the health economics data tables (not provided in MIMIC)
+The MIMIC III version 1.4 21 clinical data tables and 5 tables for vocabulary
+- OMOP CDM v5.3.1 which defines 15 standardized \it{clinical} data tables, 3
+\it{health} system data tables, 2 \it{health economics} data tables, 5 tables
+for \it{derived} elements and 12 tables for standardized \it{vocabulary}. 
+We didn’t use the health economics data tables (not provided by MIMIC)
 
-All the process is available freely on the github website : https://github.com/MIT-LCP/mimic-omop.
+All the process is available freely on the github website :
+https://github.com/MIT-LCP/mimic-omop.
 
 Extract-Transformation-Load (ETL) processes is a methodology that allows
 migrating data from a source location to a target location. ETL first extract
