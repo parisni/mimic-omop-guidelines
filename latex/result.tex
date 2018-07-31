@@ -1,0 +1,17 @@
+\subsection{Transformation}
+  For the prescritions MIMIC-III table 75% (a verifier) of drugs had a gsn code. The conept_relationship table provide mapping between gsn and RxNorm classsifications. To improve the mapping we then proceeded to a manual mapping
+
+\subsection{Analytics}
+
+\subsection{Contribution}
+
+The \emph{denormalized derived} tables appears to improves the computations
+costs and the verbosity of the SQL queries. In addition the resulting tables
+are much more readily with the label of the concepts directly in the fact
+table. Hence a bit of denormalization improves greatly the experience of the
+data scientist by adding some redonduncy in the data while not breaking
+existing SQL queries. The drawback is it would make it more tricky to update
+and keep the dataset consistent - which is non applicable because OMOP is
+generally a static dataset.
+
+
