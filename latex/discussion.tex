@@ -1,10 +1,34 @@
-% about derived tables
-Derived tables. It is important that OMOP keeps a level of normalisation in
-order to simplify the ETL and make it consistent. However once done, it is
-judicious to give access to data-scientist to more denormalized tables and more
-specialized tables. Multiple concerns exists about OMOP performances and
-optimization. However there will never be a perfect multi-use case table, and
-this is the reponsibility of the data scientist to build his own tables,
-simplified, specialized for his research and answer efficiently and clearly his
-needs.
+% SQL: a choice for future
 
+% about derived tables
+It is important that OMOP keeps a level of normalisation in order to simplify
+the ETL and make it consistent. However once done, it is judicious to give
+access to data-scientist to more denormalized tables and more specialized
+tables. Multiple concerns exists about OMOP performances and optimization.
+However there will never be a perfect multi-use case table, and this is the
+reponsibility of the data scientist to build his own tables, simplified,
+specialized for his research and answer efficiently and clearly his needs.
+
+% About derived data
+Derived data integrates quite well in OMOP. We made use of note\_nlp to store
+information derived from notes, measurement to store numerical information and
+cohort_attributes to store scores. However it is still unclear if derived data
+should be stored per domain or if it should be stored in dedicated derived
+tables. We found out that there is a lack of tables to track provenance and
+description of such data.
+
+% missing in the model
+%% data quality
+An other missing aspect is some quality tables to access and measure the
+quality of data. MIMIC had some column to keep track of corrupted information.
+It would be of interest to be able to keep the messy data and allow research on
+data cleaning and data quality and avoid removing information.
+
+%% mecanisms for real time ingestion of data, such version control
+Last but not least, as stated in the introduction a good CDM for ICU would
+allow near realtime early warning systems and model inference on fresh data.
+OMOP clearly does provide static dataset and does not have mecanisms for
+realtime ingestion, and data version control - it is not a datawarehouse. That
+being said a solution such FHIR is a great way to implement realtime inference
+from EHR data and that's how FHIR and OMOP are complementary that yet have been
+investigated \cite{gatech}.
