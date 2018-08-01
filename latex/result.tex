@@ -1,10 +1,21 @@
 \subsection{Transformation}
 % effectiveness of the transformation
+
+The MIMIC to OMOP conversion was done by two developers (one data engineer and
+one intensivist) in an estimate amount of 500 hours. This includes the ETL, the
+git documentation, the concept mapping, the contributions and the unit tests.
 The ETL (including unit tests, and generation of the ready to load archive) on
 the 100 patient subset takes five minutes and allows fast cycles of
 developments. On the full MIMIC dataset the ETL lasts 3 hours. 
+The resulting csv archive is slightly the same size than the original one, and
+this is also the same once instanced in PGSQL and indexed.
 
 
+- size of MIMIC OMOP, row number for the bigest relation (measurement)
+- chartevents and labevents provide many number field as a string which is not handy for statistical analyse. We provide a standard and easy improval by the community model to extract numerical value from string
+	- operators have been extracted to fill operator_concept_id column
+	- numeric value has been extracted to fill value_as_number column
+	- units of measures have been extracted to fill unit_concept_id column
 
   For the prescritions MIMIC-III table 75% (a verifier) of drugs had a gsn code. The conept_relationship table provide mapping between gsn and RxNorm classsifications. To improve the mapping we then proceeded to a manual mapping
 
@@ -18,16 +29,25 @@ Several articles tried to evaluate CDM quality (8, 9).
 The criterias developped by Khan and Al, which referenced Moody and Shanks (10) metrics were adapted to our study.
 Our study doesn't want to evaluate the quality of CDM. But we adapt these criterias to assess our ETL work.
 
-| Data Model Dimension                          | Descriptions  |
-|-----------------------------------------------|------------- |
-| Completeness - structural mapping             | Data coverage : coverage of sources datas concepts that mapped to standard OMOP concept|
-| Completeness - semantic mapping               | Domain coverage : coverage of sources domains that are accommodated by the standard OMOP model|
-| Integrity                                     | "Meaningful data relationships and constraints that uphold th eintent of the data-s original purpose" Khan and Al |
-| Flexibility                                   | The ease to expand the standard model for new datatypes, concepts |
-| Integration                                   | The capacity of the standard model to use multiples terminology and links its to standard one|
-| Implementability                              | The stability of the models, the community, the cost of adoption |
-| Understandability                             | The ease of the standard model to be easily understood |
-| Simplicity                                    | The ease of querying the standard model - the model should contains the minimum of concepts and relationship |
+% Please add the following required packages to your document preamble:
+% \usepackage[normalem]{ulem}
+% \useunder{\uline}{\ul}{}
+% Please add the following required packages to your document preamble:
+% \usepackage[normalem]{ulem}
+% \useunder{\uline}{\ul}{}
+\begin{table}[]
+\begin{tabular}{ll}
+Data Model Dimension              & Descriptions                                                                                                      \\
+Completeness - structural mapping & Data coverage : coverage of sources datas concepts that mapped to standard OMOP concept                           \\
+Completeness - semantic mapping   & Domain coverage : coverage of sources domains that are accommodated by the standard OMOP model                    \\
+Integrity                         & "Meaningful data relationships and constraints that uphold th eintent of the data-s original purpose" Khan and Al \\
+Flexibility                       & The ease to expand the standard model for new datatypes, concepts                                                 \\
+Integration                       & The capacity of the standard model to use multiples terminology and links its to standard one                     \\
+Implementability                  & The stability of the models, the community, the cost of adoption                                                  \\
+Understandability                 & The ease of the standard model to be easily understood                                                            \\
+Simplicity                        & The ease of querying the standard model - the model should contains the minimum of concepts and relationship     
+\end{tabular}
+\end{table}
 
 Understandability and simplicity will be evaluated in the analytics parts, in real life application.
 
@@ -44,24 +64,27 @@ Compleness - semantic mapping
 This following table shows where the informations goes and links between MIMICIII tables and MIMICIII-OMOP tables
 As OMOP is a conceptual model, a same type of data goes in the same table. The best example may be the measurement table which is field by 4 source tables. Is is because of all the numerics datas should go to this table.
 
-| Omop tables    	| Number of rows | Source tables |
-|-----------------------|---------------|--------------|
-| PERSONS 		| 46520         | patients, admissions |
-| DEATH 		| 14849         | patients, admissions |
-| VISIT_OCCURRENCE 	| 58976         | admissions |
-| VISIT_DETAIL 		| 271808        | transfers, service |
-| MEASUREMENT 		| 366272371     | chartevents, labevents, microbiologyevents, outputevents |
-| OBSERVATION 		| 6721040       | admissions, chartevents, datetimevvents, drgcodes |
-| DRUG_EXPOSURE 	| 24934758      | prescriptions, inputevents_cv, inputevents_mv|
-| PROCEDURE_OCCURRENCE 	| 1063525       | cptevents, procedureevents_mv, procedure_icd|
-| CONDITION_OCCURRENCE 	| 716595        | admissions, diagnosis_icd |
-| NOTE 			| 2082294       | notevents|
-| NOTE_NLP 		| 16350855      | noteevents |
-| COHORT_ATTRIBUTE 	| 2628838       | callout |
-| CARE_SITE 		| 93            | transfers, service |
-| PROVIDER 		| 7567          | caregivers |
-| OBSERVATION_PERIOD 	| 58976         | patients, admissions |
-| SPECIMEN 	 	| 39874171      | chartevents, labevents, microbiologyevents |
+\begin{table}[]
+\begin{tabular}{lll}
+OMOP tables           & Number of rows & MIMIC tables                                             \\
+PERSONS               & 46520          & patients, admissions                                     \\
+DEATH                 & 14849          & patients, admissions                                     \\
+VISIT\_OCCURRENCE     & 58976          & admissions                                               \\
+VISIT\_DETAIL         & 271808         & transfers, service                                       \\
+MEASUREMENT           & 366272371      & chartevents, labevents, microbiologyevents, outputevents \\
+OBSERVATION           & 6721040        & admissions, chartevents, datetimevvents, drgcodes        \\
+DRUG\_EXPOSURE        & 24934758       & prescriptions, inputevents\_cv, inputevents\_mv          \\
+PROCEDURE\_OCCURRENCE & 1063525        & cptevents, procedureevents\_mv, procedure\_icd           \\
+CONDITION\_OCCURRENCE & 716595         & admissions, diagnosis\_icd                               \\
+NOTE                  & 2082294        & notevents                                                \\
+NOTE\_NLP             & 16350855       & noteevents                                               \\
+COHORT\_ATTRIBUTE     & 2628838        & callout                                                  \\
+CARE\_SITE            & 93             & transfers, service                                       \\
+PROVIDER              & 7567           & caregivers                                               \\
+OBSERVATION\_PERIOD   & 58976          & patients, admissions                                     \\
+SPECIMEN              & 39874171       & chartevents, labevents, microbiologyevents              
+\end{tabular}
+\end{table}
 
 Ajouter schema : MIMIC-OMOP_equivalence.png
 
@@ -77,37 +100,41 @@ Baseline characteristics : comparison MIMICIII / MIMIC OMOP (basic statistics)
 The following table lists the baseline characterization of the population of MIMICIII-OMOP compared with MIMICIII.
 The MIMIC-III database contains 45.520 individuals and 58.976 single admissions.
 
-| items					|OMOP-MIMIC 			        | MIMICIII |
-|---------------------------------------|---------------------------------------|----------|
-| Persons (Number) 			| 46.520 			        | 46.520 |
-| Admissions (Number) 			| 58.976 			        | 58.976 |
-| Icustays (Number)   			| 61.532 			        | 71.576 |
-| Gender, Female (Number, %) 	       	| 20.399 (43 %)               	        | 20.399 |
-| Age (Mean)  				| 64 ans, 4 months 		        | 64 years, 4 months |
-| 0-5  				        |   8110		                |   8110 |
-| 6-15                                  |      1		                |      1 |
-| 16-25			                |   1434		                |   1434 |
-| 26-45  	                        |   5962		                |   5962 |
-| 46-65				        |  17375		                |  17375 |
-| 66-80				        |  15793		                |  15793 |
-| >80				        |  10301		                |  10301 |
-| Emergency                             |  42071	                        | 42071 |
-| Elective		                |   7706                                | 7706 |
-| Surgical patients		        | 19246 		                | 19246 |
-| Length of stay, hospital (median) 	| 6.59 (Q1-Q3 : 3.84 - 11.88) 	        | 6.46 (Q1-Q3 : 3.74 -11.79) |
-| Length of stay, ICU (median)      	| 1.87 (Q1-Q3 : 0.95 - 3.87)  	        | 2.09 (Q1-Q3 : 1.10 - 4.48) |
-| Mortality, ICU (Number, %)        	| 5815 (9%)                   	        | 5814 (9%) |
-| Mortality, hospital (Number, %)   	| 4559 (6%)                   	        | 4511 (7%) |
-| Lab measurements per admissions (mean)| 678  (from labevents + charevents)    | 478 (from labevents) |
-| Procedures per admissions (mean)      | 4.6                                   | 4.6 |
-| Drugs per admissions (mean)           | 82.8                                  | 82.8 |
-| Exit dignosis per admissions (mean)   | 11.0                                  | 11.0 |
+
+\begin{table}[]
+\begin{tabular}{lll}
+items                                  & OMOP-MIMIC                         & MIMIC                      \\
+Persons (Number)                       & 46.520                             & 46.520                     \\
+Admissions (Number)                    & 58.976                             & 58.976                     \\
+Icustays (Number)                      & 61.532                             & 71.576                     \\
+Gender, Female (Number, \%)            & 20.399 (43 \%)                     & 20.399                     \\
+Age (Mean)                             & 64 ans, 4 months                   & 64 years, 4 months         \\
+0-5                                    & 8110                               & 8110                       \\
+6-15                                   & 1                                  & 1                          \\
+16-25                                  & 1434                               & 1434                       \\
+26-45                                  & 5962                               & 5962                       \\
+46-65                                  & 17375                              & 17375                      \\
+66-80                                  & 15793                              & 15793                      \\
+\textgreater{}80                       & 10301                              & 10301                      \\
+Emergency                              & 42071                              & 42071                      \\
+Elective                               & 7706                               & 7706                       \\
+Surgical patients                      & 19246                              & 19246                      \\
+Length of stay, hospital (median)      & 6.59 (Q1-Q3 : 3.84 - 11.88)        & 6.46 (Q1-Q3 : 3.74 -11.79) \\
+Length of stay, ICU (median)           & 1.87 (Q1-Q3 : 0.95 - 3.87)         & 2.09 (Q1-Q3 : 1.10 - 4.48) \\
+Mortality, ICU (Number, \%)            & 5815 (9\%)                         & 5814 (9\%)                 \\
+Mortality, hospital (Number, \%)       & 4559 (6\%)                         & 4511 (7\%)                 \\
+Lab measurements per admissions (mean) & 678  (from labevents + charevents) & 478 (from labevents)       \\
+Procedures per admissions (mean)       & 4.6                                & 4.6                        \\
+Drugs per admissions (mean)            & 82.8                               & 82.8                       \\
+Exit dignosis per admissions (mean)    & 11.0                               & 11.0                      
+\end{tabular}
+\end{table}
 
 MIMIC-III contains 61.532 stays in ICU whereas OMOP-MIMIC contains 71.576 unique stays.
-That is a 116% increase in stays due to our ETL methodology as we explained in the methods.
+That is a 116\% increase in stays due to our ETL methodology as we explained in the methods.
 
 We can see that we increase the number of laboratory measurement per admissions.
-This is because the laboratory datas from chartevents has been extract and treated as laboratory
+This is because the laboratory data from chartevents has been extract and treated as laboratory
 All the code to created this statistics are provided here (cf extra : basic_statistics.sql)
 
 Loss of datas
@@ -118,11 +145,17 @@ We evaluate the percentage of columns and the percentage of rows as have done ot
 - for the rows no data were lost. 
 The error rows are deleted (inputevents_mv, chartevents, procedureevents_mv, note). As MIMIC team told us that they will remove it in the next release because this datas are poor quality we decided to do the same. 
 The following table shows the number of rows with errors.
-| Relations              | Error Percentage |
-| inputevents_mv     | 10% |
-| chartevents        | 0.04% |
-| procedureevents_mv | 3% |
-| Note               | 0.04% |
+
+
+\begin{table}[]
+\begin{tabular}{ll}
+Relations           & Error Percentage \\
+inputevents\_mv     & 10,00\%          \\
+chartevents         & 0.04\%           \\
+procedureevents\_mv & 3,00\%           \\
+Note                & 0.04\%          
+\end{tabular}
+\end{table}
 
 - Columns
 Depending on tables between 40 % and 80% of sources columns which doesn't fits to CDM where erased. 
@@ -134,18 +167,22 @@ The storetime was deleted during the ETL
 
 terminology mapping coverage
 ****************************
-| Omop tables (domain)  | Mapped_records | Total_records | % Mapped_records | Mapped_concepts_source | Total_concepts_source | % Mapped_concepts_source | Mapped_concept_id |
-|-----------------------|----------------|---------------|------------------|------------------------|-----------------------|--------------------------|-------------------|
-| PERSONS               | 93040          |         93040 |            100 % |                     43 |                    43 |                    100 % |                25 |
-| VISIT_OCCURRENCE 	| 58976          |         58976 |            100 % |                     34 |                    34 |                    100 % |                19 |
-| VISIT_DETAIL 		| 396930         |        396930 |            100 % |                     28 |                    28 |                    100 % |                17 |
-| MEASUREMENT 		| 
-| OBSERVATION 		| 
-| DRUG_EXPOSURE 	| 9316670        |      24934751 |             37 % |                   3981 |                  7410 |                     53 % |              3555 |
-| PROCEDURE_OCCURRENCE  | 1057914        |       1063525 |             99 % |                   2192 |                  2218 |                     98 % |              3406 |
-| CONDITION_OCCURRENCE 	| 662799         |        716595 |             92 % |                   6647 |                  6984 |                     95 % |              6215 |
-| CARE_SITE 		| 144            |           144 |            100 % |                     58 |                    58 |                    100 % |               105 |
-| SPECIMEN 	 	| 28181686       |      39874171 |             70 % |                     71 |                    92 |                     77 % |                35 |
+
+\begin{table}[]
+\begin{tabular}{llllllll}
+Omop tables (domain)  & Mapped\_records & Total\_records & \% Mapped\_records & Mapped\_concepts\_source & Total\_concepts\_source & \% Mapped\_concepts\_source & Mapped\_concept\_id \\
+PERSONS               & 93040           & 93040          & 100,00\%           & 43                       & 43                      & 100,00\%                    & 25                  \\
+VISIT\_OCCURRENCE     & 5897600,00\%    & 58976          & 100,00\%           & 34                       & 34                      & 100,00\%                    & 19                  \\
+VISIT\_DETAIL         & 396930          & 396930         & 100,00\%           & 28                       & 28                      & 100,00\%                    & 17                  \\
+MEASUREMENT           &                 &                &                    &                          &                         &                             &                     \\
+OBSERVATION           &                 &                &                    &                          &                         &                             &                     \\
+DRUG\_EXPOSURE        & 9316670         & 24934751       & 37,00\%            & 3981                     & 7410                    & 53,00\%                     & 3555                \\
+PROCEDURE\_OCCURRENCE & 1057914         & 1063525        & 99,00\%            & 2192                     & 2218                    & 98,00\%                     & 3406                \\
+CONDITION\_OCCURRENCE & 662799          & 716595         & 92,00\%            & 6647                     & 6984                    & 95,00\%                     & 6215                \\
+CARE\_SITE            & 144             & 144            & 100,00\%           & 58                       & 58                      & 100,00\%                    & 105                 \\
+SPECIMEN              & 28181686        & 39874171       & 70,00\%            & 71                       & 92                      & 77,00\%                     & 35                 
+\end{tabular}
+\end{table}
 
 These results include automatic and manual mapping.
 
@@ -252,10 +289,4 @@ This is a more ICU centric data structures that may help for analytics.
 others
 ######
 
-- estimation of number of work hours : Data transformation was done by 2 developers and praticians in 500 hours
 - ethnicity_concept_id : only two strange concept_name hispanic or non_hispanic
-- size of MIMIC OMOP, row number for the bigest relation (measurement)
-- chartevents and labvents provide many number field as a string which is not handy for statistical analyse. We provide a standard and easy improval by the community model to extract numerical value from string
-	- operators have been extracted to fill operator_concept_id column
-	- numeric value has been extracted to fill value_as_number column
-	- units of measures have been extracted to fill unit_concept_id column
