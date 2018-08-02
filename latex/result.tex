@@ -16,10 +16,6 @@ quality evaluation grid (\ref{table:quality}) developed by Khan and Al
 \cite{khan-quality} which is commonly used as a reference \cite{moody-quality}.
 
 - size of MIMIC OMOP, row number for the bigest relation (measurement)
-- chartevents and labevents provide many number field as a string which is not handy for statistical analyse. We provide a standard and easy improval by the community model to extract numerical value from string
-	- operators have been extracted to fill operator\_concept\_id column
-	- numeric value has been extracted to fill value\_as\_number column
-	- units of measures have been extracted to fill unit\_concept\_id column
 
   For the prescritions MIMIC table 75\% (a verifier) of drugs had a gsn code. The conept\_relationship table provide mapping between gsn and RxNorm classsifications. To improve the mapping we then proceeded to a manual mapping
 
@@ -27,7 +23,7 @@ The OMOP-CDM contains 37 data tables. We populated 19 tables.
 From MIMIC we create a standardized model called MIMIC-OMOP.
 
 Quality evaluation criteria
-===========================
+%===========================
 1)
 Several articles tried to evaluate CDM quality (8, 9).
 The criterias developped by Khan and Al, which referenced Moody and Shanks (10) metrics were adapted to our study.
@@ -63,7 +59,7 @@ During the all ETL process we created a lot of unit tests thanks to pgTap librar
 3)
 
 Compleness - semantic mapping 
-=============================
+%=============================
 
 The table \ref{table:dispatch} shows where the informations goes and links
 between MIMIC tables and OMOP tables.  Since OMOP is a conceptual model, a same
@@ -101,10 +97,10 @@ As shown, all the MIMIC domain are linked to proper OMOP domain.
 The semantic mapping was not a problem for our work.
 
 Completeness - structural mapping 
-===============================
+%===============================
 
 Baseline characteristics : comparison MIMIC / MIMIC OMOP (basic statistics)
-******************************************************************************
+%*******************************************************************************
 
 The following table lists the baseline characterization of the population of
 OMOP compared with MIMIC.
@@ -151,7 +147,7 @@ chartevents has been extracted and treated as laboratory. All the code to
 created this statistics are provided here (cf extra : basic\_statistics.sql).
 
 Loss of datas
-*************
+%*************
 
 We tried to evaluate the percentage of loaded records from the source database
 to OMOP. We evaluate the percentage of columns and rows lost in the process as
@@ -185,30 +181,40 @@ Note                & 0.04\%           \\\botrule
 \end{table*}
 
 terminology mapping coverage
-****************************
+%****************************
 
-\begin{table}[]
-\begin{tabular}{llllllll}
-Omop tables (domain)  & Mapped\_records & Total\_records & \% Mapped\_records & Mapped\_concepts\_source & Total\_concepts\_source & \% Mapped\_concepts\_source & Mapped\_concept\_id \\
-PERSONS               & 93040           & 93040          & 100,00\%           & 43                       & 43                      & 100,00\%                    & 25                  \\
-VISIT\_OCCURRENCE     & 5897600,00\%    & 58976          & 100,00\%           & 34                       & 34                      & 100,00\%                    & 19                  \\
-VISIT\_DETAIL         & 396930          & 396930         & 100,00\%           & 28                       & 28                      & 100,00\%                    & 17                  \\
-MEASUREMENT           &                 &                &                    &                          &                         &                             &                     \\
-OBSERVATION           &                 &                &                    &                          &                         &                             &                     \\
-DRUG\_EXPOSURE        & 9316670         & 24934751       & 37,00\%            & 3981                     & 7410                    & 53,00\%                     & 3555                \\
-PROCEDURE\_OCCURRENCE & 1057914         & 1063525        & 99,00\%            & 2192                     & 2218                    & 98,00\%                     & 3406                \\
-CONDITION\_OCCURRENCE & 662799          & 716595         & 92,00\%            & 6647                     & 6984                    & 95,00\%                     & 6215                \\
-CARE\_SITE            & 144             & 144            & 100,00\%           & 58                       & 58                      & 100,00\%                    & 105                 \\
-SPECIMEN              & 28181686        & 39874171       & 70,00\%            & 71                       & 92                      & 77,00\%                     & 35                 
-\end{tabular}
-\end{table}
+\begin{table*}[t]
+\tbl{Terminology Mapping coverage}{
+\begin{tabular}{@{}lllll@{}}\toprule
+Omop tables (domain)   & Total\_records & \% Mapped\_records  & Total\_concepts\_source & \% Mapped\_concepts\_source  \\\colrule
+PERSONS                & 93040          & 100,00\%            & 43                      & 100,00\%                     \\
+VISIT\_OCCURRENCE      & 58976          & 100,00\%            & 34                      & 100,00\%                     \\
+VISIT\_DETAIL          & 396930         & 100,00\%            & 28                      & 100,00\%                     \\
+MEASUREMENT            &                &                     &                         &                              \\
+OBSERVATION            &                &                     &                         &                              \\
+DRUG\_EXPOSURE         & 24934751       & 37,00\%             & 7410                    & 53,00\%                      \\
+PROCEDURE\_OCCURRENCE  & 1063525        & 99,00\%             & 2218                    & 98,00\%                      \\
+CONDITION\_OCCURRENCE  & 716595         & 92,00\%             & 6984                    & 95,00\%                      \\
+CARE\_SITE             & 144            & 100,00\%            & 58                      & 100,00\%                     \\
+SPECIMEN               & 39874171       & 70,00\%             & 92                      & 77,00\%                      \\\botrule
+\end{tabular}}
+\end{table*}
 
 These results include automatic and manual mapping.
 
-- The unmapped concept are the concept\_id = 0 (No mapping concept). To improve this mapping we need collaborative work. We provide our csv mapping files on our github.
+The unmapped concept are the concept\_id = 0 (No mapping concept). To improve
+this mapping we need collaborative work. We provide our csv mapping files on
+our github.
 The terminology mapping has been evaluated by a physician. 
+% need to identify missing values
+The zero value for concept\_id may appear in very different cases. First case
+the local concept has no equivalent in the standard set of concept. Second case
+it has not been yet been mapped and may have an standard equivalent. Third case
+the value is missing and cannot be mapped. In our opinion while all those cases
+cannot be used for standard queries, they should have a different concept\_id
+in order to be addressed differently.
 
-- % of domain_id not in adequation with table name 
+- \% of domain_id not in adequation with table name 
 	- some are logical because observation domain may be measurement table and vice verca
 
 - we have mapped  many source concept to one standard concept\_id. This is because MIMIC provide a lots of equivalent free text concepts.
@@ -244,13 +250,15 @@ Integration
 
 OMOP Terminology coverage has been previously evaluated as excellent
 \cite{omop-vs-pcornet}. We used the OMOP mapping for NDC-RxNorm, ICD9-SNOMED,
-CPT4-SNOMED. It was really helpful because MIMIC provide lots of non standard
+CPT4-SNOMED. It was really helpful because MIMIC provides lots of non standard
 terminology already mapped by OMOP community
 We tried to evaluated this OMOP mapping.
 We check 100 items for each mapping used (NDC, ICD9 and CPT4). ICD9 and CPT4 are correcly mapped to SNOMED. But only 85\% of NDC are
 linked to a correct RxNorm code. In part due to incorrect NDC code (from MIMIC), in part because only 78\% of NDC codes are mapped to Rxnorm.
 
-But the OMOP common standard vocabulary, SNOMED-CT, did not cover all ICD-9-CM codes (95\%). Moreover, not all ICD-9-CM codes can have one-to-one mapping to SNOMED, some are one-to-many (28\%)(2)
+But the OMOP common standard vocabulary, SNOMED-CT, did not cover all ICD-9-CM
+codes (95\%). Moreover, not all ICD-9-CM codes can have one-to-one mapping to
+SNOMED, some are one-to-many (28\%)\cite{snomed-icd9}
  
 Implementability
 ===============

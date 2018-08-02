@@ -221,12 +221,14 @@ measurements for microorganisms and related antibiograms and is inspired from
 MIMIC \textit{microbiology\_event} table. 
 
 % distinction between extraction and inference
-We tried  not to infer results. For examens whereas it's logical to put a
+We tried not to infer results. For examens whereas it's logical to put a
 specimen for many labevents results (as one sample of blood may be used to
 multiple exams) we decided to create as many specimen row as laboratory exams
 because the information is not present in MIMIC. It was the same when date
-information were not provide (\textit{start/end\_datetime} for \textit{drug\_exposure}).
+information were not provide (\textit{start/end\_datetime} for
+\textit{drug\_exposure}).
 % extraction of raw data
+- chartevents and labevents provide many number field as a string which is not handy for statistical analyse. We provide a standard and easy improval by the community model to extract numerical value from string
 The MIMIC laboratory results have been restructured to fit in OMOP format. In
 particular, the numerical value (value\_as\_number) comes with a mathematical
 operator (operator\_concept\_id) and a measurement unit (unit\_concept\_id).
