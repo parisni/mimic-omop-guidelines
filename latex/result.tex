@@ -17,11 +17,11 @@ quality evaluation grid (\ref{table:quality}) developed by Khan and Al
 
 - size of MIMIC OMOP, row number for the bigest relation (measurement)
 - chartevents and labevents provide many number field as a string which is not handy for statistical analyse. We provide a standard and easy improval by the community model to extract numerical value from string
-	- operators have been extracted to fill operator_concept_id column
-	- numeric value has been extracted to fill value_as_number column
-	- units of measures have been extracted to fill unit_concept_id column
+	- operators have been extracted to fill operator\_concept\_id column
+	- numeric value has been extracted to fill value\_as\_number column
+	- units of measures have been extracted to fill unit\_concept\_id column
 
-  For the prescritions MIMIC table 75\% (a verifier) of drugs had a gsn code. The conept_relationship table provide mapping between gsn and RxNorm classsifications. To improve the mapping we then proceeded to a manual mapping
+  For the prescritions MIMIC table 75\% (a verifier) of drugs had a gsn code. The conept\_relationship table provide mapping between gsn and RxNorm classsifications. To improve the mapping we then proceeded to a manual mapping
 
 The OMOP-CDM contains 37 data tables. We populated 19 tables.
 From MIMIC we create a standardized model called MIMIC-OMOP.
@@ -39,9 +39,10 @@ Our study doesn't want to evaluate the quality of CDM. But we adapt these criter
 % Please add the following required packages to your document preamble:
 % \usepackage[normalem]{ulem}
 % \useunder{\uline}{\ul}{}
-\begin{table}[]
-\begin{tabular}{ll}
-Data Model Dimension              & Descriptions                                                                                                      \\
+\begin{table*}[t]
+\tbl{Data Transformation Quality Evaluation Metrics}{%
+\begin{tabular}{@{}ll@{}}\toprule
+Data Model Dimension              & Descriptions                                                                                                      \\\colrule
 Completeness - semantic mapping   & Domain coverage : coverage of sources domains that are accommodated by the standard OMOP model                    \\
 Completeness - structural mapping & Data coverage : coverage of sources data concepts that mapped to standard OMOP concept                           \\
 Integrity                         & "Meaningful data relationships and constraints that uphold th eintent of the data-s original purpose" Khan and Al \\
@@ -49,10 +50,10 @@ Flexibility                       & The ease to expand the standard model for ne
 Integration                       & The capacity of the standard model to use multiples terminology and links its to standard one                     \\
 Implementability                  & The stability of the models, the community, the cost of adoption                                                  \\
 Understandability                 & The ease of the standard model to be understood                                                           	      \\
-Simplicity                        & The ease of querying the standard model - the model should contains the minimum of concepts and relationship     
-\end{tabular}
+Simplicity                        & The ease of querying the standard model - the model should contains the minimum of concepts and relationship    \\\botrule 
+\end{tabular}}
 \label{table:quality}
-\end{table}
+\end{table*}
 
 Understandability and simplicity will be evaluated in the analytics parts, in real life application.
 
@@ -70,9 +71,10 @@ type of data goes in the same table. The best example may be the measurement
 table which is field by 4 source tables. Is is because of all the numerics
 datas should go to this table.
 
-\begin{table}[]
-\begin{tabular}{lll}
-OMOP tables           & Number of rows & MIMIC tables                                             \\
+\begin{table*}[t]
+\tbl{MIMIC to OMOP data flows}{
+\begin{tabular}{@{}lll@{}}\toprule
+OMOP tables           & Number of rows & MIMIC tables                                             \\\colrule
 PERSONS               & 46520          & patients, admissions                                     \\
 DEATH                 & 14849          & patients, admissions                                     \\
 VISIT\_OCCURRENCE     & 58976          & admissions                                               \\
@@ -88,10 +90,10 @@ COHORT\_ATTRIBUTE     & 2628838        & callout                                
 CARE\_SITE            & 93             & transfers, service                                       \\
 PROVIDER              & 7567           & caregivers                                               \\
 OBSERVATION\_PERIOD   & 58976          & patients, admissions                                     \\
-SPECIMEN              & 39874171       & chartevents, labevents, microbiologyevents              
-\end{tabular}
+SPECIMEN              & 39874171       & chartevents, labevents, microbiologyevents               \\\botrule
+\end{tabular}}
 \label{table:dispatch}
-\end{table}
+\end{table*}
 
 Ajouter schema : MIMIC-OMOP\_equivalence.png
 
@@ -107,9 +109,10 @@ Baseline characteristics : comparison MIMIC / MIMIC OMOP (basic statistics)
 The following table lists the baseline characterization of the population of
 OMOP compared with MIMIC.
 
-\begin{table}[]
-\begin{tabular}{lll}
-items                                  & MIMIC                       & OMOP                               \\
+\begin{table*}[t]
+\tbl{Baseline characteristics MIMIC versus OMOP}{
+\begin{tabular}{@{}lll@{}}\toprule
+items                                  & MIMIC                       & OMOP                               \\\colrule
 Persons (Number)                       & 46.520                      & 46.520                             \\
 Admissions (Number)                    & 58.976                      & 58.976                             \\
 Icustays (Number)                      & 71.576                      & 61.532                             \\
@@ -132,10 +135,10 @@ Mortality, hospital (Number, \%)       & 4511 (7\%)                  & 4559 (6\%
 Lab measurements per admissions (mean) & 478                         & 678                                \\
 Procedures per admissions (mean)       & 4.6                         & 4.6                                \\
 Drugs per admissions (mean)            & 82.8                        & 82.8                               \\
-Exit dignosis per admissions (mean)    & 11.0                        & 11.0                               
-\end{tabular}
+Exit dignosis per admissions (mean)    & 11.0                        & 11.0                               \\\botrule
+\end{tabular}}
 \label{table:statistics}
-\end{table}
+\end{table*}
 
 Hopefully most statistics remains similar between two versions. Still some
 differences exists. Table \ref{table:statistics} MIMIC contains 61.532 stays in
@@ -169,16 +172,17 @@ procedureevents\_mv, note). As MIMIC team told us that they will remove it in
 the next release because this data are poor quality we decided to do the same. 
 The following table shows the number of rows with errors.
 
-\begin{table}[]
-\begin{tabular}{ll}
-Relations           & Error Percentage \\
+\begin{table*}[t]
+\tbl{Row level Data lost}{
+\begin{tabular}{@{}ll@{}}\toprule
+Relations           & Error Percentage \\\colrule
 inputevents\_mv     & 10,00\%          \\
 chartevents         & 0.04\%           \\
 procedureevents\_mv & 3,00\%           \\
-Note                & 0.04\%          
-\end{tabular}
+Note                & 0.04\%           \\\botrule
+\end{tabular}}
 \label{table:lostrows}
-\end{table}
+\end{table*}
 
 terminology mapping coverage
 ****************************
@@ -201,38 +205,38 @@ SPECIMEN              & 28181686        & 39874171       & 70,00\%            & 
 
 These results include automatic and manual mapping.
 
-- The unmapped concept are the concept_id = 0 (No mapping concept). To improve this mapping we need collaborative work. We provide our csv mapping files on our github.
+- The unmapped concept are the concept\_id = 0 (No mapping concept). To improve this mapping we need collaborative work. We provide our csv mapping files on our github.
 The terminology mapping has been evaluated by a physician. 
 
 - % of domain_id not in adequation with table name 
 	- some are logical because observation domain may be measurement table and vice verca
 
-- we have mapped  many source concept to one standard concept_id. This is because MIMIC provide a lots of equivalent free text concepts.
+- we have mapped  many source concept to one standard concept\_id. This is because MIMIC provide a lots of equivalent free text concepts.
   For example for the body temperature MIMIC provide 11 distinct concept (Temperature F, Temperature C (calc), Temp Skin [C], Temperature Fahrenheit, Temp Axillary [F], Temperature C, Temperature F (calc), Temperature Celsius, Temp Rectal [F], Temp Rectal, Blood Temperature CCO (C)). Our mapping links all of it to one single concept called temperature. All the units have been converted to celcius.
-  TODO: give example of generalisation (admission_location_to_concept)
+  TODO: give example of generalisation (admission\_location\_to\_concept)
 
 Flexibility  
 ===========
 OMOP had a 100\% match of the data models constraints and relationship.
-Two important tables are provided with the OMOP models to  match relationship : concept_relationship and fact_relationship.
-The fact_relationship table which is a important part of the OMOP CDM. It is used to represent the relationship between data.
-We used to link drugs in a solution, for microbiology / antibiograms and for visit_detail and caresite.
-The SQL following query shows how a microorganism is linked to its antibiogram thanks to fact_relationship
+Two important tables are provided with the OMOP models to  match relationship : concept\_relationship and fact\_relationship.
+The fact\_relationship table which is a important part of the OMOP CDM. It is used to represent the relationship between data.
+We used to link drugs in a solution, for microbiology / antibiograms and for visit\_detail and caresite.
+The SQL following query shows how a microorganism is linked to its antibiogram thanks to fact\_relationship
 
-SELECT measurement_source_value, value_as_concept_id, concept_name
-FROM measurement
-JOIN concept resistance ON value_as_concept_id = concept_id
-JOIN fact_relationship ON measurement_id =  fact_id_2
-JOIN
-(
-	SELECT measurement_id AS id_is_staph
-	FROM measurement m
-	WHERE measurement_type_concept_id = 2000000007        			-- concept.concept_name = 'Labs - Culture Organisms'
-	AND value_as_concept_id = 4149419                     			-- concept.concept_name = 'staph aureus coag +'
-	AND measurement_concept_id = 46235217               			-- concept.concept_name = 'Bacteria identified in Blood product unit.autologous by Culture';
-
-) staph ON id_is_staph = fact_id_1;
-WHERE measurement_type_concept_id = 2000000008        			        -- concept.concept_name = 'Labs - Culture Sensitivity'
+%SELECT measurement_source_value, value_as_concept_id, concept_name
+%FROM measurement
+%JOIN concept resistance ON value_as_concept_id = concept_id
+%JOIN fact_relationship ON measurement_id =  fact_id_2
+%JOIN
+%(
+%	SELECT measurement_id AS id_is_staph
+%	FROM measurement m
+%	WHERE measurement_type_concept_id = 2000000007        			-- concept.concept_name = 'Labs - Culture Organisms'
+%	AND value_as_concept_id = 4149419                     			-- concept.concept_name = 'staph aureus coag +'
+%	AND measurement_concept_id = 46235217               			-- concept.concept_name = 'Bacteria identified in Blood product unit.autologous by Culture';
+%
+%) staph ON id_is_staph = fact_id_1;
+%WHERE measurement_type_concept_id = 2000000008        			        -- concept.concept_name = 'Labs - Culture Sensitivity'
 
 
 Integration
@@ -324,7 +328,7 @@ We provided many derived values. Community is welcome to improve it
 We also provided materialized views with denormalized structures : microbiology tables
 This is a more ICU centric data structures that may help for analytics.
 
-others
-######
+%others
+%######
 
-- ethnicity_concept_id : only two strange concept_name Hispanic or non_Hispanic
+- ethnicity\_concept\_id : only two strange concept\_name Hispanic or non\_Hispanic

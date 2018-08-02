@@ -2,23 +2,15 @@
 
 Ajouter les deux schemas de database design
 
-- To provide standard and reproductilable process all the ETL used SQL script
-  with PostgreSQL-ETL implementation
-- we tried  not to infer results. For examens whereas it's logical to put a
-  specimen for many labevents results (as one sample of blood may be used to
-  multilple exams) we decided to create as many specimen row as laboratory
-  exams because the information is not present in MIMIC. It was the same when
-  date information were not provide (start/end\_datetime for drug\_exposure)
 
 % ETL
 The MIMIC III version 1.4 21 clinical data tables and 5 tables for vocabulary
-- OMOP CDM v5.3.1 which defines 15 standardized \it{clinical} data tables, 3
-\it{health} system data tables, 2 \it{health economics} data tables, 5 tables
-for \it{derived} elements and 12 tables for standardized \it{vocabulary}. 
+OMOP CDM v5.3.1 which defines 15 standardized \textit{clinical} data tables, 3
+\textit{health} system data tables, 2 \textit{health economics} data tables, 5 tables
+for \textit{derived} elements and 12 tables for standardized \textit{vocabulary}. 
 We didn’t use the health economics data tables (not provided by MIMIC)
 
-All the process is available freely on the github website :
-https://github.com/MIT-LCP/mimic-omop.
+All the process is available freely on the github website \cite{mimic-omop-website}.
 
 Extract-Transformation-Load (ETL) processes is a methodology that allows
 migrating data from a source location to a target location. ETL first extract
@@ -41,16 +33,16 @@ of ELT because they both allow to scale well horizontally and write java
 procedural user defined function that are used in conjunction with SQL queries.
 In this work, we decided to transform MIMIC into OMOP thought a ELT to limit
 the programming knowledges needed for code maintenance and to allow end users
-to participate in this process. PostgreSQL has been chosen as the database
+to participate in this process. PGSQL has been chosen as the database
 support for ELT because it is the primary support of MIMIC database and allows
 community to run the ETL on limited resources without licensing need. Finally
-PostgreSQL have recently made huge effort to handle data-processing better.
+PGSQL have recently made huge effort to handle data-processing better.
 
 % Structural Transformations
 
 % creating tables (only with constraints, no indexes, subset, sequences)
 The MIMIC source data have been loaded with the provided scripts into a
-PostgreSQL (PGSQL) instance and a subset of 100 patient chosen upon their
+PGSQL (PGSQL) instance and a subset of 100 patient chosen upon their
 broad representativity in terms of data have been cloned into a second instance
 to serve as a light, representative development set.  Each tables of the source
 have been added a global sequence incremented from 0 that serves as primary key
@@ -77,12 +69,12 @@ is detailed bellow).
 All character typed columns limited in length have been changed to unlimited
 since this might cause unpredictable truncation of content, and this has no bad
 impact on PGSQL's storing size or performance.
-The \it{visit\_occurrence} and \it{visit\_detail} table have been corrected
+The \textit{visit\_occurrence} and \textit{visit\_detail} table have been corrected
 accordingly to some discussion on the forum.
-The \it{note\_nlp} table have been extended with some fields accordingly to
-the documentation online. The character \it{offset} column have been split into
+The \textit{note\_nlp} table have been extended with some fields accordingly to
+the documentation online. The character \textit{offset} column have been split into
 two integers columns because the offset word is a SQL reserved word and it
-makes sense to fill the resulting \it{offset\_begin} and \it{offset\_end}
+makes sense to fill the resulting \textit{offset\_begin} and \textit{offset\_end}
 resulting columns.
 
 The structural transformation have been done in few iteration of several phases.
@@ -100,33 +92,31 @@ table to OMOP table and vice-versa.
 % Preprocessing and modification of mimic
 By design MIMIC aggregates informations from various systems such the emergency
 specific tool. Thus the transfer information is spread into multiple table,
-such \it{admissions}, \it{transfers} and \it{icustays}. OMOP centralizes this
-information in the \it{vis_t\_detail}. As a result some hard transformation
+such \textit{admissions}, \textit{transfers} and \textit{icustays}. OMOP centralizes this
+information in the \textit{visit\_detail}. As a result some hard transformation
 have been made. We added emergency stays as a normal location for patients
 throughout their hospital stay. Icustays mimic table was deleted as it is a
 derived table from transfers table (2) and we decided to assign a new new
-\it{visit\_detail} pour each stay in ICU (based of the transfers table) whereas
+\textit{visit\_detail} pour each stay in ICU (based of the transfers table) whereas
 mimic preferred to assign new icustay stay if a new admissions occurs > 24h
 after the end of the previous stay.
 
 
-- modification of MIMIC
-	- visit\_detail : admitting\_source\_value, admitting\_source\_concept\_id, admitting\_concept\_id, discharge\_to\_source\_value, discharge\_to\_source\_concept\_id, discharge\_to\_concept\_id provide redundant information from visit\_occurrence. We didn't populate it.
-	- observation\_period provide duplicate informations with visit\_occurrence : we fill this table to respect the omop model and tools
-	- operators have been extracted to fill operator\_concept\_id
-	- units of measures have been extracted to fill unit\_concept\_id
-	- numeric values have been extracted to fill value\_as\_number
+% INUTILE? visit\_detail : admitting\_source\_value, admitting\_source\_concept\_id, admitting\_concept\_id, discharge\_to\_source\_value, discharge\_to\_source\_concept\_id, discharge\_to\_concept\_id provide redundant information from visit\_occurrence. We didn't populate it.
+% INUTILE? observation\_period provide duplicate informations with visit\_occurrence : we fill this table to respect the OMOP model and toolsii
 
 % Conceptual Transformations
 
-- concept-driven methodology : as the omop model did we adopt a "concept-driven
-  methodology", domain of each local concept drive the concept to the right
-  table.
-
-	- conceptual (new concepts specific to ICU or general)
-		- measurement\_type\_concept\_id
-		- the actual visit\_detail doesn't introduce pertinent information and duplicate informations from visit\_occurrence table. For admitting\_from\_concept\_id and discharge\_to\_concept\_id, we extended the dictionary in order to track bed transfers and ward transfers. For visit\_type\_concept\_id we assigned a new concept for any level of granularity necessary for your use case (ward, bed...) 
-		<!-- Fournir un example de visit\_detail-->
+% conceptual (new concepts specific to ICU or general)
+While various types of information are stored in the measurement table, the
+dedicated OMOP concepts types were not enough to distinct them. We added some
+measurement types.
+The actual visit\_detail doesn't introduce pertinent information and duplicate
+informations from visit\_occurrence table. For admitting\_concept\_id and
+discharge\_to\_concept\_id, we extended the dictionary in order to track bed
+transfers and ward transfers. For visit\_type\_concept\_id we assigned a new
+concept for any level of granularity necessary for your use case (ward, bed...) 
+%<!-- Fournir un example de visit\_detail-->
 
 
 % local coding
@@ -173,16 +163,19 @@ check by a physician.
 is mainly based on the Systematized Nomenclature of Medicine Clinical Terms
 (SNOMED-CT)
 - A mapping between many classifications and the standard omop ones (ICD-9 and
-snomed-CT for examples) is already provided with concept\_relationship table. We
-have used this to the maximum extent possible (laboratory exams, exit diagnoses
-and procedures)
+snomed-CT for examples) is already provided with \textit{concept\_relationship}
+table. We have used this to the maximum extent possible (laboratory exams, exit
+diagnoses and procedures)
 % domain driven approach
+- concept-driven methodology : as the omop model did we adopt a "concept-driven
+  methodology", domain of each local concept drive the concept to the right
+  table.
 MIMIC design is functional since tables hold data per medical domain (eg:
 chartevents table contains information that are displayed as charts in the
 ICUs). OMOP has a different approach and pool together data by thematic or
 domain (eg: any data which derived from a measurement goes into the
-mearsurement table). The ETL needs then to split some MIMIC tables into
-multiple domain and consequently OMOP tables. To get more readibility in the
+measurement table). The ETL needs then to split some MIMIC tables into
+multiple domain and consequently OMOP tables. To get more readability in the
 ETL we decided that the choice on which domain belongs a MIMIC data is driven
 by the concept it is linked to. The concept driven methodology consists in
 dispatching the data from a single table by working on the concepts and not the
@@ -199,11 +192,14 @@ OMOP have been loaded into apache HIVE 1.2.1. into ORC format. Users had access
 to the ORC dataset from jupyter notebooks with, python or scala. A SQL
 webclient allowed teams to write SQL from presto on the same dataset. The
 hadoop cluster was a based on 5 computers with 16 cores and 220GO ram.
-The MIMIC-OMOP dataset has been loaded from a PostgreSQL instance to HIVE
+The MIMIC-OMOP dataset has been loaded from a PGSQL instance to HIVE
 thought apache SQOOP 1.4.6. directly into the ORC format. 
 Participants had also access to the physical modeling of the database thought
 schemaspy to have access to both table/column comments and primary/foreign key
 materialising tables relations.
+
+%
+
 \subsection{Contribution}
 % scores
 MIMIC provides a lot of SQL scripts to calculate derived scores and existing
@@ -222,25 +218,37 @@ format and as a result it is involved in many joins to get the concept label.
 A set of \emph{specialized analytics} tables has been built on top of the
 original OMOP format. The microbiology events is a reorganization of data from
 measurements for microorganisms and related antibiograms and is inspired from
-MIMIC \it{microbiology\_event} table. 
+MIMIC \textit{microbiology\_event} table. 
+
+% distinction between extraction and inference
+We tried  not to infer results. For examens whereas it's logical to put a
+specimen for many labevents results (as one sample of blood may be used to
+multiple exams) we decided to create as many specimen row as laboratory exams
+because the information is not present in MIMIC. It was the same when date
+information were not provide (\textit{start/end\_datetime} for \textit{drug\_exposure}).
+% extraction of raw data
+The MIMIC laboratory results have been restructured to fit in OMOP format. In
+particular, the numerical value (value\_as\_number) comes with a mathematical
+operator (operator\_concept\_id) and a measurement unit (unit\_concept\_id).
+The MIMIC semi-structured raw laboratory data have been structured with a PGSQL
+function to extract those information.
 % note nlp
-The \it{note\_nlp} table allows to store Natural Language Processing results
+The \textit{note\_nlp} table allows to store Natural Language Processing results
 derived from plain text notes. In order to evaluate this table we provided
 two information extraction pipelines.
-The \emph{first} pipeline \emph{section extractor} based on apache UIMA framework
-splits the notes into sections in order to help analysts to choose or avoid
-some sections from their analysis.  The sections patterns (such "Illness
+The \emph{first} pipeline \emph{section extractor} based on apache UIMA
+framework splits the notes into sections in order to help analysts to choose or
+avoid some sections from their analysis. The sections patterns (such "Illness
 History") have been automatically extracted from texts from regular
 expressions, automatically filtered by keeping only one with frequency higher
 than 1 percent and manually filtered to exclude false positives with a total of
 1200 sections. The resulting sections patterns candidate have been then
 manually regrouped into similar 400 groups. The extracted sections have not
-been mapped to the any standard terminology such LOINC CDO. The reason is the
+been mapped to any standard terminology such LOINC CDO. The reason is the
 CDO LOINC has decided to stop to maintain and to remove it's sections from its
 standard arguing it is too difficult to maintain, and this sections are not
-widely used
-[https://loinc.org/news/loinc-version-2-63-and-relma-version-6-22-are-now-available/].
+widely used \cite{loinc-website}.
 The \emph{second} pipeline has extracted some numeric values such weight,
-height, body mass index and cadriac left ventricular ejection fraction within
+height, body mass index and cardiac left ventricular ejection fraction within
 medical notes with a python script. The resulting structured numerical values
 have been loaded in the measurement or the observation tables.
