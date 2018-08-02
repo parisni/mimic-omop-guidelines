@@ -11,16 +11,20 @@ The resulting csv archive is slightly the same size than the original one, and
 this is also the same once instanced in PGSQL and indexed.
 
 
+In order to evaluate how well transformed is the data we first adopt the data
+quality evaluation grid (\ref{table:quality}) developed by Khan and Al
+\cite{khan-quality} which is commonly used as a reference \cite{moody-quality}.
+
 - size of MIMIC OMOP, row number for the bigest relation (measurement)
 - chartevents and labevents provide many number field as a string which is not handy for statistical analyse. We provide a standard and easy improval by the community model to extract numerical value from string
 	- operators have been extracted to fill operator_concept_id column
 	- numeric value has been extracted to fill value_as_number column
 	- units of measures have been extracted to fill unit_concept_id column
 
-  For the prescritions MIMIC-III table 75% (a verifier) of drugs had a gsn code. The conept_relationship table provide mapping between gsn and RxNorm classsifications. To improve the mapping we then proceeded to a manual mapping
+  For the prescritions MIMIC table 75\% (a verifier) of drugs had a gsn code. The conept_relationship table provide mapping between gsn and RxNorm classsifications. To improve the mapping we then proceeded to a manual mapping
 
 The OMOP-CDM contains 37 data tables. We populated 19 tables.
-From MIMICIII we create a standardized model called MIMICIII-OMOP.
+From MIMIC we create a standardized model called MIMIC-OMOP.
 
 Quality evaluation criteria
 ===========================
@@ -38,15 +42,16 @@ Our study doesn't want to evaluate the quality of CDM. But we adapt these criter
 \begin{table}[]
 \begin{tabular}{ll}
 Data Model Dimension              & Descriptions                                                                                                      \\
-Completeness - structural mapping & Data coverage : coverage of sources datas concepts that mapped to standard OMOP concept                           \\
 Completeness - semantic mapping   & Domain coverage : coverage of sources domains that are accommodated by the standard OMOP model                    \\
+Completeness - structural mapping & Data coverage : coverage of sources data concepts that mapped to standard OMOP concept                           \\
 Integrity                         & "Meaningful data relationships and constraints that uphold th eintent of the data-s original purpose" Khan and Al \\
 Flexibility                       & The ease to expand the standard model for new datatypes, concepts                                                 \\
 Integration                       & The capacity of the standard model to use multiples terminology and links its to standard one                     \\
 Implementability                  & The stability of the models, the community, the cost of adoption                                                  \\
-Understandability                 & The ease of the standard model to be easily understood                                                            \\
+Understandability                 & The ease of the standard model to be understood                                                           	      \\
 Simplicity                        & The ease of querying the standard model - the model should contains the minimum of concepts and relationship     
 \end{tabular}
+\label{table:quality}
 \end{table}
 
 Understandability and simplicity will be evaluated in the analytics parts, in real life application.
@@ -55,14 +60,15 @@ Understandability and simplicity will be evaluated in the analytics parts, in re
 During the all ETL process we created a lot of unit tests thanks to pgTap library. All are available on our github. All the test passed.
 
 3)
-A many previous authors, we used Achilles sofware to evaluate the data quality(4). It is open-source analytics software produced by OHDSI (6).
-This tool is used for data characterization, data quality assessment (Achilles Heel), and the visualization of observational health data (6).
-ACHILLES calculates summary statistics and includes a unique function for checking data quality, named Achilles Heel. 
 
 Compleness - semantic mapping 
 =============================
-This following table shows where the informations goes and links between MIMICIII tables and MIMICIII-OMOP tables
-As OMOP is a conceptual model, a same type of data goes in the same table. The best example may be the measurement table which is field by 4 source tables. Is is because of all the numerics datas should go to this table.
+
+The table \ref{table:dispatch} shows where the informations goes and links
+between MIMIC tables and OMOP tables.  Since OMOP is a conceptual model, a same
+type of data goes in the same table. The best example may be the measurement
+table which is field by 4 source tables. Is is because of all the numerics
+datas should go to this table.
 
 \begin{table}[]
 \begin{tabular}{lll}
@@ -84,68 +90,84 @@ PROVIDER              & 7567           & caregivers                             
 OBSERVATION\_PERIOD   & 58976          & patients, admissions                                     \\
 SPECIMEN              & 39874171       & chartevents, labevents, microbiologyevents              
 \end{tabular}
+\label{table:dispatch}
 \end{table}
 
-Ajouter schema : MIMIC-OMOP_equivalence.png
+Ajouter schema : MIMIC-OMOP\_equivalence.png
 
-As shown, all the MIMIC domain are links to proper OMOP domain. 
+As shown, all the MIMIC domain are linked to proper OMOP domain. 
 The semantic mapping was not a problem for our work.
 
-Compleness - structural mapping 
+Completeness - structural mapping 
 ===============================
 
-Baseline characteristics : comparison MIMICIII / MIMIC OMOP (basic statistics)
+Baseline characteristics : comparison MIMIC / MIMIC OMOP (basic statistics)
 ******************************************************************************
 
-The following table lists the baseline characterization of the population of MIMICIII-OMOP compared with MIMICIII.
-The MIMIC-III database contains 45.520 individuals and 58.976 single admissions.
-
+The following table lists the baseline characterization of the population of
+OMOP compared with MIMIC.
 
 \begin{table}[]
 \begin{tabular}{lll}
-items                                  & OMOP-MIMIC                         & MIMIC                      \\
-Persons (Number)                       & 46.520                             & 46.520                     \\
-Admissions (Number)                    & 58.976                             & 58.976                     \\
-Icustays (Number)                      & 61.532                             & 71.576                     \\
-Gender, Female (Number, \%)            & 20.399 (43 \%)                     & 20.399                     \\
-Age (Mean)                             & 64 ans, 4 months                   & 64 years, 4 months         \\
-0-5                                    & 8110                               & 8110                       \\
-6-15                                   & 1                                  & 1                          \\
-16-25                                  & 1434                               & 1434                       \\
-26-45                                  & 5962                               & 5962                       \\
-46-65                                  & 17375                              & 17375                      \\
-66-80                                  & 15793                              & 15793                      \\
-\textgreater{}80                       & 10301                              & 10301                      \\
-Emergency                              & 42071                              & 42071                      \\
-Elective                               & 7706                               & 7706                       \\
-Surgical patients                      & 19246                              & 19246                      \\
-Length of stay, hospital (median)      & 6.59 (Q1-Q3 : 3.84 - 11.88)        & 6.46 (Q1-Q3 : 3.74 -11.79) \\
-Length of stay, ICU (median)           & 1.87 (Q1-Q3 : 0.95 - 3.87)         & 2.09 (Q1-Q3 : 1.10 - 4.48) \\
-Mortality, ICU (Number, \%)            & 5815 (9\%)                         & 5814 (9\%)                 \\
-Mortality, hospital (Number, \%)       & 4559 (6\%)                         & 4511 (7\%)                 \\
-Lab measurements per admissions (mean) & 678  (from labevents + charevents) & 478 (from labevents)       \\
-Procedures per admissions (mean)       & 4.6                                & 4.6                        \\
-Drugs per admissions (mean)            & 82.8                               & 82.8                       \\
-Exit dignosis per admissions (mean)    & 11.0                               & 11.0                      
+items                                  & MIMIC                       & OMOP                               \\
+Persons (Number)                       & 46.520                      & 46.520                             \\
+Admissions (Number)                    & 58.976                      & 58.976                             \\
+Icustays (Number)                      & 71.576                      & 61.532                             \\
+Gender, Female (Number, \%)            & 20.399                      & 20.399 (43 \%)                     \\
+Age (Mean)                             & 64 years, 4 months          & 64 ans, 4 months                   \\
+0-5                                    & 8110                        & 8110                               \\
+6-15                                   & 1                           & 1                                  \\
+16-25                                  & 1434                        & 1434                               \\
+26-45                                  & 5962                        & 5962                               \\
+46-65                                  & 17375                       & 17375                              \\
+66-80                                  & 15793                       & 15793                              \\
+\textgreater{}80                       & 10301                       & 10301                              \\
+Emergency                              & 42071                       & 42071                              \\
+Elective                               & 7706                        & 7706                               \\
+Surgical patients                      & 19246                       & 19246                              \\
+Length of stay, hospital (median)      & 6.46 (Q1-Q3 : 3.74 -11.79)  & 6.59 (Q1-Q3 : 3.84 - 11.88)        \\
+Length of stay, ICU (median)           & 2.09 (Q1-Q3 : 1.10 - 4.48)  & 1.87 (Q1-Q3 : 0.95 - 3.87)         \\
+Mortality, ICU (Number, \%)            & 5814 (9\%)                  & 5815 (9\%)                         \\
+Mortality, hospital (Number, \%)       & 4511 (7\%)                  & 4559 (6\%)                         \\
+Lab measurements per admissions (mean) & 478                         & 678                                \\
+Procedures per admissions (mean)       & 4.6                         & 4.6                                \\
+Drugs per admissions (mean)            & 82.8                        & 82.8                               \\
+Exit dignosis per admissions (mean)    & 11.0                        & 11.0                               
 \end{tabular}
+\label{table:statistics}
 \end{table}
 
-MIMIC-III contains 61.532 stays in ICU whereas OMOP-MIMIC contains 71.576 unique stays.
-That is a 116\% increase in stays due to our ETL methodology as we explained in the methods.
+Hopefully most statistics remains similar between two versions. Still some
+differences exists. Table \ref{table:statistics} MIMIC contains 61.532 stays in
+ICU whereas OMOP contains 71.576 ICU stays. That is a 16\% increase in stays
+due to our ETL methodology as explained in the methods.
 
-We can see that we increase the number of laboratory measurement per admissions.
-This is because the laboratory data from chartevents has been extract and treated as laboratory
-All the code to created this statistics are provided here (cf extra : basic_statistics.sql)
+The table \ref{table:statistics} shows the number of laboratory measurement per
+admissions is increased. This is because the laboratory data from MIMIC
+chartevents has been extracted and treated as laboratory. All the code to
+created this statistics are provided here (cf extra : basic\_statistics.sql).
 
 Loss of datas
 *************
-We tried to evaluate the percentage of loaded records from the source database to the OMOP-CDM
-We evaluate the percentage of columns and the percentage of rows as have done other studies (1) 
 
-- for the rows no data were lost. 
-The error rows are deleted (inputevents_mv, chartevents, procedureevents_mv, note). As MIMIC team told us that they will remove it in the next release because this datas are poor quality we decided to do the same. 
+We tried to evaluate the percentage of loaded records from the source database
+to OMOP. We evaluate the percentage of columns and rows lost in the process as
+done other studies \cite{omop-nashville}
+
+% column loss
+Depending on tables 40\% to 80\% of sources columns which do not fit to OMOP
+where deleted.  The exact removed columns are provided in the appendix (cf
+extras) Almost all the removed columns are redundant with others or provide
+derived informations.  The main concern are some lost timestamps. For example
+the MIMIC chartevents tables provide the storetime and charttime columns but
+OMOP only provide one slot for timestamp to stored. Thus storetime was deleted
+during the ETL.
+% row loss
+The erroneous rows \ref{table:lostrows} were deleted in the process (marked
+with a status column in MIMIC tables inputevents\_mv, chartevents,
+procedureevents\_mv, note). As MIMIC team told us that they will remove it in
+the next release because this data are poor quality we decided to do the same. 
 The following table shows the number of rows with errors.
-
 
 \begin{table}[]
 \begin{tabular}{ll}
@@ -155,15 +177,8 @@ chartevents         & 0.04\%           \\
 procedureevents\_mv & 3,00\%           \\
 Note                & 0.04\%          
 \end{tabular}
+\label{table:lostrows}
 \end{table}
-
-- Columns
-Depending on tables between 40 % and 80% of sources columns which doesn't fits to CDM where erased. 
-The exact removed columns are provided in the appendix (cf extras)
-Almost all the removed columns are redundant with others or provide derived informations. 
-The main concern could be the timestamp when the measurements contain a lot of it.
-For example the chartevents MIMIC tables provide the storetime and charttime columns. 
-The storetime was deleted during the ETL
 
 terminology mapping coverage
 ****************************
@@ -198,10 +213,10 @@ The terminology mapping has been evaluated by a physician.
 
 Flexibility  
 ===========
-OMOP had a 100% match of the data models constraints and relationship.
+OMOP had a 100\% match of the data models constraints and relationship.
 Two important tables are provided with the OMOP models to  match relationship : concept_relationship and fact_relationship.
-The fact_relationship table which is a important part of the OMOP CDM. It is used to represente the relationship between datas.
-We used to link drugs in a solution, for  microbiology / antibiograms and for visit_detail and caresite.
+The fact_relationship table which is a important part of the OMOP CDM. It is used to represent the relationship between data.
+We used to link drugs in a solution, for microbiology / antibiograms and for visit_detail and caresite.
 The SQL following query shows how a microorganism is linked to its antibiogram thanks to fact_relationship
 
 SELECT measurement_source_value, value_as_concept_id, concept_name
@@ -222,13 +237,16 @@ WHERE measurement_type_concept_id = 2000000008        			        -- concept.conc
 
 Integration
 ===========
-- OMOP Terminology coverage has been previously evaluated as excellent(garza and al). We used the OMOP mapping for NDC-RxNorm, ICD9-SNOMED, CPT4-SNOMED.
-- It was really helpful because MIMIC provide lots of non standard terminology already mapped by OMOP community
-We tried to evaluated this OMOP mapping.
-We check 100 items for each mapping used (NDC, ICD9 and CPT4). ICD9 and CPT4 are correcly mapped to SNOMED. But only 85% of NDC are
-linked to a correct RxNorm code. In part due to incorrect NDC code (from MIMIC), in part because only 78% of NDC codes are mapped to Rxnorm.
 
-But the OMOP common standard vocabulary, SNOMED-CT, did not cover all ICD-9-CM codes (95%). Moreover, not all ICD-9-CM codes can have one-to-one mapping to SNOMED, some are one-to-many (28%)(2)
+OMOP Terminology coverage has been previously evaluated as excellent
+\cite{omop-vs-pcornet}. We used the OMOP mapping for NDC-RxNorm, ICD9-SNOMED,
+CPT4-SNOMED. It was really helpful because MIMIC provide lots of non standard
+terminology already mapped by OMOP community
+We tried to evaluated this OMOP mapping.
+We check 100 items for each mapping used (NDC, ICD9 and CPT4). ICD9 and CPT4 are correcly mapped to SNOMED. But only 85\% of NDC are
+linked to a correct RxNorm code. In part due to incorrect NDC code (from MIMIC), in part because only 78\% of NDC codes are mapped to Rxnorm.
+
+But the OMOP common standard vocabulary, SNOMED-CT, did not cover all ICD-9-CM codes (95\%). Moreover, not all ICD-9-CM codes can have one-to-one mapping to SNOMED, some are one-to-many (28\%)(2)
  
 Implementability
 ===============
@@ -241,8 +259,19 @@ Micro versions (V5.1.1, V5.1.2 etc.) are released irregularly and often, and con
 (7)
 TODO: forum centric + github + themis -> confusing
 
+
+Finally OHDSI provides ACHILLES as data quality tool for OMOP. It has been a
+common practice to run the tests and use this as a quality evaluation in
+numerous work \cite{achilles-papers}
+
 Achilles for quality assessment
 ==============================
+A many previous authors, we used Achilles software to evaluate the data
+quality(4). It is open-source analytics software produced by OHDSI (6).  This
+tool is used for data characterization, data quality assessment (Achilles
+Heel), and the visualization of observational health data (6).  ACHILLES
+calculates summary statistics and includes a unique function for checking data
+quality, named Achilles Heel. 
 Other team used this tool to practice data quality assess(4).
 Achilles Heel issued x errors and y warnings.
 
@@ -251,10 +280,12 @@ Achilles Heel issued x errors and y warnings.
 - extension achilles how to ?
 - comparison with other paper about error/warnings. (Korean Yoon 36->28 errors)
 TODO: minimize achille errors  (12->? errors)
+
+
 \subsection{Analytics}
 
 - French Paris hospital organized a datathon with MIMIC-OMOP
-25 teams, 160 participants had 48 hours to undertake a clinical project using the OMOP MIMIC-III database throught 15000 requests. They had the opportunity to create mixed teams : clinicians brought the questions which need data mining, along with their expertise of the data ; data scientists judged the technical feasibility and eventually implement the various analysis needed
+25 teams, 160 participants had 48 hours to undertake a clinical project using the OMOP MIMIC database thought 15000 requests. They had the opportunity to create mixed teams : clinicians brought the questions which need data mining, along with their expertise of the data ; data scientists judged the technical feasibility and eventually implement the various analysis needed
 This datahon had tested OMOP model in real statistical condition. A datathon was organised in collaboration with the MIT.(3)
 
 - AP-HP calculation clusters, able to access to the data pre-loaded in Jupyter environments, where will be installed the most popular tools and libraries in R and Python, with Hadoop Spark
@@ -262,9 +293,16 @@ This datahon had tested OMOP model in real statistical condition. A datathon was
 schema big data platform
 
 MIMIC-OMOP dataset was 10 GO sized as ORC format. On the other side the same
-dataset is sized 400 GO on a postgreSQL instance. Generating the indexes
+dataset is sized 400 GO on a PGSQL instance. Generating the indexes
 ORC automatically generates indexing. However these are much light than the
-postgreSQL btree indexes specified by the OMOP DDL.
+PGSQL btree indexes specified by the OMOP DDL.
+
+Writing standard queries (ie: with standard concepts) need to be familiar with
+the concept\_relationship design and also master graph nature of some
+terminology such SNOMED-CT in order to grab all potential codes that might be
+related to the one analysts think of primarily. This complexity is inherent of
+terminology complexity and the closure table \ref{closure-table} design handle
+perfectly.
 
 \subsection{Contribution}
 
@@ -272,7 +310,7 @@ The \emph{denormalized derived} tables appears to improves the computations
 costs and the verbosity of the SQL queries. In addition the resulting tables
 are much more human readily with the label of the concepts directly in the fact
 table. Hence a bit of denormalization improves greatly the experience of the
-data scientist by adding some redonduncy in the data while not breaking
+data scientist by adding some redundancy in the data while not breaking
 existing SQL queries. The drawback is it would make it more tricky to update
 and keep the dataset consistent - which is non applicable because OMOP is
 generally a static dataset.
@@ -280,7 +318,7 @@ The \emph{microbiology derived} table simplifies the experience for
 data-scientists.
 
 We provided many derived values. Community is welcome to improve it
-- From noteevents : weight, heigth, LVEF
+- From noteevents : weight, height, LVEF
 - From measurement : SOFA, IGSII, F/P, corrected Ca / K, BMI, corrected osmolarity
 
 We also provided materialized views with denormalized structures : microbiology tables
@@ -289,4 +327,4 @@ This is a more ICU centric data structures that may help for analytics.
 others
 ######
 
-- ethnicity_concept_id : only two strange concept_name hispanic or non_hispanic
+- ethnicity_concept_id : only two strange concept_name Hispanic or non_Hispanic
