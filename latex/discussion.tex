@@ -41,11 +41,15 @@ data cleaning and data quality and avoid removing information.
 %% mecanisms for real time ingestion of data, such version control
 Last but not least, as stated in the introduction a good CDM for ICU would
 allow near realtime early warning systems and model inference on fresh data.
-OMOP clearly does provide static dataset and does not have mecanisms for
-realtime ingestion, and data version control - it is not a datawarehouse. That
-being said a solution such FHIR is a great way to implement realtime inference
-from EHR data and that's how FHIR and OMOP are complementary that yet have been
-investigated \cite{gatech}.
+OMOP is clearly designed to provide static dataset and does not have mecanisms
+for realtime ingestion, and data version control - it is not a datawarehouse.
+Making analysis on statics datasets is essential in order to have reproducible
+results. However when the algorithm needs to be moved at bed side, there is a
+need for a freshness of data, and a way to identify the patient that OMOP won't
+easily provide. That being said a solution such FHIR is a great way to
+implement realtime inference from EHR data and that's how FHIR and OMOP are
+complementary that yet have been investigated \cite{gatech} but needs further
+optimizations.
 
 % OMOP community organisation
 During this work the OMOP forum was very active. Working groups.  It is a
@@ -63,3 +67,6 @@ data model including comments on columns and table accessible and we found out
 that the open-source tool schema spy was of good help. In addition limit the
 misunderstanding by delivering SQL examples and we found out that the git
 repository is the best place for documenting and interact with the community.
+
+% On static / early warning system
+OMOP has been designed to build static
