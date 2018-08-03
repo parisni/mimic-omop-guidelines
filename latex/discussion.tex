@@ -31,7 +31,10 @@ information derived from notes, measurement to store numerical information and
 cohort\_attributes to store scores. However it is still unclear if derived data
 should be stored per domain or if it should be stored in dedicated derived
 tables. We found out that there is a lack of tables to track provenance and
-description of such data.
+description of such data. In addition we have been confused wether the derived
+information from notes should be directed into the dedicated domain table.
+However, notes may contain information from family members and they should'nt
+be lost or go into patient centered tables. For this reason, we think
 
 % missing in the model
 %% data quality
@@ -70,5 +73,3 @@ that the open-source tool schema spy was of good help. In addition limit the
 misunderstanding by delivering SQL examples and we found out that the git
 repository is the best place for documenting and interact with the community.
 
-% On static / early warning system
-OMOP has been designed to build static

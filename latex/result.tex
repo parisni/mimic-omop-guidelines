@@ -293,29 +293,6 @@ Achilles Heel issued x errors and y warnings.
 - comparison with other paper about error/warnings. (Korean Yoon 36->28 errors)
 TODO: minimize achille errors  (12->? errors)
 
-
-\subsection{Analytics}
-
-- French Paris hospital organized a datathon with MIMIC-OMOP
-25 teams, 160 participants had 48 hours to undertake a clinical project using the OMOP MIMIC database thought 15000 requests. They had the opportunity to create mixed teams : clinicians brought the questions which need data mining, along with their expertise of the data ; data scientists judged the technical feasibility and eventually implement the various analysis needed
-This datahon had tested OMOP model in real statistical condition. A datathon was organised in collaboration with the MIT.(3)
-
-- AP-HP calculation clusters, able to access to the data pre-loaded in Jupyter environments, where will be installed the most popular tools and libraries in R and Python, with Hadoop Spark
-
-schema big data platform
-
-MIMIC-OMOP dataset was 10 GO sized as ORC format. On the other side the same
-dataset is sized 400 GO on a PGSQL instance. Generating the indexes
-ORC automatically generates indexing. However these are much light than the
-PGSQL btree indexes specified by the OMOP DDL.
-
-Writing standard queries (ie: with standard concepts) need to be familiar with
-the concept\_relationship design and also master graph nature of some
-terminology such SNOMED-CT in order to grab all potential codes that might be
-related to the one analysts think of primarily. This complexity is inherent of
-terminology complexity and the closure table \ref{closure-table} design handle
-perfectly.
-
 \subsection{Contribution}
 
 The \emph{denormalized derived} tables appears to improves the computations
@@ -340,3 +317,25 @@ This is a more ICU centric data structures that may help for analytics.
 %######
 
 - ethnicity\_concept\_id : only two strange concept\_name Hispanic or non\_Hispanic
+
+\subsection{Analytics}
+
+- French Paris hospital organized a datathon with MIMIC-OMOP
+25 teams, 160 participants had 48 hours to undertake a clinical project using the OMOP MIMIC database thought 15000 requests. They had the opportunity to create mixed teams : clinicians brought the questions which need data mining, along with their expertise of the data ; data scientists judged the technical feasibility and eventually implement the various analysis needed
+This datahon had tested OMOP model in real statistical condition. A datathon was organised in collaboration with the MIT.(3)
+
+- AP-HP calculation clusters, able to access to the data pre-loaded in Jupyter environments, where will be installed the most popular tools and libraries in R and Python, with Hadoop Spark
+
+schema big data platform
+
+MIMIC-OMOP dataset was 10 GO sized as ORC format. On the other side the same
+dataset is sized 400 GO on a PGSQL instance. Generating the indexes
+ORC automatically generates indexing. However these are much light than the
+PGSQL btree indexes specified by the OMOP DDL.
+
+Writing standard queries (ie: with standard concepts) need to be familiar with
+the concept\_relationship design and also master graph nature of some
+terminology such SNOMED-CT in order to grab all potential codes that might be
+related to the one analysts think of primarily. This complexity is inherent of
+terminology complexity and the closure table \ref{closure-table} design handle
+perfectly.
