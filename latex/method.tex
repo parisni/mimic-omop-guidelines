@@ -225,40 +225,47 @@ operator (operator\_concept\_id) and a measurement unit (unit\_concept\_id).
 The MIMIC semi-structured raw laboratory data have been structured with a PGSQL
 function to extract those information.
 % note nlp
-The \textit{note\_nlp} table allows to store Natural Language Processing results
-derived from plain text notes. In order to evaluate this table we provided
-two information extraction pipelines.
-The \emph{first} pipeline \emph{section extractor} based on apache UIMA
-framework splits the notes into sections in order to help analysts to choose or
-avoid some sections from their analysis. The sections patterns (such "Illness
-History") have been automatically extracted from texts from regular
-expressions, automatically filtered by keeping only one with frequency higher
-than 1 percent and manually filtered to exclude false positives with a total of
-1200 sections. The resulting sections patterns candidate have been then
-manually regrouped into similar 400 groups. The extracted sections have not
-been mapped to any standard terminology such LOINC CDO. The reason is the
-CDO LOINC has decided to stop to maintain and to remove it's sections from its
-standard arguing it is too difficult to maintain, and this sections are not
-widely used \cite{loinc-website}.
-The \emph{second} pipeline has extracted some numeric values such weight,
+
+The \textit{note_nlp} has been initially designed to store derived final or
+interim information and its metadata from clinical notes. When final, the
+extracted informations are intended to be moved to the dedicated domain/table
+to be then reused as regular structured data. When interim, the information is
+stored in the table an can serve subsequent analysis. In order to evaluate this
+table we provided two information extraction pipelines.
+The \emph{first} pipeline has extracted some numeric values such weight,
 height, body mass index and cardiac left ventricular ejection fraction within
 medical notes with a python script. The resulting structured numerical values
 have been loaded according to its domain in the measurement or the observation
 tables.
+The \emph{second} pipeline \emph{section extractor} based on apache UIMA
+framework splits the notes into sections in order to help analysts to choose or
+avoid some sections from their analysis. While some methods already exists to
+extract medical sections \cite{section-extraction} the prior work of describing
+sections was too high, and we went with a naïve approach. The sections patterns
+(such "Illness History") have been automatically extracted from texts from
+regular expressions, automatically filtered by keeping only one with frequency
+higher than 1 percent and manually filtered to exclude false positives with a
+total of 1200 sections. The resulting sections patterns candidate have been
+then manually regrouped into similar 400 groups. The extracted sections have
+not been mapped to any standard terminology such LOINC CDO. The reason is the
+CDO LOINC has decided to stop to maintain and to remove its sections from its
+standard arguing it is too difficult to maintain, and estimates that this
+sections are not widely used \cite{loinc-website}.
 
 %Head 2
 \subsection{Data Analytics}
 % datathon
-- datathon / organization
-A total of 150 person and 20 teams from X countries were present for the two
-days event. 20 projects had been prepared thought a forum.
-- technical architecture
-OMOP have been loaded into apache HIVE 1.2.1 into ORC format. Users had access
-to the ORC dataset from jupyter notebooks with, python or scala. A SQL
-webclient allowed teams to write SQL from presto on the same dataset. The
-hadoop cluster was a based on 5 computers with 16 cores and 220GO ram.
-The MIMIC-OMOP dataset has been loaded from a PGSQL instance to HIVE
-thought apache SQOOP 1.4.6 directly into the ORC format. 
-Participants had also access to the physical modeling of the database thought
-schemaspy to have access to both table/column comments and primary/foreign key
-materialising tables relations.
+A free access 48h datathon \cite{mimid-omop-datathon} was setup in Paris once
+the MIMIC-OMOP transformation ready for research in order to evaluate OMOP as
+an alternative data model in a real life event. A total of 150 person and 20
+teams from X countries were present for the two days event. 20 projects had
+been prepared thought a forum. OMOP have been loaded into apache HIVE 1.2.1
+into ORC format. Users had access to the ORC dataset from a web interface
+jupyter notebooks with, python, R or scala. A SQL webclient allowed teams to
+write SQL from presto on the same dataset. The hadoop cluster was based on 5
+computers with 16 cores and 220GO RAM memory. The MIMIC-OMOP dataset has been
+loaded from a PGSQL instance to HIVE thought apache SQOOP 1.4.6 directly into
+the ORC format. Participants had also access to the physical modeling of the
+database thought Schemaspy to have access to the OMOP physical data model with
+both table/column comments and primary/foreign key materialising tables
+relations. All the queries were logged.
