@@ -1,4 +1,25 @@
 % ETL state
+The choice of the ELT has several advantages over using a dedicated ETL
+software. It factorizes both people knowledges and computer resources allowing
+analysts to become implementers and review the code or contribute to the
+transformation with SQL as single language and technology.
+
+% Organisation of the code
+By choosing a public git repository for both documentation and source code
+support this allows analysts to learn about the project and also learn how to
+contribute \cite{mimic-git}.
+
+% Choice of ELT
+
+% Data quality
+Any data transformation is susceptible to comes with bugs that can have huge
+impact in medical research. The RDBMS basements such transactions,
+normalisation and integrity constraints are built-in safeguards that have been
+useful along the process. Besides the implemented unit-tests ensures pasts or
+futures bugs are behind us. A ideal but complex \cite{johnson-reprod}
+validation method would be to reproduce existing studies on OMOP and make sure
+results are consistent but yet only data distribution concordance have been
+verified.
 
 % ELT Time
 The computation time of the ETL on the PGSQL instance on a modest personal
@@ -63,8 +84,9 @@ from a user perspective. It appears it is not doable for most of people to get
 involved. The forum is full of details and information. It contrasts with the
 implementation guide that suffer from not being as well detailed. We think the
 OMOP community would greatly benefit from systematic and synthetic
-synchronisation between forum, mailing lists,  github and end user
+synchronisation between forum, mailing lists, github and end user
 documentation.
+% help from datathon: specialized mapping
 
 % Documentation need
 The datathon real life test has revealed the strong need to make the physical

@@ -1,5 +1,43 @@
 %% This BibTeX bibliography file was created using BibDesk.
 %% http://bibdesk.sourceforge.net/
+PMLR 68:361-376
+
+@ARTICLE{schema-matching,
+    author = {Philip A. Bernstein and Jayant Madhavan and Erhard Rahm},
+    title = {Generic schema matching, ten years later},
+    journal = {PVLDB},
+    year = {},
+    pages = {2011}
+}
+
+@InProceedings{johnson-reprod,
+  title = 	 {Reproducibility in critical care: a mortality prediction case study},
+  author = 	 {Alistair E. W. Johnson and Tom J. Pollard and Roger G. Mark},
+  booktitle = 	 {Proceedings of the 2nd Machine Learning for Healthcare Conference},
+  pages = 	 {361--376},
+  year = 	 {2017},
+  editor = 	 {Finale Doshi-Velez and Jim Fackler and David Kale and Rajesh Ranganath and Byron Wallace and Jenna Wiens},
+  volume = 	 {68},
+  series = 	 {Proceedings of Machine Learning Research},
+  address = 	 {Boston, Massachusetts},
+  month = 	 {18--19 Aug},
+  publisher = 	 {PMLR},
+  pdf = 	 {http://proceedings.mlr.press/v68/johnson17a/johnson17a.pdf},
+  url = 	 {http://proceedings.mlr.press/v68/johnson17a.html},
+  abstract = 	 {Mortality prediction of intensive care unit (ICU) patients facilitates hospital benchmarking and has the opportunity to provide caregivers with useful summaries of patient health at the bedside. The development of novel models for mortality prediction is a popular task in machine learning, with researchers typically seeking to maximize measures such as the area under the receiver operator characteristic curve (AUROC). The number of ’researcher degrees of freedom’ that contribute to the performance of a model, however, presents a challenge when seeking to compare reported performance of such models. In this study, we review publications that have reported performance of mortality prediction models based on the Medical Information Mart for Intensive Care (MIMIC) database and attempt to reproduce the cohorts used in their studies. We then compare the performance reported in the studies against gradient boosting and logistic regression models using a simple set of features extracted from MIMIC. We demonstrate the large heterogeneity in studies that purport to conduct the single task of ’mortality prediction’, highlighting the need for improvements in the way that prediction tasks are reported to enable fairer comparison between models. We reproduced datasets for 38 experiments corresponding to 28 published studies using MIMIC. In half of the experiments, the sample size we acquired was 25% greater or smaller than the sample size reported. The highest discrepancy was 11,767 patients. While accurate reproduction of each study cannot be guaranteed, we believe that these results highlight the need for more consistent reporting of model design and methodology to allow performance improvements to be compared. We discuss the challenges in reproducing the cohorts used in the studies, highlighting the importance of clearly reported methods (e.g. data cleansing, variable selection, cohort selection) and the need for open code and publicly available benchmarks.}
+}
+
+@Article{mimic-git,
+   Author="Johnson, A. E.  and Stone, D. J.  and Celi, L. A.  and Pollard, T. J. ",
+   Title="{{T}he {M}{I}{M}{I}{C} {C}ode {R}epository: enabling reproducibility in critical care research}",
+   Journal="J Am Med Inform Assoc",
+   Year="2018",
+   Volume="25",
+   Number="1",
+   Pages="32--39",
+   Month="Jan"
+}
+
 
 @Article{section-extraction,
 	Author="Denny, J. C.  and Spickard, A.  and Johnson, K. B.  and Peterson, N. B.  and Peterson, J. F.  and Miller, R. A. ",
@@ -23,6 +61,11 @@
 	Month="May"
 }
 
+@misc{closure-table,
+	title = {{Bill Karwin's blog}  Rendering Trees with Closure Tables},
+	howpublished = {\url{https://karwin.blogspot.com/2010/03/rendering-trees-with-closure-tables.html}},
+	note = {Accessed: 2010-09-30}
+}
 % universal-archive
 @misc{note-nlp-spec,
 	title = {{Universal Archive} web solution},

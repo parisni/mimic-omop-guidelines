@@ -2,12 +2,14 @@
 % ALTERNATE STORY
 %
 % 1. ICU benefits from BIG DATA
-% 2. MIMIC is the only open access but while very cool it has limitation that a CDM would help  to
-% 3. OMOP as been described the best CDM. Recently FHIR is Emmerging.
-% 4. Objective threefold are: 1. transform, 2. contribute 3. analysis
+% 2. MIMIC is the only open access but while very cool it has limitation 
+% 3. CDM overcomes MIMIC limitations
+% 4. I2B2, FHIR and OMOP CDM's
+% 5. OMOP looks better
+% 6. Objective threefold are: 1. transform, 2. contribute 3. analysis
 
 % ICU: a paradox 
-Intensive Care Units (ICUs) are particularly sensitive units  where demand of
+Intensive Care Units (ICUs) are particularly sensitive units where demand of
 care is rising\cite{angus2000} and mortality is up to 30\% which is a major
 health care problem \cite{icu-mortality}. Studies have shown that intensivists
 use a limited number of clinical information concepts to guide the
@@ -23,51 +25,129 @@ of broad patient medical informations expectations are to improve clinical
 outcomes and practices, allow personalized medicine and guide decision thought
 early warning systems, and also enrol large and multicentric cohort easily
 while minimizing costs.
+\\
+%% Existing ICU databses
+%By now several commercial or noncommercial, opensource or nonopensource ICU
+%databases have been developed.
+%\emph{CUB-REA} is a semi-automatic collection of 25 years and over 300k ICU
+%patients stays from 30 distinct ICUs in Paris region and covers administrative
+%data only \cite{cubrea-descr,cubrea-website}. Yet it is subject of 15
+%international publication and access is under conditions.
+%\emph{OutcomeREA} is a manual collection of 20 years over 20k UCU patients
+%stays with medium granularity data from 20 distinct ICUs in France. Yet it is
+%subject of 50 international publications and access is under conditions.
+%\emph{eICU} \cite{eicu-website} is an automatic collection of 2 years of 1.5M
+%ICU patients stays from 500 ICU in the USA and covers high granularity
+%data \cite{mimic-i2b2}. It is a commercial database.
+%\emph{MIMIC} (Medical Information Mart for Intensive Care) is a
+%semi-automatic collection of 10 years and over 60k ICU patients stays with very
+%high granularity (including EKG) from 1 ICU in Boston. Yet it is subject of 300
+%international publication. It is a freely-available database.
+%All those databases have their own dedicated model. Their structural model
+%are all based on relational database but all do have tables and columns with
+%different meaning and granularity. As an example MIMIC do have two inputevents
+%tables reflecting its source center changed its EHR. Also their conceptual
+%model are mostly different. For example MIMIC do have ICD9 for condition
+%terminology, while CUB-REA do have both CIM9 and CIM10. 
 
-% Existing ICU databses
+% MIMIC database
+% - local terminologies
+% - one center
+% - two successive critical care information systems (CCI)
+% - a model that reflect the EHR
 By now several commercial or noncommercial, opensource or nonopensource ICU
 databases have been developed.
-\emph{CUB-REA} is a semi-automatic collection of 25 years and over 300k ICU
-patients stays from 30 distinct ICUs in Paris region and covers administrative
-data only \cite{cubrea-descr,cubrea-website}. Yet it is subject of 15
-international publication and access is under conditions.
-\emph{OutcomeREA} is a manual collection of 20 years over 20k UCU patients
-stays with medium granularity data from 20 distinct ICUs in France. Yet it is
-subject of 50 international publications and access is under conditions.
-\emph{eICU} \cite{eicu-website} is an automatic collection of 2 years of 1.5M
-ICU patients stays from 500 ICU in the USA and covers high granularity
-data \cite{mimic-i2b2}. It is a commercial database.
-\emph{MIMIC} (Medical Information Mart for Intensive Care) is a
-semi-automatic collection of 10 years and over 60k ICU patients stays with very
-high granularity (including EKG) from 1 ICU in Boston. Yet it is subject of 300
-international publication. It is a freely-available database.
-All those databases have their own dedicated model. Their structural model
-are all based on relational database but all do have tables and columns with
-different meaning and granularity. As an example MIMIC do have two inputevents
-tables reflecting its source center changed its EHR. Also their conceptual
-model are mostly different. For example MIMIC do have ICD9 for condition
-terminology, while CUB-REA do have both CIM9 and CIM10. 
+\emph{MIMIC} (Medical Information Mart for Intensive Care) is a semi-automatic
+collection of 10 years and over 60k ICU patients stays with very high
+granularity (including EKG) from two successive critical care information
+systems (CCI) of the Beth Israel Deaconess Medical Center in Boston. It is the
+first freely-available ICU database and yet it is subject of 300 international
+publication. However its monocentric nature makes difficult to generalize the
+conclusion on other ICUs. The MIMIC relational data model reflects the originals
+CCI as evidenced by the two distinct inputs tables \textit{inputevent\_mv} and
+\textit{ouputevent\_cv} \cite{mimic-nature} or the two distinct terminologies
+for the physiological data. This leads analysts (data-scientitsts,
+statisticians\ldots) to reconcile this heterogeneity during the preprocessing
+for each studies.
+\\
 
-% Common Data Models
-Some studies have shown that using a common data model (CDM) for databases
-allows multicentric research, allow mining rare disease  and
-catalyse research in general by allowing sharing practices, code, and
-tools \cite{cdm-review}. On the other hand some studies have shown that results are
-not replicable from one to another database \cite{omop-replicability} and that
-keeping the local conceptual model \cite{fhir-deep} and structure
-\cite{imi-protect} of database for research leads to better outcomes. Last but
-not least, studies have show that CDM can lead to different results
-\cite{cdm-comparison}.
+% Why a Common Data Models
+Some studies have shown that using a common data model (CDM) by generalizing
+the database on structural (data model) and conceptual (terminology model)
+design enables multicentric research, mining rare disease and catalyses
+research by allowing sharing practices, source code and
+tools \cite{cdm-review}. 
+% Criticism for structural model (IMI, FHIR, loose of information)
+% Criticism for conceptual model (OMOP standard, FHIR)
+Some studies have shown that results are not fully replicable from one to the
+other CDM \cite{cdm-comparison} or from one to another center
+\cite{omop-replicability}. Lighter approaches argue that keeping the local
+conceptual model \cite{fhir-deep} or both original conceptual and structural
+\cite{imi-protect} of the database for research leads to better outcomes. On
+the first hand keeping MIMIC on its specific form won't solve the limitation of
+the previous paragraph and on the other hand a fully standardized form would
+introduce other drawbacks. The ideal solution is likely in-between to allow
+both local or standardized analysis depending on the research question.
+\\
+
 % Existing CDM
-A dozen of CDM have emerged but we limited the candidate data models to those
-designed and used for clinical researches, and those freely available in the
-public domains without restrictions.
-\emph{OMOP} (Observational Medical Outcomes Partnership Common Data Model) is
-a CDM designed for multicentric Drug adverse Event and now enlarges to medical,
-clinical and also genomic use cases. OMOP provides both structural (as as set
-of relational tables) and conceptual (as a set of standard terminologies) such
-SNOMED for diagnoses, RxNORM for drug ingredients and LOINC for laboratory
-results. While OMOP has proven its fiability \cite{omop-eval} the fact that
+% I2B2
+Several studies have previously applied CDM to MIMIC. Chronaki et al.
+\cite{mimic-i2b2} have evaluated i2b2 to federate MIMIC and eICU. i2b2 is a
+medical cohort discovery tool used in more than 200 hospitals over the world.
+% i2b2 structural model
+The i2b2' highly flexible structural model is able to ingest various domains
+and data types in a unique star-schema composed of 5 tables. While i2b2 is
+highly efficient for cohort discovery, it's model wasn't designed for ad-hoc
+analysis.
+% i2b2 conceptual model
+The i2b2' conceptual model is a path based table allowing to store any simple
+or hierarchical local terminology (graph are not supported). The SHRINE project
+goes a step further by proposing a set of standard terminology to federate
+multiple i2b2 instances. Each instance needs to map all its local concepts to
+the standard's one and vice-versa \cite{shrine-design} (bi-directional
+mapping).
+% FHIR
+
+More recently Rajkomar et al. have been using \emph{FHIR} (Fast Healthcare
+Interoperability Resources) as a CDM to apply deep learning on medical records.
+FHIR is a medical data exchange API specification. FHIR provides a structural
+CDM that can be materialized as JSON, XML or RDF format. FHIR is flexible and
+does not specify a standard conceptual model so that each hospital can add
+extension to implement specific data or share within it's local terminology
+making each FHIR implementation sensibly divergent. While some research show it
+as a promising CDM for ad-hoc analysis \cite{fhir-google} or cohort discovery
+% ADD FHIR weakness: loss of data minus raw information
+\cite{fhir-paris}, its graph nature adds a layer of transformation making usage
+complicated for analysts. 
+% fhir structural model
+% fhir conceptual model
+
+% OMOP
+% omop structural model
+OMOP structural model consists of several groups of thematic tables (clinical,
+costs, derived\ldots). Each clinical domains are stored in various dedicated
+tables.
+% omop conceptual model
+OMOP conceptual model is based on a closure table pattern \cite{closure-table}
+able to ingest any simple, hierarchical and also graph terminologies such
+SNOMED-CT used locally. In addition to the local terminologies OMOP specifies
+and maintains a set of standard terminologies to be mapped uni-directionally
+(local to standard) by implementers.
+
+Previous preliminary work have been made on translating MIMIC into OMOP
+\cite{mimic-omop-previous} and still work remains to be affined and upgraded to
+be furthermore evaluated.
+
+A dozen of medical CDM exist and a recent study compared their quality
+\cite{omop-vs-pcornet} through various characteristics presented in table x.
+From all the candidates, \textit{OMOP} (Observational Medical Outcomes
+Partnership Common Data Model) fits better the criteria. OMOP is a CDM
+originally designed for multicentric Drug adverse Event and now extends to
+medical, clinical and also genomic use cases. OMOP provides both structural and
+conceptual model such SNOMED for diagnoses, RxNORM for drug ingredients and
+LOINC for laboratory results. While OMOP has proven its fiability
+\cite{omop-eval} the fact that
 concept mapping process is known to have impact on results
 \cite{omop-concept-impact} and that applying the same protocol on different
 data sources leads to different results \cite{omop-replicability} reveals the
@@ -76,53 +156,20 @@ of transforming databases into OMOP have been published
 \cite{omop-german,omop-nashville} and yet OMOP stores 682 milion patients
 records from all over the world\cite{omop-bigboy}. OMOP had 5 versions, and
 prones its strong backward compatibility.
-\emph{i2b2/SHRINE} is a medical cohort discovery tool used in more than 200
-hospitals over the world. SHRINE is one of the attempt to federate multiple
-instances of i2b2. The i2b2 star schema has proven its high flexibility thanks
-to the modular design of the fact tables allowing storing numerics, characters
-or concepts. Its single terminology model is a path based hierarchical table
-does not allow to modelise graph ontology (such snomed). While i2b2 is highly
-efficient for cohort discovery, it's model wasn't designed for ad-hoc analysis.
-A bidirectional terminology mapping \cite{shrine-design} between local concepts
-and the SHRINE core set of standard concepts is a prerequirement to participate
-to a SHRINE network.
-\emph{HL7-FHIR} (Fast Healthcare Interoperability Resources) is a medical
-data exchange API specification. FHIR provides a structural CDM that can be
-materialized as JSON, XML or RDF format. FHIR is flexible and does not specify
-a standard conceptual model so that each hospital can add extension to
-implement specific data or share within it's local terminology making each FHIR
-implementation sensibly divergent. While some research show it as a promising
-CDM for ad-hoc analysis \cite{fhir-google} or cohort discovery
-\cite{fhir-paris}, its graph nature adds a layer of transformation making usage
-complicated for data-scientists as well as difficult to create standardized
-analysis. Finally the model envolves and does not make the asumption of
-backward compatibilities along the versions.
-%- PCORnet, the National Patient-Centered Clinical Research Network (http://pcornet.org/pcornet-common-data-model/)
-%        - have been created to monitore the safety of FDA-regulated medical products.
-%	- PCORnet Common Data Model (CDM) integrate multiple data from different sources and leverages standard terminologies and coding systems for healthcare (including ICD, SNOMED, CPT, HCPSC, and LOINC) to enable interoperability with and responsiveness to evolving data standards.
-%	- The first version of the CDM was released in 2014, and there have been 3 major releases and one minor update since then (last release CDM v4.1: Released May 18, 2018 )
-
-% CHOICE (OMOP & MIMIC)
-% choice of mimic
-To demonstrate the feasibility and the opportunity to use a CDM for ICU
-databases, we choose MIMIC since it is freely accessible and then the result of
-this work will be accessible for subsequent improvement, analysis, and
-demonstration. Secondly, MIMIC does have the most broad and high granularity
-database leading to evaluate the ability of the CDM to ingest such complex
-dataset. More importantly, MIMIC stated they would think of a
-CDM\cite{mimic-nature}, that would solve some structure and conceptual
-weaknesses of MIMIC mentionned above and this work should help MIMIC in it's
-goal to build a international ICU database \cite{mimic-i2b2}.
-% choice of omop
 Among the other CDM, OMOP looks like the best fit as it allows both
 multicentric standardised analysis as well as monocentric specific modeling and
 analysis. 
-Compared to PCORnet \cite{omop-vs-pcornet} OMOP performs better in the
-evaluation database criteria compared with the other models (and PCORnet in
-particularly) : completeness, integrity, flexibility, simplicity of
-integration, and implementability, accommodate the broadest coverage of
-standard terminologies, provides more systematic analysis with analytic library
-and visualizing tools, provides easier SQL models.
+\\
+
+% CDM Comparison
+In a recent CDM comparison study
+\cite{cdm-review} OMOP performs better in the evaluation database criteria
+compared with the other models (and PCORnet in particularly) : completeness,
+integrity, flexibility, simplicity of integration, and implementability,
+accommodate the broadest coverage of standard terminologies, provides more
+systematic analysis with analytic library and visualizing tools, provides
+easier SQL models.
+%compared to i2b2
 Compared to i2b2/SHRINE, the unilateral mapping methodology of OMOP is more
 effective than the bidirectional \cite{shrine-design} SHRINE mapping. Hence
 OMOP proposes a broader set of standardised concepts. In terms of structural
@@ -133,29 +180,41 @@ work have loaded i2b2 with MIMICiii \cite{mimic-i2b2} - however, the concept
 mapping step have limited the results since i2b2 design do not store the local
 ontology or information where OMOP design allows to keep the concept mapping
 unfinished. OMOP has this advantage to keep the terminology mapping step not
-mandatory by keeping the local codes in a usable format.  As compared to FHIR,
-OMOP performs better as a conceptual CDM as FHIR does not specify which
-terminology to implement. In terms of structural CDM OMOP relational model can
-be materialized into csv format and stored in any relational database when FHIR
-materialised as json needs some processing and more skills to be exploited.
-OMOP shares the advantages of all above models. 
-Previous preliminary work have been made on translating MIMIC into OMOP
-\cite{mimic-omop-previous} and still work remains to be affined and upgraded to
-be furthermore evaluated.
+mandatory by keeping the local codes in a usable format.
+%compared to FHIR
+As compared to FHIR, OMOP performs better as a conceptual CDM as FHIR does not
+specify which terminology to implement. In terms of structural CDM OMOP
+relational model can be materialized into csv format and stored in any
+relational database when FHIR materialised as json needs some processing and
+more skills to be exploited.  OMOP shares the advantages of all above models. 
+\\
+
+% CHOICE (OMOP & MIMIC)
+% choice of mimic
+%To demonstrate the feasibility and the opportunity to use a CDM for ICU
+%databases, we choose MIMIC since it is freely accessible and then the result of
+%this work will be accessible for subsequent improvement, analysis, and
+%demonstration. Secondly, MIMIC does have the most broad and high granularity
+%database leading to evaluate the ability of the CDM to ingest such complex
+%dataset. More importantly, MIMIC stated they would think of a
+%CDM\cite{mimic-nature}, that would solve some structure and conceptual
+%weaknesses of MIMIC mentioned above and this work should help MIMIC in it's
+%goal to build a international ICU database \cite{mimic-i2b2}.
+% choice of omop
 
 % Evaluation of MIMIC-OMOP
-In order to evaluate the MIMIC-OMOP transformation we propose to answer to
+In order to evaluate the MIMIC to OMOP transformation we propose to answer to
 remaining question such the difficulty of transforming/maintaining an OMOP
 dataset from an existing one, how well the initial dataset is integrated and
 how much data is lost in the process, how clear and simple the model is to be
-queried simply and efficiently by scientists, how well design it is to be
+queried simply and efficiently by analysts, how well design it is to be
 enriched by collaborative work, and finally in what extend OMOP can integrate
 and makes feedbacks to intensivists in a realtime context.  This work is then
-evaluated through 3 axes: Transformation, Contribution and Analytics.
+evaluated through 3 axes: Transformations, Contributions and Analytics.
 % contribution
 The \emph{first} major contribution of this study is to evaluate OMOP in a real
 life and well known freely accessible database. The \emph{second} major
 contribution is to provide a freely accessible dataset in the OMOP format that
 might be useful for researchers. The \emph{third} major contribution is to
 provide the OMOP community some useful transformations dedicated to ICU and
-that can be reused in any OMOP dataset.
+that can be reused on any OMOP dataset.
