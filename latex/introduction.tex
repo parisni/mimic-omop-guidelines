@@ -55,8 +55,6 @@ while minimizing costs.
 % - one center
 % - two successive critical care information systems (CCI)
 % - a model that reflect the EHR
-By now several commercial or noncommercial, opensource or nonopensource ICU
-databases have been developed.
 \emph{MIMIC} (Medical Information Mart for Intensive Care) is a semi-automatic
 collection of 10 years and over 60k ICU patients stays with very high
 granularity (including EKG) from two successive critical care information
@@ -79,8 +77,8 @@ research by allowing sharing practices, source code and
 tools \cite{cdm-review,data-enclave}. 
 % Criticism for structural model (IMI, FHIR, loose of information)
 % Criticism for conceptual model (OMOP standard, FHIR)
-Some studies have shown that results are not fully replicable from one to the
-other CDM \cite{cdm-comparison} or from one to another center
+However some studies have shown that results are not fully replicable from one
+to the other CDM \cite{cdm-comparison} or from one to another center
 \cite{omop-replicability}. Lighter approaches argue that keeping the local
 conceptual model \cite{fhir-deep} or both original conceptual and structural
 \cite{imi-protect} of the database for research leads to better outcomes. On
@@ -123,6 +121,19 @@ complicated for analysts.
 % fhir structural model
 % fhir conceptual model
 
+\textit{OMOP} (Observational Medical Outcomes Partnership Common Data
+Model) is a CDM originally designed for multicentric Drug adverse Event and now
+extends to medical, clinical and also genomic use cases. OMOP provides both
+structural and conceptual model such SNOMED for diagnoses, RxNORM for drug
+ingredients and LOINC for laboratory results. While OMOP has proven its
+fiability \cite{omop-eval} the fact that concept mapping process is known to
+have impact on results \cite{omop-concept-impact} and that applying the same
+protocol on different data sources leads to different results
+\cite{omop-replicability} reveals the importance of keeping the local codes to
+allow local analysis. Several example of transforming databases into OMOP have
+been published \cite{omop-german,omop-nashville} and yet OMOP stores 682 milion
+patients records from all over the world\cite{omop-bigboy}. OMOP had 5
+versions, and prones its strong backward compatibility.
 % OMOP
 % omop structural model
 OMOP structural model consists of several groups of thematic tables (clinical,
@@ -134,41 +145,25 @@ able to ingest any simple, hierarchical and also graph terminologies such
 SNOMED-CT used locally. In addition to the local terminologies OMOP specifies
 and maintains a set of standard terminologies to be mapped uni-directionally
 (local to standard) by implementers.
-
 Previous preliminary work have been made on translating MIMIC into OMOP
 \cite{mimic-omop-previous} and still work remains to be affined and upgraded to
 be furthermore evaluated.
-
-A dozen of medical CDM exist and a recent study compared their quality
-\cite{omop-vs-pcornet} through various characteristics presented in table x.
-From all the candidates, \textit{OMOP} (Observational Medical Outcomes
-Partnership Common Data Model) fits better the criteria. OMOP is a CDM
-originally designed for multicentric Drug adverse Event and now extends to
-medical, clinical and also genomic use cases. OMOP provides both structural and
-conceptual model such SNOMED for diagnoses, RxNORM for drug ingredients and
-LOINC for laboratory results. While OMOP has proven its fiability
-\cite{omop-eval} the fact that
-concept mapping process is known to have impact on results
-\cite{omop-concept-impact} and that applying the same protocol on different
-data sources leads to different results \cite{omop-replicability} reveals the
-importance of keeping the local codes to allow local analysis. Several example
-of transforming databases into OMOP have been published
-\cite{omop-german,omop-nashville} and yet OMOP stores 682 milion patients
-records from all over the world\cite{omop-bigboy}. OMOP had 5 versions, and
-prones its strong backward compatibility.
-Among the other CDM, OMOP looks like the best fit as it allows both
-multicentric standardised analysis as well as monocentric specific modeling and
-analysis. 
 \\
 
+%A dozen of medical CDM exist and a recent study compared their quality
+%\cite{} through various characteristics presented in table x.
+%From all the candidates, OMOP fits better the criteria. 
+%Among the other CDM, OMOP looks like the best fit as it allows both
+%multicentric standardised analysis as well as monocentric specific modeling and
+%analysis. 
+
 % CDM Comparison
-In a recent CDM comparison study
-\cite{cdm-review} OMOP performs better in the evaluation database criteria
-compared with the other models (and PCORnet in particularly) : completeness,
-integrity, flexibility, simplicity of integration, and implementability,
-accommodate the broadest coverage of standard terminologies, provides more
-systematic analysis with analytic library and visualizing tools, provides
-easier SQL models.
+In a recent CDM comparison study \cite{cdm-review,omop-vs-pcornet} OMOP
+performs better in the evaluation database criteria compared with the other
+models (and PCORnet in particularly) : completeness, integrity, flexibility,
+simplicity of integration, and implementability, accommodate the broadest
+coverage of standard terminologies, provides more systematic analysis with
+analytic library and visualizing tools, provides easier SQL models.
 %compared to i2b2
 Compared to i2b2/SHRINE, the unilateral mapping methodology of OMOP is more
 effective than the bidirectional \cite{shrine-design} SHRINE mapping. Hence
@@ -186,7 +181,7 @@ As compared to FHIR, OMOP performs better as a conceptual CDM as FHIR does not
 specify which terminology to implement. In terms of structural CDM OMOP
 relational model can be materialized into csv format and stored in any
 relational database when FHIR materialised as json needs some processing and
-more skills to be exploited.  OMOP shares the advantages of all above models. 
+more skills to be exploited. OMOP shares the advantages of all above models. 
 \\
 
 % CHOICE (OMOP & MIMIC)
