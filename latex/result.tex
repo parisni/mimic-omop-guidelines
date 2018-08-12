@@ -1,40 +1,58 @@
 %
-% ALTERNATE STORY
-%
 % 1. Data Transformation
 % 2. Contributions
 % 3. Analytics
 % 
-\subsection{Transformation}
-% effectiveness of the transformation
+\subsection{Data Transformation}
 
-The MIMIC to OMOP conversion was done by two developers (one data engineer and
-one intensivist) in an estimate amount of 500 hours. This includes the ETL, the
-git documentation, the concept mapping, the contributions and the unit tests.
-The ETL (including unit tests, and generation of the ready to load archive) on
-the 100 patient subset takes five minutes and allows fast cycles of
-developments. On the full MIMIC dataset the ETL lasts 3 hours. 
-The resulting csv archive is slightly the same size than the original one, and
-this is also the same once instanced in PGSQL and indexed.
+% General
+The MIMIC to OMOP conversion was performed by two developers (a data engineer 
+and an intensivist) for an estimated 500 hours. This includes ELT, git 
+documentation, concept mapping, contributions and unit tests. 
+ELT (with unit tests and generation of ready-to-load archives) on the subset 
+of 100 patients takes five minutes and enables rapid development cycles. 
+On all MIMIC data, the ELT lasts 3 hours. The resulting csv archive is about 
+the same size as the original archive, and it is also the same once 
+instantiated in PGSQL and indexed.
+
+The OMOP-CDM contains 37 data tables. We populated 19 tables. 
+From MIMIC, we create a standardized model called MIMIC-OMOP.
+
+% Data transformations
+The evaluation of a system and a structural model is rather difficult \cite{moody-quality} 
+but we have tried to evaluate it through several axes.
+
+%% Unit tests
+The first axe was the unit tests. During the all ETL process we created a lot 
+of unit tests thanks to pgTap library. 
+All are available on our github \cite{mimic-omop-website}. All the test passed.
+
+%% Achilles evaluation            
+The second axe was Achilles evaluation. Like many previous authors, 
+we used the Achille software to assess data quality \cite{achilles-evaluation}. 
+It is an open-source analysis software produced by OHDSI \cite{ohdsi-achilles}.
+This tool is used for data characterization, data quality assessment 
+(Achilles' heel) and health observation data visualization \cite{ohdsi-achilles}.
+It has been common practice to perform Achilles tests and use it as a 
+quality assessment in many works. Achilles Heel issued 12 errors and y warnings. 
+This result is correct compared to other studies \cite{achilles-evaluation}
+We believe that this tool has several limitations. It does not evaluate 
+the structural change, it is difficult to understand some error messages and 
+we decide to process more evaluation tests.     
 
 
-In order to evaluate how well transformed is the data we first adopt the data
-quality evaluation grid (\ref{table:quality}) developed by Khan and Al
-\cite{khan-quality} which is commonly used as a reference \cite{moody-quality}.
-
-- size of MIMIC OMOP, row number for the bigest relation (measurement)
-
-  For the prescritions MIMIC table 75\% (a verifier) of drugs had a gsn code. The conept\_relationship table provide mapping between gsn and RxNorm classsifications. To improve the mapping we then proceeded to a manual mapping
-
-The OMOP-CDM contains 37 data tables. We populated 19 tables.
-From MIMIC we create a standardized model called MIMIC-OMOP.
-
-Quality evaluation criteria
-%===========================
-1)
-Several articles tried to evaluate CDM quality (8, 9).
-The criterias developped by Khan and Al, which referenced Moody and Shanks (10) metrics were adapted to our study.
-Our study doesn't want to evaluate the quality of CDM. But we adapt these criterias to assess our ETL work.
+%% Kahn
+Several articles have attempted to assess the quality of the CDM (8, 9). 
+The criteria developed by Khan and Al\cite{khan-quality}, which refer to the metrics 
+Moody and Shanks \cite{moody-quality}, have been adapted for our study. 
+Our study does not want to assess the quality of the CDM. But we adapt these 
+criteria to assess the quality of the data transformation (\ref{table:quality}).
+Comprehensiveness, integrity, flexibility, integration, implementability 
+will be discussed in this part (data transformation). 
+Understandability and simplicity will be assessed in the analytical parts, 
+in the actual application.
+All the code to create these statistics is provided on the github repository 
+\cite{mimic-omop-website}.
 
 % Please add the following required packages to your document preamble:
 % \usepackage[normalem]{ulem}
@@ -46,8 +64,8 @@ Our study doesn't want to evaluate the quality of CDM. But we adapt these criter
 \tbl{Data Transformation Quality Evaluation Metrics}{%
 \begin{tabular}{@{}ll@{}}\toprule
 Data Model Dimension              & Descriptions                                                                                                      \\\colrule
-Completeness - semantic mapping   & Domain coverage : coverage of sources domains that are accommodated by the standard OMOP model                    \\
-Completeness - structural mapping & Data coverage : coverage of sources data concepts that mapped to standard OMOP concept                           \\
+Completeness - structural mapping & Domain coverage : coverage of sources domains that are accommodated by the standard OMOP model                    \\
+Completeness - semantic mapping   & Data coverage : coverage of sources data concepts that mapped to standard OMOP concept                           \\
 Integrity                         & "Meaningful data relationships and constraints that uphold th eintent of the data-s original purpose" Khan and Al \\
 Flexibility                       & The ease to expand the standard model for new datatypes, concepts                                                 \\
 Integration                       & The capacity of the standard model to use multiples terminology and links its to standard one                     \\
@@ -58,21 +76,17 @@ Simplicity                        & The ease of querying the standard model - th
 \label{table:quality}
 \end{table*}
 
-Understandability and simplicity will be evaluated in the analytics parts, in real life application.
 
-2) 
-During the all ETL process we created a lot of unit tests thanks to pgTap library. All are available on our github. All the test passed.
-
-3)
-
-Compleness - semantic mapping 
-%=============================
-
-The table \ref{table:dispatch} shows where the informations goes and links
-between MIMIC tables and OMOP tables.  Since OMOP is a conceptual model, a same
-type of data goes in the same table. The best example may be the measurement
-table which is field by 4 source tables. Is is because of all the numerics
-datas should go to this table.
+%% structural mapping
+%      Ajouter schema : MIMIC-OMOP equivalence.png
+The table \ref{table:dispatch} shows the structural mapping, i.e. where the 
+information goes and links between the MIMIC tables and the MIMICIII-OMOP tables go.
+The largest relationship is the measuring table with 366272371 rows.
+Since OMOP is a conceptual model, the same type of data goes into the same table. 
+The best example can be the measurement table which is field by 4 source tables. 
+That's because all numerical data should go to that table.
+All MIMIC domains are linked to the OMOP domain. 
+Structural mapping was not a problem for our work.
 
 \begin{table*}[t]
 \tbl{MIMIC to OMOP data flows}{
@@ -97,20 +111,11 @@ SPECIMEN              & 39874171       & chartevents, labevents, microbiologyeve
 \end{tabular}}
 \label{table:dispatch}
 \end{table*}
-
-Ajouter schema : MIMIC-OMOP\_equivalence.png
-
-As shown, all the MIMIC domain are linked to proper OMOP domain. 
-The semantic mapping was not a problem for our work.
-
-Completeness - structural mapping 
-%===============================
-
-Baseline characteristics : comparison MIMIC / MIMIC OMOP (basic statistics)
-%*******************************************************************************
-
-The following table lists the baseline characterization of the population of
-OMOP compared with MIMIC.
+                                                                    
+%% Semantic  mapping
+The table \label{table:statistics} presents the basic characterization of the 
+MIMIC-OMOP population in relation to the MIMIC and assesses the overall quality of 
+our semantic mapping.
 
 \begin{table*}[t]
 \tbl{Baseline characteristics MIMIC versus OMOP}{
@@ -143,37 +148,32 @@ Exit dignosis per admissions (mean)    & 11.0                        & 11.0     
 \label{table:statistics}
 \end{table*}
 
-Hopefully most statistics remains similar between two versions. Still some
-differences exists. Table \ref{table:statistics} MIMIC contains 61.532 stays in
-ICU whereas OMOP contains 71.576 ICU stays. That is a 16\% increase in stays
-due to our ETL methodology as explained in the methods.
+Fortunately most statistics remain similar between the two versions. 
+There are still some differences. 
+The table \ref{table:statistics} MIMIC contains 61,532 intensive care stays while 
+OMOP contains 71,576 intensive care stays. This represents a 16\% increase in 
+stays due to our ELT methodology as explained in the methods.
+                    
+This table shows that the number of laboratory measurements 
+per admission is increased. This is because the laboratory data from MIMIC 
+chartervents have been extracted and treated as a laboratory.
 
-The table \ref{table:statistics} shows the number of laboratory measurement per
-admissions is increased. This is because the laboratory data from MIMIC
-chartevents has been extracted and treated as laboratory. All the code to
-created this statistics are provided here (cf extra : basic\_statistics.sql).
-
-Loss of datas
-%*************
-
-We tried to evaluate the percentage of loaded records from the source database
-to OMOP. We evaluate the percentage of columns and rows lost in the process as
-done other studies \cite{omop-nashville}
-
-% column loss
-Depending on tables 40\% to 80\% of sources columns which do not fit to OMOP
-where deleted.  The exact removed columns are provided in the appendix (cf
-extras) Almost all the removed columns are redundant with others or provide
-derived informations.  The main concern are some lost timestamps. For example
-the MIMIC chartevents tables provide the storetime and charttime columns but
-OMOP only provide one slot for timestamp to stored. Thus storetime was deleted
-during the ETL.
-% row loss
-The erroneous rows \ref{table:lostrows} were deleted in the process (marked
-with a status column in MIMIC tables inputevents\_mv, chartevents,
-procedureevents\_mv, note). As MIMIC team told us that they will remove it in
-the next release because this data are poor quality we decided to do the same. 
-The following table shows the number of rows with errors.
+%% Loss of datas                                        
+We tried to estimate the percentage of records loaded from the source database 
+at MIMIC-OMOP. We estimate the percentage of columns and rows lost in 
+the process as other studies have done \cite{omop-nashville}.
+                    
+According to the tables, 40\% to 80\% of the columns in the sources that do not 
+correspond to OMOP have been deleted. The exact columns removed are provided 
+on the article github. Almost all the deleted columns were redundant with others 
+or provided derived information. The main concern is the loss of some timestamps. 
+For example, the MIMIC chartevents tables provide the storetime and charttime columns, 
+but OMOP provides only one location to store timestamp. Thus, MIMIC storetime 
+column was eliminated during ELT. As mentioned in the methods the error lines 
+have been deleted in the process (marked with a status column in the MIMIC tables 
+inputevents\_mv, chartevents, procedureevents\_mv, note).
+The following table \ref{table:lostrows} shows the number of lines with deleted 
+errors.
 
 \begin{table*}[t]
 \tbl{Row level Data lost}{
@@ -187,8 +187,27 @@ Note                & 0.04\%           \\\botrule
 \label{table:lostrows}
 \end{table*}
 
-terminology mapping coverage
-%****************************
+%% terminology mapping coverage
+
+This table \ref{table:mapping} shows the results of automatic and manual mapping. 
+The unmapped concepts are the concept id = 0 (no mapping concept). 
+To improve this mapping, we need collaborative work. Terminology mapping was 
+evaluated by a physician. The value zero for concept\_id can appear in very 
+different cases. In the first case, the local concept has no equivalent in the 
+standard concept set. In the second case, it has not yet been mapped and may 
+have a standard equivalent. In the third case, the value is missing and cannot 
+be mapped. In our opinion, although not all of these cases can be used for 
+standard queries, they should have a different concept identifier in order to be 
+treated differently (not only concept\_id = 0). Some of the domains\_id do not 
+match the table name, it makes sense because the observation domain can be 
+measurement table and vice versa.
+Often we have mapped many source concepts to a standard concept\_id. This is 
+because MIMIC provides a large number of equivalent concepts. For example, 
+for body temperature, MIMIC provides 11 distinct concepts (Temperature F, 
+Temperature C (calc), Temp Skin [C], Temperature Fahren- heit, Temp Axillary [F], 
+Temperature C, Temperature F (calc), Temperature Celsius, Temp Rectal [F], 
+Temp Rectal, Blood Temperature CCO (C)). Our mapping links all this to a single 
+concept called temperature. All units have been converted to Celcius.
 
 \begin{table*}[t]
 \tbl{Terminology Mapping coverage}{
@@ -205,144 +224,90 @@ CONDITION\_OCCURRENCE  & 716595         & 92,00\%             & 6984            
 CARE\_SITE             & 144            & 100,00\%            & 58                      & 100,00\%                     \\
 SPECIMEN               & 39874171       & 70,00\%             & 92                      & 77,00\%                      \\\botrule
 \end{tabular}}
+\label{table:mapping}
 \end{table*}
 
-These results include automatic and manual mapping.
+%% Flexibility  
+OMOP had a 100\% match of the constraints and relationships of the data models
+and is a flexibility is high. 
+Two important tables are provided with OMOP models to match the relationships : 
+concept\_relationship and fact\_relationship. It is used to represent the 
+relationship between the data. We used it to bind the drugs into a solution, 
+for microbiology / antibiograms and for visit\_detail and caresite links. 
+The following SQL query shows how a microorganism is linked to its susceptibility 
+test by a fact\_relationship.
 
-The unmapped concept are the concept\_id = 0 (No mapping concept). To improve
-this mapping we need collaborative work. We provide our csv mapping files on
-our github.
-The terminology mapping has been evaluated by a physician. 
-% need to identify missing values
-The zero value for concept\_id may appear in very different cases. First case
-the local concept has no equivalent in the standard set of concept. Second case
-it has not been yet been mapped and may have an standard equivalent. Third case
-the value is missing and cannot be mapped. In our opinion while all those cases
-cannot be used for standard queries, they should have a different concept\_id
-in order to be addressed differently.
+\begin{lstlisting}[language=sql]
+SELECT measurement_source_value, value_as_concept_id, concept_name
+FROM measurement
+JOIN concept resistance ON value_as_concept_id = concept_id
+JOIN fact_relationship ON measurement_id =  fact_id_2
+JOIN
+(
+	SELECT measurement_id AS id_is_staph
+	FROM measurement m
+	WHERE measurement_type_concept_id = 2000000007        			-- concept.concept_name = 'Labs - Culture Organisms'
+	AND value_as_concept_id = 4149419                     			-- concept.concept_name = 'staph aureus coag +'
+	AND measurement_concept_id = 46235217               			-- concept.concept_name = 'Bacteria identified in Blood product unit.autologous by Culture';
 
-- \% of domain\_id not in adequation with table name 
-	- some are logical because observation domain may be measurement table and vice verca
+) staph ON id_is_staph = fact_id_1;
+WHERE measurement_type_concept_id = 2000000008        			        -- concept.concept_name = 'Labs - Culture Sensitivity'
+\end{lstlisting}
 
-- we have mapped  many source concept to one standard concept\_id. This is because MIMIC provide a lots of equivalent free text concepts.
-  For example for the body temperature MIMIC provide 11 distinct concept (Temperature F, Temperature C (calc), Temp Skin [C], Temperature Fahrenheit, Temp Axillary [F], Temperature C, Temperature F (calc), Temperature Celsius, Temp Rectal [F], Temp Rectal, Blood Temperature CCO (C)). Our mapping links all of it to one single concept called temperature. All the units have been converted to celcius.
-  TODO: give example of generalisation (admission\_location\_to\_concept)
-
-Flexibility  
-===========
-OMOP had a 100\% match of the data models constraints and relationship.
-Two important tables are provided with the OMOP models to  match relationship : concept\_relationship and fact\_relationship.
-The fact\_relationship table which is a important part of the OMOP CDM. It is used to represent the relationship between data.
-We used to link drugs in a solution, for microbiology / antibiograms and for visit\_detail and caresite.
-The SQL following query shows how a microorganism is linked to its antibiogram thanks to fact\_relationship
-
-%SELECT measurement_source_value, value_as_concept_id, concept_name
-%FROM measurement
-%JOIN concept resistance ON value_as_concept_id = concept_id
-%JOIN fact_relationship ON measurement_id =  fact_id_2
-%JOIN
-%(
-%	SELECT measurement_id AS id_is_staph
-%	FROM measurement m
-%	WHERE measurement_type_concept_id = 2000000007        			-- concept.concept_name = 'Labs - Culture Organisms'
-%	AND value_as_concept_id = 4149419                     			-- concept.concept_name = 'staph aureus coag +'
-%	AND measurement_concept_id = 46235217               			-- concept.concept_name = 'Bacteria identified in Blood product unit.autologous by Culture';
-%
-%) staph ON id_is_staph = fact_id_1;
-%WHERE measurement_type_concept_id = 2000000008        			        -- concept.concept_name = 'Labs - Culture Sensitivity'
-
-
-Integration
-===========
-
-OMOP Terminology coverage has been previously evaluated as excellent
-\cite{omop-vs-pcornet}. We used the OMOP mapping for NDC-RxNorm, ICD9-SNOMED,
-CPT4-SNOMED. It was really helpful because MIMIC provides lots of non standard
-terminology already mapped by OMOP community
-We tried to evaluated this OMOP mapping.
-We check 100 items for each mapping used (NDC, ICD9 and CPT4). ICD9 and CPT4 are correcly mapped to SNOMED. But only 85\% of NDC are
-linked to a correct RxNorm code. In part due to incorrect NDC code (from MIMIC), in part because only 78\% of NDC codes are mapped to Rxnorm.
-
-But the OMOP common standard vocabulary, SNOMED-CT, did not cover all ICD-9-CM
-codes (95\%). Moreover, not all ICD-9-CM codes can have one-to-one mapping to
-SNOMED, some are one-to-many (28\%)\cite{snomed-icd9}
+%% Integration
+OMOP's terminology coverage has already been rated as excellent \cite{omop-vs-pcornet}. 
+We used OMOP mapping for NDC-RxNorm, ICD9-SNOMED, CPT4-SNOMED. 
+This was really useful to integreate MIMIC database because it provides a lot 
+of non-standard terminology already mapped by the OMOP community. 
+We tried to evaluate this automatic OMOP mapping. We check 100 elements for each 
+mapping used (NDC, ICD9 and CPT4). CIM9 and CPT4 are correctly mapped to SNOMED 
+(100\%). But only 85\% of NDCs are linked to a correct RxNorm code. 
+Partly because of an incorrect NDC code (from MIMIC), partly because only 78\% 
+of NDC codes are mapped to Rxnorm. Moreover, even if this does not seem to have 
+affected our ELT we know that not all ICD-9-CM codes can have a one-to-one match 
+with SNOMED, some are one to several (28\%) \cite{snomed-icd9}
  
-Implementability
-===============
-- OMOP available since 9 years
-- this models and its provided concepts are licence free
-- the community is large and was very helpful.
-- Full versions (V6, 7 etc.) are usually released each year (1-Jan) and are not backwards compatible. 
-Minor versions (V5.1, 5.2 etc.) are not guaranteed to be backwards compatible though an effort is made to make sure that current queries will not break. 
-Micro versions (V5.1.1, V5.1.2 etc.) are released irregularly and often, and contain small hot fixes or backward compatible changes to the last minor version.
-(7)
-TODO: forum centric + github + themis -> confusing
+%% Implementability
+OMOP has been available for 9 years. Its models and concepts provided are 
+license free, the community is large and has been very helpful. Full versions 
+are generally published annually and are not backwards compatible. 
+Minor versions are not guaranteed to be backwards compatible, although an effort 
+is made to ensure that current requests will not break. Micro-versions are 
+published irregularly and often, and contain small corrections or changes 
+that are backward compatible with the latest minor version \cite{omop-cdm}
 
+% TODO: forum centric + github + themis -> confusing
 
-Finally OHDSI provides ACHILLES as data quality tool for OMOP. It has been a
-common practice to run the tests and use this as a quality evaluation in
-numerous work \cite{achilles-papers}
-
-Achilles for quality assessment
-==============================
-A many previous authors, we used Achilles software to evaluate the data
-quality(4). It is open-source analytics software produced by OHDSI (6).  This
-tool is used for data characterization, data quality assessment (Achilles
-Heel), and the visualization of observational health data (6).  ACHILLES
-calculates summary statistics and includes a unique function for checking data
-quality, named Achilles Heel. 
-Other team used this tool to practice data quality assess(4).
-Achilles Heel issued x errors and y warnings.
-
-- 18h 50k patients: this testifies the model needs structural optimisations
-- difficulté pour ajoute fr. 
-- extension achilles how to ?
-- comparison with other paper about error/warnings. (Korean Yoon 36->28 errors)
-TODO: minimize achille errors  (12->? errors)
 
 \subsection{Contribution}
 
-The \emph{denormalized derived} tables appears to improves the computations
-costs and the verbosity of the SQL queries. In addition the resulting tables
-are much more human readily with the label of the concepts directly in the fact
-table. Hence a bit of denormalization improves greatly the experience of the
-data scientist by adding some redundancy in the data while not breaking
-existing SQL queries. The drawback is it would make it more tricky to update
-and keep the dataset consistent - which is non applicable because OMOP is
-generally a static dataset.
-The \emph{microbiology derived} table simplifies the experience for
-data-scientists.
+\emph{Denormalized derived} tables improve calculation costs and SQL query verbosity. 
+In addition, the resulting tables are much more human readable with the concept 
+label directly in table and greatly reduces joins. Therefore, a little 
+denormalization greatly improves the data scientist's experience and the simplicity
+ by adding some redundancy in the data while not interrupting existing SQL queries. 
+Moreover, these normalized views are backward compatible and remain 
+standardized allowing the creation of multicentric algorithms.
 
-We provided many derived values. Community is welcome to improve it
-- From noteevents : weight, height, LVEF
-- From measurement : SOFA, IGSII, F/P, corrected Ca / K, BMI, corrected osmolarity
+\emph{Materialized derived views} from microbiologyevents and icustays simplify 
+the experience for scientists. The community should do more.
+                    
+As indicated in the methods section, we have provided many \emph{derived values}. 
+Again, the community is welcome to evaluate and improve them.   
 
-We also provided materialized views with denormalized structures : microbiology tables
-This is a more ICU centric data structures that may help for analytics.
-
-%others
-%######
-
-- ethnicity\_concept\_id : only two strange concept\_name Hispanic or non\_Hispanic
 
 \subsection{Analytics}
-
-- French Paris hospital organized a datathon with MIMIC-OMOP
-25 teams, 160 participants had 48 hours to undertake a clinical project using the OMOP MIMIC database thought 15000 requests. They had the opportunity to create mixed teams : clinicians brought the questions which need data mining, along with their expertise of the data ; data scientists judged the technical feasibility and eventually implement the various analysis needed
-This datahon had tested OMOP model in real statistical condition. A datathon was organised in collaboration with the MIT.(3)
-
-- AP-HP calculation clusters, able to access to the data pre-loaded in Jupyter environments, where will be installed the most popular tools and libraries in R and Python, with Hadoop Spark
-
-schema big data platform
-
-MIMIC-OMOP dataset was 10 GO sized as ORC format. On the other side the same
-dataset is sized 400 GO on a PGSQL instance. Generating the indexes
-ORC automatically generates indexing. However these are much light than the
-PGSQL btree indexes specified by the OMOP DDL.
-
-Writing standard queries (ie: with standard concepts) need to be familiar with
-the concept\_relationship design and also master graph nature of some
-terminology such SNOMED-CT in order to grab all potential codes that might be
-related to the one analysts think of primarily. This complexity is inherent of
-terminology complexity and the closure table \ref{closure-table} design handle
-perfectly.
+The French Hospital of Paris (AP-HP) organized a datathon with MIMIC-OMOP. 
+25 teams, 160 participants had 48 hours to undertake a clinical project using 
+the database MIMIC-OMOP through 15000 requests. They had the opportunity to 
+create mixed teams: clinicians brought the issues that required data mining, 
+as well as their data expertise; data scientists judged the technical feasibility 
+and finally implemented the various analyses needed. Writing standard queries 
+(i.e. with standard concepts) requires knowing the organization of relational models 
+(SQL) and also mastering the graphical nature of certain terminologies such as 
+SNOMED-CT in order to capture all potential codes that might be related to the one 
+analysts think of first. This complexity is inherent in terminology complexity 
+and the closure table \ref{closure-table}. It is therefore not specific to OMOP 
+or MIMIC-OMOP. 
+Overall the teams found MIMIC-OMOP easy to learn.
+All teams managed to produce results at the end of the datathon.
