@@ -1,97 +1,116 @@
 % ETL state
-The choice of the ELT has several advantages over using a dedicated ETL
-software. It factorizes both people knowledges and computer resources allowing
-analysts to become implementers and review the code or contribute to the
-transformation with SQL as single language and technology.
+The choice of ELT has several advantages over the use of dedicated ELT/ETL 
+software. It factors both people's knowledge and computer resources allowing 
+analysts to become implementers and revise code or contribute to transformation 
+with SQL as the unique language and technology.
 
 % Organisation of the code
-By choosing a public git repository for both documentation and source code
-support this allows analysts to learn about the project and also learn how to
+By choosing a public git repository for documentation and source code support, 
+this allows analysts to learn more about the project and learn how to 
 contribute \cite{mimic-git}.
 
 % Choice of ELT
 
 % Data quality
-Any data transformation is susceptible to comes with bugs that can have huge
-impact in medical research. The RDBMS basements such transactions,
-normalisation and integrity constraints are built-in safeguards that have been
-useful along the process. Besides the implemented unit-tests ensures pasts or
-futures bugs are behind us. A ideal but complex \cite{johnson-reprod}
-validation method would be to reproduce existing studies on OMOP and make sure
-results are consistent but yet only data distribution concordance have been
-verified.
+Any data transformation is likely to generate bugs that can have a huge impact 
+in medical research. The foundations of the RDBMS, such as transactions, 
+standardization and integrity constraints, are integrated safeguards that have
+ been useful throughout the process. In addition to the implemented, 
+unit tests ensure that past or future bugs are behind us. An ideal but complex 
+validation method \cite{johnson-reprod} would be to replicate existing OMOP 
+studies and ensure that the results are consistent. 
+
+
+
 
 % ELT Time
-The computation time of the ETL on the PGSQL instance on a modest personal
-computer is compatible with a community work where collaborator can clone the
-source code and setup a development instance to reproduce or improve the work.
-The choice of the ELT based mostly in SQL code lets end users with SQL
-background only to review and enhance the work. As a result, the targeted
-community is as broad as possible and we expect translational profiles to get
-involved.
+The calculation time of the ETL on the PGSQL instance on a modest personal 
+computer is compatible with a community work where the collaborator can clone 
+the source code and configure a development instance to reproduce or improve 
+the work. The choice of ELT based mainly on SQL code allows end users with 
+SQL background only to review and improve the work. 
+As a result, the target community is as broad as possible and we expect 
+translation profiles to be involved.
+
+
+
+
 
 % SQL: a choice for future
-The datathon has shown that distributed platforms with commodity hardware
-provides SQL tools allowing OLAP analysis with great performances that overcome
-OLTP RDBMS weaknesses. Hence it takes advantage of SQL language analytics
-features such grouping, windowing, joining and mathematic functions that often
-lack in NOSQL databases.
+The datathon showed that platforms distributed with basic hardware provide SQL 
+tools for OLAP analysis with excellent performance that overcome OLTP RDBMS 
+weaknesses. Therefore, it takes advantage of SQL language analysis functions 
+such as grouping, windowing, assembling and mathematical functions that are 
+often missing in NOSQL databases.
 
 % about derived tables
-It is important that OMOP keeps a level of normalisation in order to simplify
-the ETL and make it consistent. However once done, it is judicious to give
-access to data-scientist to more denormalized tables and more specialized
-tables. Multiple concerns exists about OMOP performances and optimization.
-However there will never be a perfect multi-use case table, and this is the
-reponsibility of the data scientist to build his own tables, simplified,
-specialized for his research and answer efficiently and clearly his needs.
+It is important that OMOP maintains a level of standardisation in order to 
+simplify ETL and make it consistent. However, once done, it makes sense to give 
+access to scientific data at more denormalized and special tables. 
+There are many concerns about OMOP's performance and optimization. However, 
+there will never be a perfect multi-purpose case table, and it is the 
+responsibility of the data scientist to build his own, simplified, specialized 
+tables for his research and to respond effectively and clearly to his needs.
+
+
 
 % About derived data
-Derived data integrates quite well in OMOP. We made use of note\_nlp to store
-information derived from notes, measurement to store numerical information and
-cohort\_attributes to store scores. However it is still unclear if derived data
-should be stored per domain or if it should be stored in dedicated derived
-tables. We found out that there is a lack of tables to track provenance and
-description of such data. In addition we have been confused wether the derived
-information from notes should be directed into the dedicated domain table.
-However, notes may contain information from family members and they should'nt
-be lost or go into patient centered tables. For this reason, we think
+The derived data integrate quite well into OMOP. We used notei\_nlp to store 
+information derived from scores, measurement to store numerical information 
+and cohort\_attribute to store scores. However, it is not yet clear whether 
+derived data should be stored by domain or whether it should be stored in 
+dedicated derived tables. We found that there are no tables to track the source 
+and description of these data. 
+In addition, we do not know if the information derived from the notes should 
+be directed to the dedicated domain table. 
+However, the notes may contain information from family members and should not be 
+lost or found in patient-centred tables. 
+
 
 % missing in the model
 %% data quality
-An other missing aspect is some quality tables to assess and measure the
-quality of data. MIMIC had some column to keep track of corrupted information.
-It would be of interest to be able to keep the messy data and allow research on
-data cleaning and data quality and avoid removing information.
+Another missing aspect is the quality tables for assessing and measuring data 
+quality. MIMIC had a column to keep track of corrupted information. 
+It would be interesting to be able to keep the disordered data and allow 
+research on data cleaning and quality and avoid deleting data in training.
+
+
 
 %% mecanisms for real time ingestion of data, such version control
-Last but not least, as stated in the introduction a good CDM for ICU would
-allow near realtime early warning systems and model inference on fresh data.
-OMOP is clearly designed to provide static dataset and does not have mecanisms
-for realtime ingestion, and data version control - it is not a datawarehouse.
-Making analysis on statics datasets is essential in order to have reproducible
-results. However when the algorithm needs to be moved at bed side, there is a
-need for a freshness of data, and a way to identify the patient that OMOP won't
-easily provide. That being said a solution such FHIR is a great way to
-implement realtime inference from EHR data and that's how FHIR and OMOP are
-complementary that yet have been investigated \cite{gatech} but needs further
-optimizations.
+Last but not least, as noted in the introduction, a good CDM for the ICU would 
+allow for near real-time early warning systems and inference modelling on fresh 
+data. OMOP is clearly designed to provide a static data set and does not have 
+real-time ingestion and data version control mechanisms - it is not a data 
+warehouse. Analysis of static data sets is essential for reproducible results. 
+However, when the algorithm needs to be moved to the bed side, it is necessary 
+to have fresh data and a means of identifying the patient that OMOP will not 
+easily provide. That said, a solution like FHIR is a great way to implement 
+real-time inference from EHR data, and that's how FHIR and OMOP are complementary. 
+This has already been studied \cite{gatech}  but needs further optimisation.
 
 % OMOP community organisation
-During this work the OMOP forum was very active. Working groups.  It is a
-challenge to manage such large community from all moderator, contributors and
-from a user perspective. It appears it is not doable for most of people to get
-involved. The forum is full of details and information. It contrasts with the
-implementation guide that suffer from not being as well detailed. We think the
-OMOP community would greatly benefit from systematic and synthetic
-synchronisation between forum, mailing lists, github and end user
-documentation.
+During this work, the OMOP forum was very active. It is a challenge to manage 
+such a large community of all moderators, contributors and from the user's 
+point of view. It seems that it is not possible for most people to get involved. 
+The forum is full of details and in training. It contrasts with the implementation 
+guide, which suffers from not being as detailed. We believe that the OMOP 
+community would greatly benefit from a systematic and synthetic synchronization 
+between the forum, mailing lists, github and end user documentation.
+
+
 % help from datathon: specialized mapping
 
 % Documentation need
-The datathon real life test has revealed the strong need to make the physical
-data model including comments on columns and table accessible and we found out
-that the open-source tool schema spy was of good help. In addition limit the
-misunderstanding by delivering SQL examples and we found out that the git
-repository is the best place for documenting and interact with the community.
+The real life test of the datathon revealed the strong need to make the physical 
+data model accessible, including comments on columns and tables, and we 
+discovered that the open-source tool schema spy tool was a good help. 
+In addition, we found that the git repository is the best place to document 
+and interact with the community.
 
+% data / algorithm sharing
+The conversion of MIMIC to OMOP format is finally the first step in our plan. 
+In France, the exchange of patient data between centres is rightly very regulated. 
+We think that MIMIC-OMOP could be used to learn OMOP and build algorithms. 
+Then it is necessary to send the data we imagine to send the algorithms in the 
+centers having transcribed their database in OMOP format. 
+This would resolve confidentiality issues.
