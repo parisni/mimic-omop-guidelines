@@ -1,6 +1,6 @@
 \subsection{Data Transformation}
 
-All processes are freely accessible to the public via the github website
+All \textbf{transformation processes} are freely accessible to the public via the github website
  \cite{mimic-omop-website} maintained by MIT-LCP \cite{mimic-nature}. 
 The repository is based on git and is designed for sharing, improvement, 
 collaboration and reproducible work. Indeed, github is archived on a universal 
@@ -64,9 +64,10 @@ the online documentation. The character \textit{offset} column has been divided 
 integer type columns because the offset word is a SQL reserved word and it makes 
 sense to fill the resulting \textit{offset\_begin} and \textit{offset\_end} 
 resulting columns.
+\\
 
 % Structural Transformations
-The \textbf{structural} transformation took place in several phases.
+The \textbf{structural transformation} took place in several phases.
 The first phase consists of looping each MIMIC table and choosing an equivalent 
 location in OMOP for each column. In general, the MIMIC documentation and the OMOP 
 documentation were sufficiently informative. In several cases, we needed 
@@ -99,6 +100,7 @@ been removed because it is a table derived from the transfer table \cite{icustay
 and we decided to assign a new \textit{visit\_detail} for each ICU stay (based on 
 the transfer table) while mimic preferred to assign a new icustay stay if a new 
 admission occurs > 24h after the end of the previous stay.
+\\
 
 % INUTILE? visit\_detail : admitting\_source\_value, admitting\_source\_concept\_id, admitting\_concept\_id, discharge\_to\_source\_value, discharge\_to\_source\_concept\_id, discharge\_to\_concept\_id provide redundant information from visit\_occurrence. We didn't populate it.
 % INUTILE? observation\_period provide duplicate informations with visit\_occurrence : we fill this table to respect the OMOP model and toolsii
