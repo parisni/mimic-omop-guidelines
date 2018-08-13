@@ -61,7 +61,7 @@ and the \textit{visit\_detail} tables have been corrected accordingly some discu
 the OHDSI forum. 
 The \textit{nlp\_note} table has been completed by fields corresponding to 
 the online documentation. The character \textit{offset} column has been divided into two 
-ingeter type columns because the offset word is a SQL reserved word and it makes 
+integer type columns because the offset word is a SQL reserved word and it makes 
 sense to fill the resulting \textit{offset\_begin} and \textit{offset\_end} 
 resulting columns.
 
@@ -96,7 +96,7 @@ the detail of the \textit{visit\_detail}.
 We added emergency stays as a normal location for patients throughout their 
 hospital stay (unlike what had been done by MIMIC). Icustays raw mimic table has 
 been removed because it is a table derived from the transfer table \cite{icustays-doc} 
-and we decided to assign a new \textit{visiti\_detail} for each ICU stay (based on 
+and we decided to assign a new \textit{visit\_detail} for each ICU stay (based on 
 the transfer table) while mimic preferred to assign a new icustay stay if a new 
 admission occurs > 24h after the end of the previous stay.
 
@@ -159,7 +159,7 @@ duplicate informations from \textit{visit\_occurrence} table.
 For \textit{admitting\_concept\_id} and \textit{discharge\_to\_concept\_id} columns, 
 we extended the dictionary to track bed transfers and room transfers. 
 For \textit{visit\_type\_concept\_id} column we assigned a new concept for any level of 
-granularity necessary for your use case (ward, bed...)
+granularity necessary for your use case (ward, bed\ldots)
 
 \subsection{Contribution}
 
@@ -183,7 +183,7 @@ on the original OMOP format. Microbiologicalevents table is a reorganization of 
 measurement table datas of microorganisms and associated susceptibility testing 
 antibiotics and is based on the MIMIC \textit{microbiologicalevents} table. 
 The OMOP icustays table allows to quickly obtain the patients admitted in 
-resuscitation and is inspired by the MIMIC \texit{icustays} tables.
+resuscitation and is inspired by the MIMIC \textit{icustays} tables.
 
 % note nlp
 The \textit{note\_nlp} table was originally designed to store final or intermediate 
