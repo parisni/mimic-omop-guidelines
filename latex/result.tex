@@ -46,7 +46,7 @@ Several articles have attempted to assess the quality of the CDM (8, 9).
 The criteria developed by Khan and Al\cite{khan-quality}, which refer to the metrics 
 Moody and Shanks \cite{moody-quality}, have been adapted for our study. 
 Our study does not want to assess the quality of the CDM. But we adapt these 
-criteria to assess the quality of the data transformation (\ref{table:quality}).
+criteria to assess the quality of the data transformation (table \ref{table:quality}).
 Comprehensiveness, integrity, flexibility, integration, implementability 
 will be discussed in this part (data transformation). 
 Understandability and simplicity will be assessed in the analytical parts, 
@@ -60,8 +60,10 @@ All the code to create these statistics is provided on the github repository
 % Please add the following required packages to your document preamble:
 % \usepackage[normalem]{ulem}
 % \useunder{\uline}{\ul}{}
+\tiny
 \begin{table*}[t]
-\tbl{Data Transformation Quality Evaluation Metrics}{%
+%\tbl{Data Transformation Quality Evaluation Metrics}{%
+\caption{Data Transformation Quality Evaluation Metrics}
 \begin{tabular}{@{}ll@{}}\toprule
 Data Model Dimension              & Descriptions                                                                                                      \\\colrule
 Completeness - structural mapping & Domain coverage : coverage of sources domains that are accommodated by the standard OMOP model                    \\
@@ -72,13 +74,14 @@ Integration                       & The capacity of the standard model to use mu
 Implementability                  & The stability of the models, the community, the cost of adoption                                                  \\
 Understandability                 & The ease of the standard model to be understood                                                           	      \\
 Simplicity                        & The ease of querying the standard model - the model should contains the minimum of concepts and relationship    \\\botrule 
-\end{tabular}}
+\end{tabular}
 \label{table:quality}
 \end{table*}
-
+\normalsize
 
 %% structural mapping
 %      Ajouter schema : MIMIC-OMOP equivalence.png
+
 The table \ref{table:dispatch} shows the structural mapping, i.e. where the 
 information goes and links between the MIMIC tables and the MIMICIII-OMOP tables go.
 The largest relationship is the measuring table with 366272371 rows.
@@ -89,7 +92,8 @@ All MIMIC domains are linked to the OMOP domain.
 Structural mapping was not a problem for our work.
 
 \begin{table*}[t]
-\tbl{MIMIC to OMOP data flows}{
+%\tbl{MIMIC to OMOP data flows}{
+\caption{MIMIC to OMOP data flows}
 \begin{tabular}{@{}lll@{}}\toprule
 OMOP tables           & Number of rows & MIMIC tables                                             \\\colrule
 PERSONS               & 46520          & patients, admissions                                     \\
@@ -108,17 +112,20 @@ CARE\_SITE            & 93             & transfers, service                     
 PROVIDER              & 7567           & caregivers                                               \\
 OBSERVATION\_PERIOD   & 58976          & patients, admissions                                     \\
 SPECIMEN              & 39874171       & chartevents, labevents, microbiologyevents               \\\botrule
-\end{tabular}}
+\end{tabular}
 \label{table:dispatch}
 \end{table*}
-                                                                    
+ 
+
+                                                                   
 %% Semantic  mapping
-The table \label{table:statistics} presents the basic characterization of the 
+The table \ref{table:statistics} presents the basic characterization of the 
 MIMIC-OMOP population in relation to the MIMIC and assesses the overall quality of 
 our semantic mapping.
 
 \begin{table*}[t]
-\tbl{Baseline characteristics MIMIC versus OMOP}{
+%\tbl{Baseline characteristics MIMIC versus OMOP}{
+\caption{Baseline characteristics MIMIC versus OMOP}
 \begin{tabular}{@{}lll@{}}\toprule
 items                                  & MIMIC                       & OMOP                               \\\colrule
 Persons (Number)                       & 46.520                      & 46.520                             \\
@@ -144,7 +151,7 @@ Lab measurements per admissions (mean) & 478                         & 678      
 Procedures per admissions (mean)       & 4.6                         & 4.6                                \\
 Drugs per admissions (mean)            & 82.8                        & 82.8                               \\
 Exit dignosis per admissions (mean)    & 11.0                        & 11.0                               \\\botrule
-\end{tabular}}
+\end{tabular}
 \label{table:statistics}
 \end{table*}
 
@@ -176,14 +183,15 @@ The following table \ref{table:lostrows} shows the number of lines with deleted
 errors.
 
 \begin{table*}[t]
-\tbl{Row level Data lost}{
+%\tbl{Row level Data lost}{
+\caption{Row level Data lost}{
 \begin{tabular}{@{}ll@{}}\toprule
 Relations           & Error Percentage \\\colrule
 inputevents\_mv     & 10,00\%          \\
 chartevents         & 0.04\%           \\
 procedureevents\_mv & 3,00\%           \\
 Note                & 0.04\%           \\\botrule
-\end{tabular}}
+\end{tabular}
 \label{table:lostrows}
 \end{table*}
 
@@ -210,7 +218,8 @@ Temp Rectal, Blood Temperature CCO (C)). Our mapping links all this to a single
 concept called temperature. All units have been converted to Celcius.
 
 \begin{table*}[t]
-\tbl{Terminology Mapping coverage}{
+%\tbl{Terminology Mapping coverage}
+\caption{Terminology Mapping coverage}
 \begin{tabular}{@{}lllll@{}}\toprule
 Omop tables (domain)   & Total\_records & \% Mapped\_records  & Total\_concepts\_source & \% Mapped\_concepts\_source  \\\colrule
 PERSONS                & 93040          & 100,00\%            & 43                      & 100,00\%                     \\
@@ -223,7 +232,7 @@ PROCEDURE\_OCCURRENCE  & 1063525        & 99,00\%             & 2218            
 CONDITION\_OCCURRENCE  & 716595         & 92,00\%             & 6984                    & 95,00\%                      \\
 CARE\_SITE             & 144            & 100,00\%            & 58                      & 100,00\%                     \\
 SPECIMEN               & 39874171       & 70,00\%             & 92                      & 77,00\%                      \\\botrule
-\end{tabular}}
+\end{tabular}
 \label{table:mapping}
 \end{table*}
 
@@ -237,22 +246,32 @@ for microbiology / antibiograms and for visit\_detail and caresite links.
 The following SQL query shows how a microorganism is linked to its susceptibility 
 test by a fact\_relationship.
 
+\small
 \begin{lstlisting}[language=sql]
-SELECT measurement_source_value, value_as_concept_id, concept_name
+SELECT measurement_source_value
+, value_as_concept_id
+, concept_name
 FROM measurement
-JOIN concept resistance ON value_as_concept_id = concept_id
-JOIN fact_relationship ON measurement_id =  fact_id_2
+JOIN concept resistance 
+     ON value_as_concept_id = concept_id
+JOIN fact_relationship 
+     ON measurement_id =  fact_id_2
 JOIN
 (
-	SELECT measurement_id AS id_is_staph
-	FROM measurement m
-	WHERE measurement_type_concept_id = 2000000007        			-- concept.concept_name = 'Labs - Culture Organisms'
-	AND value_as_concept_id = 4149419                     			-- concept.concept_name = 'staph aureus coag +'
-	AND measurement_concept_id = 46235217               			-- concept.concept_name = 'Bacteria identified in Blood product unit.autologous by Culture';
-
+     SELECT measurement_id AS id_is_staph
+     FROM measurement m
+     WHERE measurement_type_concept_id = 2000000007        			
+        -- 'Labs - Culture Organisms'
+     AND value_as_concept_id = 4149419                     			
+        -- 'Staph aureus coag +' 
+     AND measurement_concept_id = 46235217               			
+        -- 'Bacteria identified in Blood product 
+           unit.autologous by Culture'
 ) staph ON id_is_staph = fact_id_1;
-WHERE measurement_type_concept_id = 2000000008        			        -- concept.concept_name = 'Labs - Culture Sensitivity'
+WHERE measurement_type_concept_id = 2000000008        			        
+  -- concept.concept_name = 'Labs - Culture Sensitivity'
 \end{lstlisting}
+\normalsize
 
 %% Integration
 OMOP's terminology coverage has already been rated as excellent \cite{omop-vs-pcornet}. 

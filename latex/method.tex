@@ -96,7 +96,7 @@ the detail of the \textit{visit\_detail}.
 We added emergency stays as a normal location for patients throughout their 
 hospital stay (unlike what had been done by MIMIC). Icustays raw mimic table has 
 been removed because it is a table derived from the transfer table \cite{icustays-doc} 
-and we decided to assign a new \textit{visit_detail} for each ICU stay (based on 
+and we decided to assign a new \textit{visiti\_detail} for each ICU stay (based on 
 the transfer table) while mimic preferred to assign a new icustay stay if a new 
 admission occurs > 24h after the end of the previous stay.
 
@@ -154,11 +154,11 @@ sufficient to distinguish them. We have added some.
 
 % Results 
 %<!-- Fournir un example de visit\_detail-->
-The actual \textit{visit_detail} table does not introduce relevant information and 
+The actual \textit{visit\_detail} table does not introduce relevant information and 
 duplicate informations from \textit{visit\_occurrence} table. 
 For \textit{admitting\_concept\_id} and \textit{discharge\_to\_concept\_id} columns, 
 we extended the dictionary to track bed transfers and room transfers. 
-For \textit{visit\_type\_concept\_id column we assigned a new concept for any level of 
+For \textit{visit\_type\_concept\_id} column we assigned a new concept for any level of 
 granularity necessary for your use case (ward, bed...)
 
 \subsection{Contribution}
