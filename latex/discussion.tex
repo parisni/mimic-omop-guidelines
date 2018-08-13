@@ -53,18 +53,13 @@ responsibility of the data scientist to build his own, simplified, specialized
 tables for his research and to respond effectively and clearly to his needs.
 
 
-
 % About derived data
-The derived data integrate quite well into OMOP. We used notei\_nlp to store 
-information derived from scores, measurement to store numerical information 
-and cohort\_attribute to store scores. However, it is not yet clear whether 
-derived data should be stored by domain or whether it should be stored in 
-dedicated derived tables. We found that there are no tables to track the source 
-and description of these data. 
-In addition, we do not know if the information derived from the notes should 
-be directed to the dedicated domain table. 
-However, the notes may contain information from family members and should not be 
-lost or found in patient-centred tables. 
+The derived data integrate quite well into OMOP. We used \textit{note\_nlp} to
+store information derived from scores, \textit{measurement} to store numerical
+information and \textit{cohort\_attribute} to store scores. However, it is not
+yet clear whether derived data should be stored by domain or whether it should
+be stored in dedicated derived tables. We found that there are no tables to
+track the source and description of these data. 
 
 
 % missing in the model
