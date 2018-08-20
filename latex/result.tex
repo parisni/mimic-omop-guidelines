@@ -6,6 +6,8 @@
 %% flexibility
 % 3. Analytics
 %% Understandability and simplicity 
+The evaluation of a system and a structural model is rather difficult \cite{moody-quality} 
+but we have tried to evaluate it through several axes.
 Several articles have attempted to assess the quality of the CDM \cite{kahn_data_2012,omop-vs-pcornet}. 
 The criteria developed by Khan and Al\cite{khan-quality}, which refer to the metrics 
 Moody and Shanks \cite{moody-quality}, have been adapted for our study. 
@@ -13,8 +15,8 @@ Our study does not want to assess the quality of the CDM. But we adapt these
 criteria to assess the quality of the data transformation (table \ref{table:quality}).
 Comprehensiveness, integrity, flexibility, integration, implementability 
 will be discussed in this part (data transformation). 
-Understandability and simplicity will be assessed in the analytical parts, 
-in the actual application.
+Understandability and simplicity will be assessed in the analytical parts, in
+the actual application.
 
 %
 % 1. Data Transformation
@@ -28,17 +30,14 @@ The MIMIC to OMOP conversion was performed by two developers (a data engineer
 and an intensivist) for an estimated 500 hours. This includes ELT, git 
 documentation, concept mapping, contributions and unit tests. 
 ELT (with unit tests and generation of ready-to-load archives) on the subset 
-of 100 patients takes five minutes and enables rapid development cycles. 
-On all MIMIC data, the ELT lasts 3 hours. The resulting csv archive is about 
-the same size as the original archive, and it is also the same once 
-instantiated in PGSQL and indexed.
+of 100 patients takes five minutes and enables fast development cycles. 
+On all MIMIC data, the ELT lasts 3 hours. The resulting csv archive is about
+the same size as the original archive, and it is also the same once loaded in
+PGSQL and indexed.
 
 The OMOP-CDM contains 37 data tables. We populated 19 tables. 
 From MIMIC, we create a standardized model called MIMIC-OMOP.
 
-% Data transformations
-The evaluation of a system and a structural model is rather difficult \cite{moody-quality} 
-but we have tried to evaluate it through several axes.
 
 %% Unit tests
 The first axe was the unit tests. During the all ETL process we created a lot 
@@ -75,7 +74,7 @@ All the code to create these statistics is provided on the github repository
 \begin{tabular}{@{}ll@{}}\toprule
 Data Model Dimension              & Descriptions                                                                                                      \\\colrule
 Completeness - structural mapping & Domain coverage : coverage of sources domains that are accommodated by the standard OMOP model                    \\
-Completeness - semantic mapping   & Data coverage : coverage of sources data concepts that mapped to standard OMOP concept                           \\
+Completeness - conceptual mapping & Data coverage : coverage of sources data concepts that mapped to standard OMOP concept                           \\
 Integrity                         & "Meaningful data relationships and constraints that uphold th eintent of the data-s original purpose" Khan and Al \\
 Flexibility                       & The ease to expand the standard model for new datatypes, concepts                                                 \\
 Integration                       & The capacity of the standard model to use multiples terminology and links its to standard one                     \\
@@ -203,7 +202,7 @@ Note                & 0.04\%           \\\botrule
 \label{table:lostrows}
 \end{table*}
 
-%% terminology mapping coverage
+%% conceptual mapping coverage
 
 This table \ref{table:mapping} shows the results of automatic and manual mapping. 
 The unmapped concepts are the concept id = 0 (no mapping concept). 
@@ -251,11 +250,10 @@ Two important tables are provided with OMOP models to match the relationships :
 concept\_relationship and fact\_relationship. It is used to represent the 
 relationship between the data. We used it to bind the drugs into a solution, 
 for microbiology / antibiograms and for visit\_detail and caresite links. 
-The following SQL query shows how a microorganism is linked to its susceptibility 
+The following SQL query~\ref{lst:original} shows how a microorganism is linked to its susceptibility 
 test by a fact\_relationship.
 
-\small
-\begin{lstlisting}[language=sql]
+\begin{lstlisting}[language=sql,basicstyle=\scriptsize,caption=Original table microbiology SQL query,label={lst:original}]
 SELECT measurement_source_value
 , value_as_concept_id
 , concept_name
@@ -266,20 +264,48 @@ JOIN fact_relationship
      ON measurement_id =  fact_id_2
 JOIN
 (
-     SELECT measurement_id AS id_is_staph
-     FROM measurement m
-     WHERE measurement_type_concept_id = 2000000007        			
-        -- 'Labs - Culture Organisms'
-     AND value_as_concept_id = 4149419                     			
-        -- 'Staph aureus coag +' 
-     AND measurement_concept_id = 46235217               			
-        -- 'Bacteria identified in Blood product 
-           unit.autologous by Culture'
+   SELECT measurement_id AS id_is_staph
+   FROM measurement m
+   WHERE TRUE 
+   AND measurement_type_concept_id = 2000000007        			
+      -- 'Labs - Culture Organisms'
+   AND value_as_concept_id = 4149419                     			
+      -- 'Staph aureus coag +' 
+   AND measurement_concept_id = 46235217               			
+      -- 'Bacteria identified in Blood product 
+         unit.autologous by Culture'
 ) staph ON id_is_staph = fact_id_1;
-WHERE measurement_type_concept_id = 2000000008        			        
+WHERE TRUE
+AND  measurement_type_concept_id = 2000000008        			        
   -- concept.concept_name = 'Labs - Culture Sensitivity'
 \end{lstlisting}
-\normalsize
+
+\begin{lstlisting}[language=sql,basicstyle=\scriptsize,caption=Optimized table microbiology SQL query,label={lst:optimized}]
+SELECT measurement_source_value
+, value_as_concept_id
+, concept_name
+FROM measurement
+JOIN concept resistance 
+     ON value_as_concept_id = concept_id
+JOIN fact_relationship 
+     ON measurement_id =  fact_id_2
+JOIN
+(
+   SELECT measurement_id AS id_is_staph
+   FROM measurement m
+   WHERE TRUE 
+   AND measurement_type_concept_id = 2000000007        			
+      -- 'Labs - Culture Organisms'
+   AND value_as_concept_id = 4149419                     			
+      -- 'Staph aureus coag +' 
+   AND measurement_concept_id = 46235217               			
+      -- 'Bacteria identified in Blood product 
+         unit.autologous by Culture'
+) staph ON id_is_staph = fact_id_1;
+WHERE TRUE
+AND  measurement_type_concept_id = 2000000008        			        
+  -- concept.concept_name = 'Labs - Culture Sensitivity'
+\end{lstlisting}
 
 %% Integration
 OMOP's terminology coverage has already been rated as excellent \cite{omop-vs-pcornet}. 
