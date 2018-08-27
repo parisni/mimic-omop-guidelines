@@ -6,17 +6,14 @@
 %% flexibility
 % 3. Analytics
 %% Understandability and simplicity 
-The evaluation of a system and a structural model is rather difficult \cite{moody-quality} 
-but we have tried to evaluate it through several axes.
-Several articles have attempted to assess the quality of the CDM \cite{kahn_data_2012,omop-vs-pcornet}. 
-The criteria developed by Khan and Al\cite{khan-quality}, which refer to the metrics 
-Moody and Shanks \cite{moody-quality}, have been adapted for our study. 
-Our study does not want to assess the quality of the CDM. But we adapt these 
-criteria to assess the quality of the data transformation (table \ref{table:quality}).
-Comprehensiveness, integrity, flexibility, integration, implementability 
-will be discussed in this part (data transformation). 
-Understandability and simplicity will be assessed in the analytical parts, in
-the actual application.
+The results are presented accordingly to the method used in tree parts. The
+evaluation of a system and a structural model is rather difficult
+\cite{moody-quality}. Several articles have attempted to assess the quality of
+the CDM \cite{kahn_data_2012,omop-vs-pcornet}. The criteria developed by Khan
+and Al\cite{khan-quality}, which refer to the metrics Moody and Shanks
+\cite{moody-quality}, have been adapted to assess the quality of the data
+transformation (table \ref{table:quality}). Those metrics are mentionned in the
+results to bring some additional structure.
 
 %
 % 1. Data Transformation
@@ -26,21 +23,20 @@ the actual application.
 \subsection{Data Transformation}
 
 % General
-The MIMIC to OMOP conversion was performed by two developers (a data engineer 
-and an intensivist) for an estimated 500 hours. This includes ELT, git 
-documentation, concept mapping, contributions and unit tests. 
-ELT (with unit tests and generation of ready-to-load archives) on the subset 
-of 100 patients takes five minutes and enables fast development cycles. 
-On all MIMIC data, the ELT lasts 3 hours. The resulting csv archive is about
-the same size as the original archive, and it is also the same once loaded in
-PGSQL and indexed.
+%
 
+The MIMIC to OMOP conversion was performed by two developers (a data engineer
+and an intensivist) for 500 hours. This includes ELT, git documentation,
+concept mapping, contributions and unit tests. ELT (with unit tests and
+generation of ready-to-load archive) on the subset of 100 patients takes five
+minutes and enables fast development cycles. The ELT lasts 3 hours to process
+the whole MIMIC database. The resulting csv archive is about the same size as
+the original archive, and MIMIC-OMOP is also the same size as MIMIC once loaded
+in PGSQL and indexed.
 The OMOP-CDM contains 37 data tables. We populated 19 tables. 
-From MIMIC, we create a standardized model called MIMIC-OMOP.
-
 
 %% Unit tests
-The first axe was the unit tests. During the all ETL process we created a lot 
+The first axe was the unit tests. During the all ELT process we created a lot 
 of unit tests thanks to pgTap library. 
 All are available on our github \cite{mimic-omop-website}. All the test passed.
 
@@ -172,7 +168,7 @@ This table shows that the number of laboratory measurements
 per admission is increased. This is because the laboratory data from MIMIC 
 chartervents have been extracted and treated as a laboratory.
 
-%% Loss of datas                                        
+%% Loss of data
 We tried to estimate the percentage of records loaded from the source database 
 at MIMIC-OMOP. We estimate the percentage of columns and rows lost in 
 the process as other studies have done \cite{omop-nashville}.
