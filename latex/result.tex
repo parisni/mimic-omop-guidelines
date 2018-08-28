@@ -1,4 +1,3 @@
-%% Kahn
 % evaluation methods
 % 1. Data Transformation
 %%  Comprehensiveness, integrity, flexibility, integration, implementability 
@@ -6,63 +5,34 @@
 %% flexibility
 % 3. Analytics
 %% Understandability and simplicity 
-The results are presented accordingly to the method used in tree parts. The
+
+The results are presented in tree sections accordingly to the method. The
 evaluation of a system and a structural model is rather difficult
 \cite{moody-quality}. Several articles have attempted to assess the quality of
 the CDM \cite{kahn_data_2012,omop-vs-pcornet}. The criteria developed by Khan
 and Al\cite{khan-quality}, which refer to the metrics Moody and Shanks
 \cite{moody-quality}, have been adapted to assess the quality of the data
-transformation (table \ref{table:quality}). Those metrics are mentionned in the
-results to bring some additional structure.
+transformation (table \ref{table:quality}). Those metrics are mentionned along
+the results to bring some additional structure.
 
 %
-% 1. Data Transformation
-% 2. Contributions
-% 3. Analytics
+%  Data Transformation
 % 
 \subsection{Data Transformation}
 
-% General
+%
+% General Results
 %
 
 The MIMIC to OMOP conversion was performed by two developers (a data engineer
 and an intensivist) for 500 hours. This includes ELT, git documentation,
 concept mapping, contributions and unit tests. ELT (with unit tests and
-generation of ready-to-load archive) on the subset of 100 patients takes five
+generation of ready-to-load archive) on a subset of 100 patients takes five
 minutes and enables fast development cycles. The ELT lasts 3 hours to process
 the whole MIMIC database. The resulting csv archive is about the same size as
 the original archive, and MIMIC-OMOP is also the same size as MIMIC once loaded
 in PGSQL and indexed.
-The OMOP-CDM contains 37 data tables. We populated 19 tables. 
 
-%% Unit tests
-The first axe was the unit tests. During the all ELT process we created a lot 
-of unit tests thanks to pgTap library. 
-All are available on our github \cite{mimic-omop-website}. All the test passed.
-
-%% Achilles evaluation            
-The second axe was Achilles evaluation. Like many previous authors, 
-we used the Achille software to assess data quality \cite{achilles-evaluation}. 
-It is an open-source analysis software produced by OHDSI \cite{ohdsi-achilles}.
-This tool is used for data characterization, data quality assessment 
-(Achilles' heel) and health observation data visualization \cite{ohdsi-achilles}.
-It has been common practice to perform Achilles tests and use it as a 
-quality assessment in many works. Achilles Heel issued 12 errors and y warnings. 
-This result is correct compared to other studies \cite{achilles-evaluation}
-We believe that this tool has several limitations. It does not evaluate 
-the structural change, it is difficult to understand some error messages and 
-we decide to process more evaluation tests.     
-
-
-All the code to create these statistics is provided on the github repository 
-\cite{mimic-omop-website}.
-
-% Please add the following required packages to your document preamble:
-% \usepackage[normalem]{ulem}
-% \useunder{\uline}{\ul}{}
-% Please add the following required packages to your document preamble:
-% \usepackage[normalem]{ulem}
-% \useunder{\uline}{\ul}{}
 \tiny
 \begin{table*}[t]
 %\tbl{Data Transformation Quality Evaluation Metrics}{%
@@ -82,23 +52,41 @@ Simplicity                        & The ease of querying the standard model - th
 \end{table*}
 \normalsize
 
-%% structural mapping
+%% Unit tests
+The first axe was the unit tests. During the all ELT process we created a lot 
+of unit tests thanks to pgTap library. 
+All are available on our github \cite{mimic-omop-website}. All the test passed.
+
+All the code to create these statistics is provided on the github repository 
+\cite{mimic-omop-website}.
+
+%
+% Structural Mapping
 %      Ajouter schema : MIMIC-OMOP equivalence.png
 
-The table \ref{table:dispatch} shows the structural mapping, i.e. where the 
-information goes and links between the MIMIC tables and the MIMICIII-OMOP tables go.
-The largest relationship is the measuring table with 366272371 rows.
+The table \ref{table:dispatch} shows the structural mapping, i.e. where the
+information goes from the MIMIC to the MIMIC-OMOP tables.  Among of the 37 OMOP
+tables, the one related to hospital costs were not applicable, some related to
+derived data ware not populated and some tables related to vocabuary are
+pre-loaded with terminology informations. The 26 tables of MIMIC have been
+dispatched into 19 OMOP tables. The reduced number of tables results from the
+differences in design. OMOP stores all the terminologies into one table whereas
+MIMIC has one table for each typology and the same applies for facts data that
+are grouped by nature (such measurements) in OMMOP while MIMIC provides a table for each
 Since OMOP is a conceptual model, the same type of data goes into the same table. 
+The dispatching of informations reflects the different nature of both structure.
 The best example can be the measurement table which is field by 4 source tables. 
 That's because all numerical data should go to that table.
 All MIMIC domains are linked to the OMOP domain. 
 Structural mapping was not a problem for our work.
+The largest relationship is the measuring table with 366272371 rows.
 
 \begin{table*}[t]
 %\tbl{MIMIC to OMOP data flows}{
 \caption{MIMIC to OMOP data flows}
 \begin{tabular}{@{}lll@{}}\toprule
 OMOP tables           & Number of rows & MIMIC tables                                             \\\colrule
+CONCEPT               & 46520          & d\_cpt, d\_icd\_procedures, d\_items, d\_labitems                                     \\
 PERSONS               & 46520          & patients, admissions                                     \\
 DEATH                 & 14849          & patients, admissions                                     \\
 VISIT\_OCCURRENCE     & 58976          & admissions                                               \\
@@ -120,11 +108,12 @@ SPECIMEN              & 39874171       & chartevents, labevents, microbiologyeve
 \end{table*}
  
 
-                                                                   
-%% Semantic  mapping
+%                                                                   
+% Semantic Mapping
+%
 The table \ref{table:statistics} presents the basic characterization of the 
 MIMIC-OMOP population in relation to the MIMIC and assesses the overall quality of 
-our semantic mapping.
+structural mapping.
 
 \begin{table*}[t]
 %\tbl{Baseline characteristics MIMIC versus OMOP}{
@@ -198,8 +187,7 @@ Note                & 0.04\%           \\\botrule
 \label{table:lostrows}
 \end{table*}
 
-%% conceptual mapping coverage
-
+%% Conceptual Mapping
 This table \ref{table:mapping} shows the results of automatic and manual mapping. 
 The unmapped concepts are the concept id = 0 (no mapping concept). 
 To improve this mapping, we need collaborative work. Terminology mapping was 
@@ -276,32 +264,6 @@ AND  measurement_type_concept_id = 2000000008
   -- concept.concept_name = 'Labs - Culture Sensitivity'
 \end{lstlisting}
 
-\begin{lstlisting}[language=sql,basicstyle=\scriptsize,caption=Optimized table microbiology SQL query,label={lst:optimized}]
-SELECT measurement_source_value
-, value_as_concept_id
-, concept_name
-FROM measurement
-JOIN concept resistance 
-     ON value_as_concept_id = concept_id
-JOIN fact_relationship 
-     ON measurement_id =  fact_id_2
-JOIN
-(
-   SELECT measurement_id AS id_is_staph
-   FROM measurement m
-   WHERE TRUE 
-   AND measurement_type_concept_id = 2000000007        			
-      -- 'Labs - Culture Organisms'
-   AND value_as_concept_id = 4149419                     			
-      -- 'Staph aureus coag +' 
-   AND measurement_concept_id = 46235217               			
-      -- 'Bacteria identified in Blood product 
-         unit.autologous by Culture'
-) staph ON id_is_staph = fact_id_1;
-WHERE TRUE
-AND  measurement_type_concept_id = 2000000008        			        
-  -- concept.concept_name = 'Labs - Culture Sensitivity'
-\end{lstlisting}
 
 %% Integration
 OMOP's terminology coverage has already been rated as excellent \cite{omop-vs-pcornet}. 
@@ -327,6 +289,9 @@ that are backward compatible with the latest minor version \cite{omop-cdm}
 
 % TODO: forum centric + github + themis -> confusing
 
+%
+% Contributions
+%
 
 \subsection{Contribution}
 
@@ -341,11 +306,25 @@ standardized allowing the creation of multicentric algorithms.
 \emph{Materialized derived views} from microbiologyevents and icustays simplify 
 the experience for scientists. The community should do more.
                     
+\begin{lstlisting}[language=sql,basicstyle=\scriptsize,caption=Optimized table microbiology SQL query,label={lst:optimized}]
+--
+--TODO: write the query
+--
+\end{lstlisting}
 As indicated in the methods section, we have provided many \emph{derived values}. 
 Again, the community is welcome to evaluate and improve them.   
 
 
+%
+% Analytics
+%
+
 \subsection{Analytics}
+
+%
+% Datathon
+%
+
 The French Hospital of Paris (AP-HP) organized a datathon with MIMIC-OMOP. 
 25 teams, 160 participants had 48 hours to undertake a clinical project using 
 the database MIMIC-OMOP through 15000 requests with a maximum duration of
@@ -356,7 +335,20 @@ various analyses needed. Writing standard queries (i.e. with standard concepts)
 requires knowing the organization of relational models (SQL) and also mastering 
 the graphical nature of certain terminologies such as SNOMED-CT in order to 
 capture all potential codes that might be related to the one analysts think of 
-first. This complexity is inherent in terminology complexity and the closure 
-table \ref{closure-table}. It is therefore not specific to OMOP or MIMIC-OMOP. 
-Overall the teams found MIMIC-OMOP easy to learn.
-All teams managed to produce results at the end of the datathon.
+first. This complexity is inherent in terminology complexity and the closure
+table \ref{closure-table}. It is therefore not specific to OMOP or MIMIC-OMOP.
+Overall the teams found MIMIC-OMOP easy to learn and managed to produce results
+at the end of the datathon.
+
+%% Achilles evaluation            
+The second axe was Achilles evaluation. Like many previous authors, 
+we used the Achille software to assess data quality \cite{achilles-evaluation}. 
+It is an open-source analysis software produced by OHDSI \cite{ohdsi-achilles}.
+This tool is used for data characterization, data quality assessment 
+(Achilles' heel) and health observation data visualization \cite{ohdsi-achilles}.
+It has been common practice to perform Achilles tests and use it as a 
+quality assessment in many works. Achilles Heel issued 12 errors and y warnings. 
+This result is correct compared to other studies \cite{achilles-evaluation}
+We believe that this tool has several limitations. It does not evaluate 
+the structural change, it is difficult to understand some error messages and 
+we decide to process more evaluation tests. 

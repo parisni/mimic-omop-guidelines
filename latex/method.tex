@@ -1,13 +1,14 @@
 \subsection{Data Transformation}
 
-All \textbf{transformation processes} are freely accessible to the public via the github website
- \cite{mimic-omop-website} maintained by MIT-LCP \cite{mimic-nature}. 
-The repository is based on git and is designed for sharing, improvement, 
-collaboration and reproducible work. Indeed, github is archived on a universal 
-and durable software archive solution \cite{universal-archive}.
-The github repository centralizes the various resources of this work such 
-as documentation, source code, unit tests, as well as questioning examples, 
-discussions and problem issues. 
+% General
+All \textbf{transformation processes} are freely accessible to the public via
+the github website \cite{mimic-omop-website} maintained by MIT-LCP
+\cite{mimic-nature}.  The repository is based on git and is designed for
+sharing, improvement, collaboration and reproducible work. Indeed, github is
+archived on a universal and durable software archive solution
+\cite{universal-archive}.  The github repository centralizes the various
+resources of this work such as documentation, source code, unit tests, as well
+as questioning examples, discussions and problem issues. 
 It also indicates web resources such as the physical data model 
 for MIMIC\cite{mimic-schemaspy} and OMOP\cite{omop-schemaspy}
 datasets and the Achilles' web client\cite{mimic-omop-achilles}.
@@ -15,7 +16,7 @@ datasets and the Achilles' web client\cite{mimic-omop-achilles}.
 The vast majority of source code is implemented in PostgreSQL 9.6.9 (PgSQL) 
 because it is the primary support for the MIMIC database and allows the community 
 to run our work on limited resources without needing a license. 
-Finally, PgSQL has recently made enormous efforts to better manage data processing. 
+Finally, PgSQL has recently made huge efforts to better manage data processing. 
 Some elaborate data transformations have been implemented as PgSQL functions.
 
 MIMIC-III version 1.4.21 (MIMIC) has been loaded with the scripts provided in a PgSQL 
@@ -24,8 +25,10 @@ provided scripts with some small changes stored in the change script.
 OMOP which defines 15 standardized \textit{clinical} data tables, 3 \textit{health} 
 system data tables, 2 \textit{health economics} data tables, 5 tables for \textit{derived} 
 elements and 12 tables for standardized \textit{vocabulary}. We didn't use the health 
-economics data tables (not provided by MIMIC). Indexes that would have slowed data migration with unnecessary calculations have been removed. Integrity constraints (primary keys, foreign keys, 
-non-nullable columns) have been included to apply integrity checks at runtime. 
+economics data tables (not provided by MIMIC). Indexes that would have slowed
+data migration with unnecessary calculations have been removed. Integrity
+constraints (primary keys, foreign keys, non-nullable columns) have been
+included to apply integrity checks at runtime. 
 A subset of 100 patients was selected based on their broad representativeness 
 of the database and cloned into a second instance to serve as a light and 
 representative development set. Each source table has been added a global unique 
@@ -54,11 +57,11 @@ Each unit test script checks whether a particular OMOP target table is loaded
 correctly - most tables are covered and tests cover simple counts, aggregate counts 
 or distribution checks.
 
-All character type columns with limited length have been modified as follows 
-unlimited since it could cause unpredictable truncation of content, and it has no 
-negative impact on PgSQL storage size or performance. The \textit{visit\_occurrence}
-and the \textit{visit\_detail} tables have been corrected accordingly some discussions on 
-the OHDSI forum. 
+All character type columns with limited length have been modified as follows
+unlimited since it could cause unpredictable truncation of content, and it has
+no negative impact on PgSQL storage size or performance. The
+\textit{visit\_occurrence} and the \textit{visit\_detail} tables have been
+corrected accordingly to some discussions on the OHDSI forum. 
 The \textit{nlp\_note} table has been completed by fields corresponding to 
 the online documentation. The character \textit{offset} column has been divided into two 
 integer type columns because the offset word is a SQL reserved word and it makes 
@@ -66,8 +69,8 @@ sense to fill the resulting \textit{offset\_begin} and \textit{offset\_end}
 resulting columns.
 \\
 
-% Structural Transformations
-The \textbf{structural transformation} took place in several phases.
+% Structural Mapping 
+The \textbf{structural mmapping} took place in several phases.
 The first phase consists of looping each MIMIC table and choosing an equivalent 
 location in OMOP for each column. In general, the MIMIC documentation and the OMOP 
 documentation were sufficiently informative. In several cases, we needed 
@@ -90,10 +93,10 @@ by a mathematical operator (concept\_operator\_id) and a unit of measurement
 (concept\_unit\_id). All lines marked in error have not been converted to OMOP 
 format since the MIMIC team plans to delete them at the next release.
 
-By design, MIMIC aggregates information from various systems. Thus, the transfer 
-information is divided into several tables, such as \textit{admissions}, 
-\textit{transfers} and \textit{icustays}. OMOP centralizes this information in 
-the detail of the \textit{visit\_detail}. 
+By design, MIMIC aggregates information from various systems\cite{mimic-omop}.
+Thus, the transfer information is divided into several tables, such as
+\textit{admissions}, \textit{transfers} and \textit{icustays}. OMOP centralizes
+this information in the detail of the \textit{visit\_detail}. 
 We added emergency stays as a normal location for patients throughout their 
 hospital stay (unlike what had been done by MIMIC). Icustays raw mimic table has 
 been removed because it is a table derived from the transfer table \cite{icustays-doc} 
@@ -105,8 +108,8 @@ admission occurs > 24h after the end of the previous stay.
 % INUTILE? visit\_detail : admitting\_source\_value, admitting\_source\_concept\_id, admitting\_concept\_id, discharge\_to\_source\_value, discharge\_to\_source\_concept\_id, discharge\_to\_concept\_id provide redundant information from visit\_occurrence. We didn't populate it.
 % INUTILE? observation\_period provide duplicate informations with visit\_occurrence : we fill this table to respect the OMOP model and toolsii
 
-% Conceptual Transformations
-The \textbf{conceptual transformation} uses OMOP vocabulary tables that have 
+% Conceptual Mapping 
+The \textbf{conceptual mapping} uses OMOP vocabulary tables that have 
 been loaded from an Athena export \cite{ohdsi-athena} of all terminologies 
 without license limitations.
 
