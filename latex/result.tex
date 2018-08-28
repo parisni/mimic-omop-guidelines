@@ -72,14 +72,10 @@ pre-loaded with terminology informations. The 26 tables of MIMIC have been
 dispatched into 19 OMOP tables. The reduced number of tables results from the
 differences in design. OMOP stores all the terminologies into one table whereas
 MIMIC has one table for each typology and the same applies for facts data that
-are grouped by nature (such measurements) in OMMOP while MIMIC provides a table for each
-Since OMOP is a conceptual model, the same type of data goes into the same table. 
-The dispatching of informations reflects the different nature of both structure.
-The best example can be the measurement table which is field by 4 source tables. 
-That's because all numerical data should go to that table.
-All MIMIC domains are linked to the OMOP domain. 
+are grouped by nature in OMOP while MIMIC tables are more specialized ane
+respects the source EHR's design. For example the measurement gather measured
+information and combines 4 source tables resulting in 366272371 rows.
 Structural mapping was not a problem for our work.
-The largest relationship is the measuring table with 366272371 rows.
 
 \begin{table*}[t]
 %\tbl{MIMIC to OMOP data flows}{
@@ -96,7 +92,7 @@ OBSERVATION           & 6721040        & admissions, chartevents, datetimevvents
 DRUG\_EXPOSURE        & 24934758       & prescriptions, inputevents\_cv, inputevents\_mv          \\
 PROCEDURE\_OCCURRENCE & 1063525        & cptevents, procedureevents\_mv, procedure\_icd           \\
 CONDITION\_OCCURRENCE & 716595         & admissions, diagnosis\_icd                               \\
-NOTE                  & 2082294        & notevents                                                \\
+NOTE                  & 2082294        & noteevents                                                \\
 NOTE\_NLP             & 16350855       & noteevents                                               \\
 COHORT\_ATTRIBUTE     & 2628838        & callout                                                  \\
 CARE\_SITE            & 93             & transfers, service                                       \\
@@ -147,15 +143,14 @@ Exit dignosis per admissions (mean)    & 11.0                        & 11.0     
 \label{table:statistics}
 \end{table*}
 
-Fortunately most statistics remain similar between the two versions. 
-There are still some differences. 
-The table \ref{table:statistics} MIMIC contains 61,532 intensive care stays while 
-OMOP contains 71,576 intensive care stays. This represents a 16\% increase in 
-stays due to our ELT methodology as explained in the methods.
-                    
-This table shows that the number of laboratory measurements 
-per admission is increased. This is because the laboratory data from MIMIC 
-chartervents have been extracted and treated as a laboratory.
+Fortunately most statistics remain similar between the two versions with still
+few differences. The table \ref{table:statistics} MIMIC contains 61,532
+intensive care stays while OMOP contains 71,576 intensive care stays. This
+represents a 16\% increase in stays due to our ELT methodology as explained in
+the methods. This table shows that the number of laboratory measurements per
+admission is increased. This is because MIMIC-OMOP gathers laboratory data from
+both the dedicated laboratory table and the chartervents table which is usually
+not considered for this purpose.
 
 %% Loss of data
 We tried to estimate the percentage of records loaded from the source database 
