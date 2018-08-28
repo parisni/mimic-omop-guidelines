@@ -1,3 +1,6 @@
+%
+% Data Transformation
+%
 \subsection{Data Transformation}
 
 % General
@@ -57,6 +60,7 @@ Each unit test script checks whether a particular OMOP target table is loaded
 correctly - most tables are covered and tests cover simple counts, aggregate counts 
 or distribution checks.
 
+% modifications of structure 
 All character type columns with limited length have been modified as follows
 unlimited since it could cause unpredictable truncation of content, and it has
 no negative impact on PgSQL storage size or performance. The
@@ -105,8 +109,6 @@ the transfer table) while mimic preferred to assign a new icustay stay if a new
 admission occurs > 24h after the end of the previous stay.
 \\
 
-% INUTILE? visit\_detail : admitting\_source\_value, admitting\_source\_concept\_id, admitting\_concept\_id, discharge\_to\_source\_value, discharge\_to\_source\_concept\_id, discharge\_to\_concept\_id provide redundant information from visit\_occurrence. We didn't populate it.
-% INUTILE? observation\_period provide duplicate informations with visit\_occurrence : we fill this table to respect the OMOP model and toolsii
 
 % Conceptual Mapping 
 The \textbf{conceptual mapping} uses OMOP vocabulary tables that have 
@@ -123,10 +125,10 @@ is used in the ELT to send the information in the proper table. As the OMOP mode
 did we adopt a "concept-driven methodology", domain of each local concept drive 
 the concept to the right table.
 
-Where possible, 
-relevant information from the original MIMIC tables has been concatenated in the 
-\textit{concept\_name} column. New local MIMIC concepts were introduced and given 
-a value from 2 billion to distinguish them from local MIMIC concepts.
+Where possible, relevant information from the original MIMIC tables has been
+concatenated in the \textit{concept\_name} column. New local MIMIC concepts
+were introduced and given a value from 2 billion to distinguish them from local
+MIMIC concepts.
 
 When it came to standardizing local MIMIC codes in OMOP standards codes, there 
 were four distinct cases. In the \emph{first} case, MIMIC is by chance already in 
@@ -140,7 +142,7 @@ In the \emph{fourth} case, mapping is not provided and terminology is enormous
 (admission diagnosis, drugs). Then, only a subset of the most represented code 
 was manually mapped.
 
-%concept mapping, fuzzy match
+% fuzzy match
 When the mapping concept is required manually, a mapping csv file has been built. 
 This solution can be adapted to medical users who do not have training in 
 database engineering. The spreadsheet has several columns such as local/standard 
@@ -153,19 +155,13 @@ demand or to generate a pre-filled csv with the best matches. It uses PGSQL
 full-text ranking features  and links local and standard candidates with a rating 
 function based on their labels. This work was followed by a intensivist check.
 
-Although various types of information are stored in the measurement table, the 
-dedicated OMOP concepts for the \textit{measurement\_type\_concept\_id} column were not 
-sufficient to distinguish them. We have added some. 
+Although various types of information are stored in the measurement table, the
+dedicated OMOP concepts for the \textit{measurement\_type\_concept\_id} column
+were not sufficient to distinguish them. We have added some. 
 
-% Results 
-%<!-- Fournir un example de visit\_detail-->
-The actual \textit{visit\_detail} table does not introduce relevant information and 
-duplicate informations from \textit{visit\_occurrence} table. 
-For \textit{admitting\_concept\_id} and \textit{discharge\_to\_concept\_id} columns, 
-we extended the dictionary to track bed transfers and room transfers. 
-For \textit{visit\_type\_concept\_id} column we assigned a new concept for any level of 
-granularity necessary for your use case (ward, bed\ldots)
-
+%
+% Contributions
+%
 \subsection{Contribution}
 
 % scores
@@ -215,6 +211,10 @@ to standard terminology such as LOINC CDO. The reason for this is that the CDO
 LOINC decided to delete its sections from its standard, considering that these 
 sections were not widely used  \cite{loinc-website}.
 
+
+%
+% Analytics
+%
 \subsection{Data Analytics}
 
 % datathon

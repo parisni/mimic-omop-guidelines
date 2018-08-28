@@ -15,6 +15,25 @@ and Al\cite{khan-quality}, which refer to the metrics Moody and Shanks
 transformation (table \ref{table:quality}). Those metrics are mentionned along
 the results to bring some additional structure.
 
+\tiny
+\begin{table*}[t]
+%\tbl{Data Transformation Quality Evaluation Metrics}{%
+\caption{Data Transformation Quality Evaluation Metrics}
+\begin{tabular}{@{}ll@{}}\toprule
+Data Model Dimension              & Descriptions                                                                                                      \\\colrule
+Completeness - structural mapping & Domain coverage : coverage of sources domains that are accommodated by the standard OMOP model                    \\
+Completeness - conceptual mapping & Data coverage : coverage of sources data concepts that mapped to standard OMOP concept                            \\
+Integrity                         & "Meaningful data relationships and constraints that uphold th eintent of the data-s original purpose" Khan and Al \\
+Flexibility                       & The ease to expand the standard model for new datatypes, concepts                                                 \\
+Integration                       & The capacity of the standard model to use multiples terminology and links its to standard one                     \\
+Implementability                  & The stability of the models, the community, the cost of adoption                                                  \\
+Understandability                 & The ease of the standard model to be understood                                                           	      \\
+Simplicity                        & The ease of querying the standard model - the model should contains the minimum of concepts and relationship      \\\botrule 
+\end{tabular}
+\label{table:quality}
+\end{table*}
+\normalsize
+
 %
 %  Data Transformation
 % 
@@ -33,25 +52,6 @@ the whole MIMIC database. The resulting csv archive is about the same size as
 the original archive, and MIMIC-OMOP is also the same size as MIMIC once loaded
 in PGSQL and indexed.
 
-\tiny
-\begin{table*}[t]
-%\tbl{Data Transformation Quality Evaluation Metrics}{%
-\caption{Data Transformation Quality Evaluation Metrics}
-\begin{tabular}{@{}ll@{}}\toprule
-Data Model Dimension              & Descriptions                                                                                                      \\\colrule
-Completeness - structural mapping & Domain coverage : coverage of sources domains that are accommodated by the standard OMOP model                    \\
-Completeness - conceptual mapping & Data coverage : coverage of sources data concepts that mapped to standard OMOP concept                           \\
-Integrity                         & "Meaningful data relationships and constraints that uphold th eintent of the data-s original purpose" Khan and Al \\
-Flexibility                       & The ease to expand the standard model for new datatypes, concepts                                                 \\
-Integration                       & The capacity of the standard model to use multiples terminology and links its to standard one                     \\
-Implementability                  & The stability of the models, the community, the cost of adoption                                                  \\
-Understandability                 & The ease of the standard model to be understood                                                           	      \\
-Simplicity                        & The ease of querying the standard model - the model should contains the minimum of concepts and relationship    \\\botrule 
-\end{tabular}
-\label{table:quality}
-\end{table*}
-\normalsize
-
 %% Unit tests
 The first axe was the unit tests. During the all ELT process we created a lot 
 of unit tests thanks to pgTap library. 
@@ -60,12 +60,15 @@ All are available on our github \cite{mimic-omop-website}. All the test passed.
 All the code to create these statistics is provided on the github repository 
 \cite{mimic-omop-website}.
 
+~
+\\
+
 %
 % Structural Mapping
-%      Ajouter schema : MIMIC-OMOP equivalence.png
+%
 
 The table \ref{table:dispatch} shows the structural mapping, i.e. where the
-information goes from the MIMIC to the MIMIC-OMOP tables.  Among of the 37 OMOP
+information goes from the MIMIC to the MIMIC-OMOP tables. Among of the 37 OMOP
 tables, the one related to hospital costs were not applicable, some related to
 derived data ware not populated and some tables related to vocabuary are
 pre-loaded with terminology informations. The 26 tables of MIMIC have been
@@ -75,14 +78,13 @@ MIMIC has one table for each typology and the same applies for facts data that
 are grouped by nature in OMOP while MIMIC tables are more specialized ane
 respects the source EHR's design. For example the measurement gather measured
 information and combines 4 source tables resulting in 366272371 rows.
-Structural mapping was not a problem for our work.
 
 \begin{table*}[t]
 %\tbl{MIMIC to OMOP data flows}{
 \caption{MIMIC to OMOP data flows}
 \begin{tabular}{@{}lll@{}}\toprule
 OMOP tables           & Number of rows & MIMIC tables                                             \\\colrule
-CONCEPT               & 46520          & d\_cpt, d\_icd\_procedures, d\_items, d\_labitems                                     \\
+CONCEPT               & 46520          & d\_cpt, d\_icd\_procedures, d\_items, d\_labitems        \\
 PERSONS               & 46520          & patients, admissions                                     \\
 DEATH                 & 14849          & patients, admissions                                     \\
 VISIT\_OCCURRENCE     & 58976          & admissions                                               \\
@@ -92,7 +94,7 @@ OBSERVATION           & 6721040        & admissions, chartevents, datetimevvents
 DRUG\_EXPOSURE        & 24934758       & prescriptions, inputevents\_cv, inputevents\_mv          \\
 PROCEDURE\_OCCURRENCE & 1063525        & cptevents, procedureevents\_mv, procedure\_icd           \\
 CONDITION\_OCCURRENCE & 716595         & admissions, diagnosis\_icd                               \\
-NOTE                  & 2082294        & noteevents                                                \\
+NOTE                  & 2082294        & noteevents                                               \\
 NOTE\_NLP             & 16350855       & noteevents                                               \\
 COHORT\_ATTRIBUTE     & 2628838        & callout                                                  \\
 CARE\_SITE            & 93             & transfers, service                                       \\
@@ -103,10 +105,7 @@ SPECIMEN              & 39874171       & chartevents, labevents, microbiologyeve
 \label{table:dispatch}
 \end{table*}
  
-
-%                                                                   
-% Semantic Mapping
-%
+% Respect of Statistics
 The table \ref{table:statistics} presents the basic characterization of the 
 MIMIC-OMOP population in relation to the MIMIC and assesses the overall quality of 
 structural mapping.
@@ -152,12 +151,20 @@ Exit dignosis per admissions (mean)    & 11.0                        & 11.0     
 \end{table*}
 
 
+% Results 
+The actual \textit{visit\_detail} table does not introduce relevant information and 
+duplicate informations from \textit{visit\_occurrence} table. 
+For \textit{admitting\_concept\_id} and \textit{discharge\_to\_concept\_id} columns, 
+we extended the dictionary to track bed transfers and room transfers. 
+For \textit{visit\_type\_concept\_id} column we assigned a new concept for any level of 
+granularity necessary for your use case (ward, bed\ldots)
+
 %
 % Loss of data
 %
-We estimated the percentage of records loaded from the source database to
-MIMIC-OMOP. We estimate the percentage of both columns and rows lost in the
-process as other studies have done \cite{omop-nashville}.
+We estimated the loss of information during the ELT process by measuring the
+percentage of both columns and rows lost in the process as other studies have
+done \cite{omop-nashville}.
 % loss of columns
 Between 40\% to 80\% of the columns in the sources have been deleted. Almost
 all the deleted columns were redundant with others or provided derived
@@ -176,7 +183,7 @@ because they are not supposed to be loaded into OMOP.
 %\tbl{Row level Data lost}{
 \caption{Row level Data lost}{
 \begin{tabular}{@{}ll@{}}\toprule
-Relations           & Error Percentage \\\colrule
+Relations           & Rows lost        \\\colrule
 inputevents\_mv     & 10,00\%          \\
 chartevents         & 0.04\%           \\
 procedureevents\_mv & 3,00\%           \\
@@ -184,6 +191,8 @@ Note                & 0.04\%           \\\botrule
 \end{tabular}}
 \label{table:lostrows}
 \end{table*}
+~
+\\
 
 %% Conceptual Mapping
 This table \ref{table:mapping} shows the results of automatic and manual mapping. 
@@ -263,7 +272,7 @@ AND  measurement_type_concept_id = 2000000008
 \end{lstlisting}
 
 
-%% Integration
+% Integration
 OMOP's terminology coverage has already been rated as excellent \cite{omop-vs-pcornet}. 
 We used OMOP mapping for NDC-RxNorm, ICD9-SNOMED, CPT4-SNOMED. 
 This was really useful to integreate MIMIC database because it provides a lot 
@@ -276,7 +285,7 @@ of NDC codes are mapped to Rxnorm. Moreover, even if this does not seem to have
 affected our ELT we know that not all ICD-9-CM codes can have a one-to-one match 
 with SNOMED, some are one to several (28\%) \cite{snomed-icd9}
  
-%% Implementability
+% Implementability
 OMOP has been available for 9 years. Its models and concepts provided are 
 license free, the community is large and has been very helpful. Full versions 
 are generally published annually and are not backwards compatible. 
@@ -285,18 +294,15 @@ is made to ensure that current requests will not break. Micro-versions are
 published irregularly and often, and contain small corrections or changes 
 that are backward compatible with the latest minor version \cite{omop-cdm}
 
-% TODO: forum centric + github + themis -> confusing
-
 %
 % Contributions
 %
-
 \subsection{Contribution}
 
 \emph{Denormalized derived} tables improve calculation costs and SQL query verbosity. 
 In addition, the resulting tables are much more human readable with the concept 
 label directly in table and greatly reduces joins. Therefore, a little 
-denormalization greatly improves the data scientist's experience and the simplicity
+denormalization greatly improves the analysts's experience and the simplicity
  by adding some redundancy in the data while not interrupting existing SQL queries. 
 Moreover, these normalized views are backward compatible and remain 
 standardized allowing the creation of multicentric algorithms.
@@ -309,6 +315,7 @@ the experience for scientists. The community should do more.
 --TODO: write the query
 --
 \end{lstlisting}
+
 As indicated in the methods section, we have provided many \emph{derived values}. 
 Again, the community is welcome to evaluate and improve them.   
 
@@ -339,14 +346,14 @@ Overall the teams found MIMIC-OMOP easy to learn and managed to produce results
 at the end of the datathon.
 
 %% Achilles evaluation            
-The second axe was Achilles evaluation. Like many previous authors, 
-we used the Achille software to assess data quality \cite{achilles-evaluation}. 
-It is an open-source analysis software produced by OHDSI \cite{ohdsi-achilles}.
-This tool is used for data characterization, data quality assessment 
-(Achilles' heel) and health observation data visualization \cite{ohdsi-achilles}.
-It has been common practice to perform Achilles tests and use it as a 
-quality assessment in many works. Achilles Heel issued 12 errors and y warnings. 
-This result is correct compared to other studies \cite{achilles-evaluation}
-We believe that this tool has several limitations. It does not evaluate 
-the structural change, it is difficult to understand some error messages and 
-we decide to process more evaluation tests. 
+The second axe was Achilles evaluation. Like many previous authors, we used the
+Achille software to assess data quality \cite{achilles-evaluation}.  It is an
+open-source analysis software produced by OHDSI \cite{ohdsi-achilles}.  This
+tool is used for data characterization, data quality assessment (Achilles'
+heel) and health observation data visualization \cite{ohdsi-achilles}.  It has
+been common practice to perform Achilles tests and use it as a quality
+assessment in many works. After 18 hours of computations Achilles Heel issued
+12 errors and y warnings.  This result is correct compared to other studies
+\cite{achilles-evaluation} We believe that this tool has several limitations.
+It does not evaluate the structural change, it is difficult to understand some
+error messages and we decide to process more evaluation tests. 
