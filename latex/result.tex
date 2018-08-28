@@ -110,6 +110,14 @@ SPECIMEN              & 39874171       & chartevents, labevents, microbiologyeve
 The table \ref{table:statistics} presents the basic characterization of the 
 MIMIC-OMOP population in relation to the MIMIC and assesses the overall quality of 
 structural mapping.
+Fortunately most statistics remain similar between the two versions with still
+few differences. The table \ref{table:statistics} MIMIC contains 61,532
+intensive care stays while OMOP contains 71,576 intensive care stays. This
+represents a 16\% increase in stays due to our ELT methodology as explained in
+the methods. This table shows that the number of laboratory measurements per
+admission is increased. This is because MIMIC-OMOP gathers laboratory data from
+both the dedicated laboratory table and the chartervents table which is usually
+not considered for this purpose.
 
 \begin{table*}[t]
 %\tbl{Baseline characteristics MIMIC versus OMOP}{
@@ -143,31 +151,26 @@ Exit dignosis per admissions (mean)    & 11.0                        & 11.0     
 \label{table:statistics}
 \end{table*}
 
-Fortunately most statistics remain similar between the two versions with still
-few differences. The table \ref{table:statistics} MIMIC contains 61,532
-intensive care stays while OMOP contains 71,576 intensive care stays. This
-represents a 16\% increase in stays due to our ELT methodology as explained in
-the methods. This table shows that the number of laboratory measurements per
-admission is increased. This is because MIMIC-OMOP gathers laboratory data from
-both the dedicated laboratory table and the chartervents table which is usually
-not considered for this purpose.
 
-%% Loss of data
-We tried to estimate the percentage of records loaded from the source database 
-at MIMIC-OMOP. We estimate the percentage of columns and rows lost in 
-the process as other studies have done \cite{omop-nashville}.
-                    
-According to the tables, 40\% to 80\% of the columns in the sources that do not 
-correspond to OMOP have been deleted. The exact columns removed are provided 
-on the article github. Almost all the deleted columns were redundant with others 
-or provided derived information. The main concern is the loss of some timestamps. 
-For example, the MIMIC chartevents tables provide the storetime and charttime columns, 
-but OMOP provides only one location to store timestamp. Thus, MIMIC storetime 
-column was eliminated during ELT. As mentioned in the methods the error lines 
-have been deleted in the process (marked with a status column in the MIMIC tables 
+%
+% Loss of data
+%
+We estimated the percentage of records loaded from the source database to
+MIMIC-OMOP. We estimate the percentage of both columns and rows lost in the
+process as other studies have done \cite{omop-nashville}.
+% loss of columns
+Between 40\% to 80\% of the columns in the sources have been deleted. Almost
+all the deleted columns were redundant with others or provided derived
+information. The main concern is the loss of some timestamps. For example, the
+MIMIC chartevents tables provides the storetime and charttime columns, but OMOP
+only provides one location to store timestamp. Thus, MIMIC storetime column was
+eliminated during ELT. As mentioned in the methods the error lines have been
+deleted in the process (marked with a status column in the MIMIC tables
 inputevents\_mv, chartevents, procedureevents\_mv, note).
-The following table \ref{table:lostrows} shows the number of lines with deleted 
-errors.
+% loss of rows
+According to the tables \cite{lostrows}, 4 MIMIC tables lost rows in the
+process. The integrality of them were erroneous or cancelled informations
+because they are not supposed to be loaded into OMOP.
 
 \begin{table*}[t]
 %\tbl{Row level Data lost}{
