@@ -53,10 +53,10 @@ the original archive, and MIMIC-OMOP is also the same size as MIMIC once loaded
 in PGSQL and indexed.
 
 %% Unit tests
+%% -> test structural Mapping ?
 The first axe was the unit tests. During the all ELT process we created a lot 
 of unit tests thanks to pgTap library. 
 All are available on our github \cite{mimic-omop-website}. All the test passed.
-
 All the code to create these statistics is provided on the github repository 
 \cite{mimic-omop-website}.
 
@@ -66,18 +66,21 @@ All the code to create these statistics is provided on the github repository
 %
 % Structural Mapping
 %
-
-The table \ref{table:dispatch} shows the structural mapping, i.e. where the
-information goes from the MIMIC to the MIMIC-OMOP tables. Among of the 37 OMOP
-tables, the one related to hospital costs were not applicable, some related to
-derived data ware not populated and some tables related to vocabuary are
-pre-loaded with terminology informations. The 26 tables of MIMIC have been
-dispatched into 19 OMOP tables. The reduced number of tables results from the
-differences in design. OMOP stores all the terminologies into one table whereas
-MIMIC has one table for each typology and the same applies for facts data that
-are grouped by nature in OMOP while MIMIC tables are more specialized ane
-respects the source EHR's design. For example the measurement gather measured
-information and combines 4 source tables resulting in 366272371 rows.
+% plan:
+% quantitative(dispatiching, domains, relationships)
+% qualitative (loss of information, statistics, modification of the structure)
+The \textbf{Structural Mapping} results are presented in the table
+\ref{table:dispatch} shows the structural mapping, i.e. where the information
+goes from the MIMIC to the MIMIC-OMOP tables. Among of the 37 OMOP tables, the
+one related to hospital costs were not applicable, some related to derived data
+ware not populated and some tables related to vocabuary are pre-loaded with
+terminology informations. The 26 tables of MIMIC have been dispatched into 19
+OMOP tables. The reduced number of tables results from the differences in
+design. OMOP stores all the terminologies into one table whereas MIMIC has one
+table for each typology and the same applies for facts data that are grouped by
+nature in OMOP while MIMIC tables are more specialized ane respects the source
+EHR's design. For example the measurement gather measured information and
+combines 4 source tables resulting in 366272371 rows.
 
 \begin{table*}[t]
 %\tbl{MIMIC to OMOP data flows}{
@@ -105,6 +108,46 @@ SPECIMEN              & 39874171       & chartevents, labevents, microbiologyeve
 \label{table:dispatch}
 \end{table*}
  
+% relationships flexibility
+OMOP had a 100\% match of the constraints and relationships of the data models
+and is a flexibility is high. 
+Two important tables are provided with OMOP models to match the relationships : 
+concept\_relationship and fact\_relationship. It is used to represent the 
+relationship between the data. We used it to bind the drugs into a solution, 
+for microbiology / antibiograms and for visit\_detail and caresite links. 
+The following SQL query~\ref{lst:original} shows how a microorganism is linked
+to its susceptibility test by a fact\_relationship.
+%% Flexibility  
+
+\begin{lstlisting}[language=sql,basicstyle=\scriptsize,caption=Original table microbiology SQL query,label={lst:original}]
+SELECT measurement_source_value
+, value_as_concept_id
+, concept_name
+FROM measurement
+JOIN concept resistance 
+     ON value_as_concept_id = concept_id
+JOIN fact_relationship 
+     ON measurement_id =  fact_id_2
+JOIN
+(
+   SELECT measurement_id AS id_is_staph
+   FROM measurement m
+   WHERE TRUE 
+   AND measurement_type_concept_id = 2000000007        			
+      -- 'Labs - Culture Organisms'
+   AND value_as_concept_id = 4149419                     			
+      -- 'Staph aureus coag +' 
+   AND measurement_concept_id = 46235217               			
+      -- 'Bacteria identified in Blood product 
+         unit.autologous by Culture'
+) staph ON id_is_staph = fact_id_1;
+WHERE TRUE
+AND  measurement_type_concept_id = 2000000008        			        
+  -- concept.concept_name = 'Labs - Culture Sensitivity'
+\end{lstlisting}
+
+% modification of the structure
+
 % Respect of Statistics
 The table \ref{table:statistics} presents the basic characterization of the 
 MIMIC-OMOP population in relation to the MIMIC and assesses the overall quality of 
@@ -138,7 +181,7 @@ Age (Mean)                             & 64 years, 4 months          & 64 ans, 4
 Emergency                              & 42071                       & 42071                              \\
 Elective                               & 7706                        & 7706                               \\
 Surgical patients                      & 19246                       & 19246                              \\
-Length of stay, hospital (median)      & 6.46 (Q1-Q3 : 3.74 -11.79)  & 6.59 (Q1-Q3 : 3.84 - 11.88)        \\
+Length of stay, hospital (median)      & 6.46 (Q1-Q3 : 3.74 - 11.79) & 6.59 (Q1-Q3 : 3.84 - 11.88)        \\
 Length of stay, ICU (median)           & 2.09 (Q1-Q3 : 1.10 - 4.48)  & 1.87 (Q1-Q3 : 0.95 - 3.87)         \\
 Mortality, ICU (Number, \%)            & 5814 (9\%)                  & 5815 (9\%)                         \\
 Mortality, hospital (Number, \%)       & 4511 (7\%)                  & 4559 (6\%)                         \\
@@ -151,13 +194,6 @@ Exit dignosis per admissions (mean)    & 11.0                        & 11.0     
 \end{table*}
 
 
-% Results 
-The actual \textit{visit\_detail} table does not introduce relevant information and 
-duplicate informations from \textit{visit\_occurrence} table. 
-For \textit{admitting\_concept\_id} and \textit{discharge\_to\_concept\_id} columns, 
-we extended the dictionary to track bed transfers and room transfers. 
-For \textit{visit\_type\_concept\_id} column we assigned a new concept for any level of 
-granularity necessary for your use case (ward, bed\ldots)
 
 %
 % Loss of data
@@ -191,29 +227,43 @@ Note                & 0.04\%           \\\botrule
 \end{tabular}}
 \label{table:lostrows}
 \end{table*}
+
 ~
 \\
 
 %% Conceptual Mapping
-This table \ref{table:mapping} shows the results of automatic and manual mapping. 
+% plan:
+% quantity (chiffres, standard, non standard)
+% quality (evaluation)
+
+The \textbf{Conceptual Mapping} results are presented in the table
+\ref{table:mapping}. 
+
 The unmapped concepts are the concept id = 0 (no mapping concept). 
-To improve this mapping, we need collaborative work. Terminology mapping was 
-evaluated by a physician. The value zero for concept\_id can appear in very 
-different cases. In the first case, the local concept has no equivalent in the 
-standard concept set. In the second case, it has not yet been mapped and may 
-have a standard equivalent. In the third case, the value is missing and cannot 
-be mapped. In our opinion, although not all of these cases can be used for 
-standard queries, they should have a different concept identifier in order to be 
-treated differently (not only concept\_id = 0). Some of the domains\_id do not 
-match the table name, it makes sense because the observation domain can be 
-measurement table and vice versa.
+
+
+% evaluation quantity of the mapping
+
+The value zero for
+concept\_id can appear in very different cases. In the first case, the local
+concept has no equivalent in the standard concept set. In the second case, it
+has not yet been mapped and may have a standard equivalent. In the third case,
+the value is missing and cannot be mapped. In our opinion, although not all of
+these cases can be used for standard queries, they should have a different
+concept identifier in order to be treated differently (not only concept\_id =
+0). Some of the domains\_id do not match the table name, it makes sense because
+the observation domain can be measurement table and vice versa.
+
 Often we have mapped many source concepts to a standard concept\_id. This is 
 because MIMIC provides a large number of equivalent concepts. For example, 
 for body temperature, MIMIC provides 11 distinct concepts (Temperature F, 
-Temperature C (calc), Temp Skin [C], Temperature Fahren- heit, Temp Axillary [F], 
+Temperature C (calc), Temp Skin [C], Temperature Fahrenheit, Temp Axillary [F], 
 Temperature C, Temperature F (calc), Temperature Celsius, Temp Rectal [F], 
 Temp Rectal, Blood Temperature CCO (C)). Our mapping links all this to a single 
 concept called temperature. All units have been converted to Celcius.
+
+% measurement units
+% TODO: example of units
 
 \begin{table*}[t]
 %\tbl{Terminology Mapping coverage}
@@ -234,49 +284,23 @@ SPECIMEN               & 39874171       & 70,00\%             & 92              
 \label{table:mapping}
 \end{table*}
 
-%% Flexibility  
-OMOP had a 100\% match of the constraints and relationships of the data models
-and is a flexibility is high. 
-Two important tables are provided with OMOP models to match the relationships : 
-concept\_relationship and fact\_relationship. It is used to represent the 
-relationship between the data. We used it to bind the drugs into a solution, 
-for microbiology / antibiograms and for visit\_detail and caresite links. 
-The following SQL query~\ref{lst:original} shows how a microorganism is linked to its susceptibility 
-test by a fact\_relationship.
-
-\begin{lstlisting}[language=sql,basicstyle=\scriptsize,caption=Original table microbiology SQL query,label={lst:original}]
-SELECT measurement_source_value
-, value_as_concept_id
-, concept_name
-FROM measurement
-JOIN concept resistance 
-     ON value_as_concept_id = concept_id
-JOIN fact_relationship 
-     ON measurement_id =  fact_id_2
-JOIN
-(
-   SELECT measurement_id AS id_is_staph
-   FROM measurement m
-   WHERE TRUE 
-   AND measurement_type_concept_id = 2000000007        			
-      -- 'Labs - Culture Organisms'
-   AND value_as_concept_id = 4149419                     			
-      -- 'Staph aureus coag +' 
-   AND measurement_concept_id = 46235217               			
-      -- 'Bacteria identified in Blood product 
-         unit.autologous by Culture'
-) staph ON id_is_staph = fact_id_1;
-WHERE TRUE
-AND  measurement_type_concept_id = 2000000008        			        
-  -- concept.concept_name = 'Labs - Culture Sensitivity'
-\end{lstlisting}
-
 
 % Integration
 OMOP's terminology coverage has already been rated as excellent \cite{omop-vs-pcornet}. 
 We used OMOP mapping for NDC-RxNorm, ICD9-SNOMED, CPT4-SNOMED. 
 This was really useful to integreate MIMIC database because it provides a lot 
 of non-standard terminology already mapped by the OMOP community. 
+
+% Adding new concepts
+The actual \textit{visit\_detail} table does not introduce relevant information and 
+duplicate informations from \textit{visit\_occurrence} table. 
+For \textit{admitting\_concept\_id} and \textit{discharge\_to\_concept\_id} columns, 
+we extended the dictionary to track bed transfers and room transfers. 
+For \textit{visit\_type\_concept\_id} column we assigned a new concept for any level of 
+granularity necessary for your use case (ward, bed\ldots)
+
+% evaluation quality of the mapping
+Terminology mapping was evaluated by a physician. 
 We tried to evaluate this automatic OMOP mapping. We check 100 elements for each 
 mapping used (NDC, ICD9 and CPT4). CIM9 and CPT4 are correctly mapped to SNOMED 
 (100\%). But only 85\% of NDCs are linked to a correct RxNorm code. 
@@ -284,15 +308,9 @@ Partly because of an incorrect NDC code (from MIMIC), partly because only 78\%
 of NDC codes are mapped to Rxnorm. Moreover, even if this does not seem to have 
 affected our ELT we know that not all ICD-9-CM codes can have a one-to-one match 
 with SNOMED, some are one to several (28\%) \cite{snomed-icd9}
+
+This results are in favor with a good \textit{integration} of the model.
  
-% Implementability
-OMOP has been available for 9 years. Its models and concepts provided are 
-license free, the community is large and has been very helpful. Full versions 
-are generally published annually and are not backwards compatible. 
-Minor versions are not guaranteed to be backwards compatible, although an effort 
-is made to ensure that current requests will not break. Micro-versions are 
-published irregularly and often, and contain small corrections or changes 
-that are backward compatible with the latest minor version \cite{omop-cdm}
 
 %
 % Contributions
@@ -309,7 +327,9 @@ standardized allowing the creation of multicentric algorithms.
 
 \emph{Materialized derived views} from microbiologyevents and icustays simplify 
 the experience for scientists. The community should do more.
-                    
+This results reflect the lack of \textit{simplicity} of the model in its
+original form can be easily overcome.
+
 \begin{lstlisting}[language=sql,basicstyle=\scriptsize,caption=Optimized table microbiology SQL query,label={lst:optimized}]
 --
 --TODO: write the query
@@ -319,6 +339,9 @@ the experience for scientists. The community should do more.
 As indicated in the methods section, we have provided many \emph{derived values}. 
 Again, the community is welcome to evaluate and improve them.   
 
+% Derived data results
+This results are in favor with a a good \textit{flexibility} of the model
+allowing to store derived data.
 
 %
 % Analytics
@@ -344,6 +367,8 @@ first. This complexity is inherent in terminology complexity and the closure
 table \ref{closure-table}. It is therefore not specific to OMOP or MIMIC-OMOP.
 Overall the teams found MIMIC-OMOP easy to learn and managed to produce results
 at the end of the datathon.
+This results are in favor with a good \textit{understandibility} and
+\textit{simplicity} of the model.
 
 %% Achilles evaluation            
 The second axe was Achilles evaluation. Like many previous authors, we used the
