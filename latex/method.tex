@@ -59,21 +59,14 @@ table is loaded correctly - most tables are covered and tests cover simple
 counts, aggregate counts or distribution checks.
 
 % modifications of structure 
-% -> to results
-All character type columns with limited length have been modified as follows
-unlimited since it could cause unpredictable truncation of content, and it has
-no negative impact on PgSQL storage size or performance. The
-\textit{visit\_occurrence} and the \textit{visit\_detail} tables have been
-corrected accordingly to some discussions on the OHDSI forum. 
-The \textit{nlp\_note} table has been completed by fields corresponding to 
-the online documentation. The character \textit{offset} column has been divided into two 
-integer type columns because the offset word is a SQL reserved word and it makes 
-sense to fill the resulting \textit{offset\_begin} and \textit{offset\_end} 
-resulting columns.
+When needed some modification of the structural model of OMOP have been made. A
+dedicated script recap all of them. It contains columns name modifications, new
+columns, columns type modifications or database indexing modification.
+
 \\
 
 % Structural Mapping 
-The \textbf{structural mmapping} took place in several phases.
+The \textbf{structural mapping} took place in several phases.
 The first phase consists of looping each MIMIC table and choosing an equivalent 
 location in OMOP for each column. In general, the MIMIC documentation and the OMOP 
 documentation were sufficiently informative. In several cases, we needed 
