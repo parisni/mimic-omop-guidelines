@@ -37,30 +37,29 @@ of the database and cloned into a second instance to serve as a light and
 representative development set. Each source table has been added a global unique 
 sequence incremented from 0 that serves as the primary key and link in the OMOP 
 target tables.
-% <!--Ajouter les deux schemas de database design -->
 
 % ELT
-Extract-Transformation-Load (ETL) is a methodology for migrating data from a 
+Extract-Transformation-Load (ELT) is a methodology for migrating data from a 
 source to a target location. ETL first extracts the data from the source location, 
 then applies the transformations to a dedicated computer and finally loads the 
 resulting data into the target location. Extract-Load-Transform (ELT) processes 
 are slightly different methodologies that does not use a dedicated server 
 transformation. The data is extracted and loaded directly into the target location 
 and subsequently transformed into the location.
-
-The ELT is composed of PgSQL scripts, each extracting information from the source 
+Our ELT is composed of PgSQL scripts, each extracting information from the source 
 or concept mapping tables, then transforming and loading an OMOP target table. 
 The order of these scripts is important and is done sequentially through a main 
 script.
 
 % unit testing
-Each ELT part has been tested using pgTAP, a unit test framework for PgSQL. This 
-allows you to check for loss of information, or code regression during development. 
-Each unit test script checks whether a particular OMOP target table is loaded 
-correctly - most tables are covered and tests cover simple counts, aggregate counts 
-or distribution checks.
+Each ELT part has been tested using pgTAP, a unit test framework for PgSQL.
+This allows to check for loss of information, or code regression during
+development. Each unit test script checks whether a particular OMOP target
+table is loaded correctly - most tables are covered and tests cover simple
+counts, aggregate counts or distribution checks.
 
 % modifications of structure 
+% -> to results
 All character type columns with limited length have been modified as follows
 unlimited since it could cause unpredictable truncation of content, and it has
 no negative impact on PgSQL storage size or performance. The

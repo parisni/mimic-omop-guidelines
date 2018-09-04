@@ -52,14 +52,6 @@ the whole MIMIC database. The resulting csv archive is about the same size as
 the original archive, and MIMIC-OMOP is also the same size as MIMIC once loaded
 in PGSQL and indexed.
 
-%% Unit tests
-%% -> test structural Mapping ?
-The first axe was the unit tests. During the all ELT process we created a lot 
-of unit tests thanks to pgTap library. 
-All are available on our github \cite{mimic-omop-website}. All the test passed.
-All the code to create these statistics is provided on the github repository 
-\cite{mimic-omop-website}.
-
 ~
 \\
 
@@ -67,8 +59,8 @@ All the code to create these statistics is provided on the github repository
 % Structural Mapping
 %
 % plan:
-% quantitative(dispatiching, domains, relationships)
-% qualitative (loss of information, statistics, modification of the structure)
+% evaluation : dispatiching, domains, relationships, statistics
+% loss of information, modification of the structure
 The \textbf{Structural Mapping} results are presented in the table
 \ref{table:dispatch} shows the structural mapping, i.e. where the information
 goes from the MIMIC to the MIMIC-OMOP tables. Among of the 37 OMOP tables, the
@@ -117,7 +109,8 @@ relationship between the data. We used it to bind the drugs into a solution,
 for microbiology / antibiograms and for visit\_detail and caresite links. 
 The following SQL query~\ref{lst:original} shows how a microorganism is linked
 to its susceptibility test by a fact\_relationship.
-%% Flexibility  
+This results are in favor with a good \textit{flexibility}. However this
+flexibility affects the \textit{simplicity} and the performances of the model.
 
 \begin{lstlisting}[language=sql,basicstyle=\scriptsize,caption=Original table microbiology SQL query,label={lst:original}]
 SELECT measurement_source_value
@@ -146,7 +139,6 @@ AND  measurement_type_concept_id = 2000000008
   -- concept.concept_name = 'Labs - Culture Sensitivity'
 \end{lstlisting}
 
-% modification of the structure
 
 % Respect of Statistics
 The table \ref{table:statistics} presents the basic characterization of the 
@@ -193,7 +185,14 @@ Exit dignosis per admissions (mean)    & 11.0                        & 11.0     
 \label{table:statistics}
 \end{table*}
 
-
+% Evaluation and Tests
+%% Unit tests
+%% -> test structural Mapping ?
+The first axe was the unit tests. During the all ELT process we created a lot 
+of unit tests thanks to pgTap library. 
+All are available on our github \cite{mimic-omop-website}. All the test passed.
+All the code to create these statistics is provided on the github repository 
+\cite{mimic-omop-website}.
 
 %
 % Loss of data
@@ -215,6 +214,16 @@ According to the tables \cite{lostrows}, 4 MIMIC tables lost rows in the
 process. The integrality of them were erroneous or cancelled informations
 because they are not supposed to be loaded into OMOP.
 
+% modification of the structure
+% TODO: List all modifications Structural modifications here
+
+%
+% Addition of data
+%
+%TODO: 
+% - extraction of labs values
+% - normalization of coding (transition with Conceptual mapping paragraph)
+
 \begin{table*}[t]
 %\tbl{Row level Data lost}{
 \caption{Row level Data lost}{
@@ -235,15 +244,12 @@ Note                & 0.04\%           \\\botrule
 % plan:
 % quantity (chiffres, standard, non standard)
 % quality (evaluation)
+% unmmaped/new concepts
 
 The \textbf{Conceptual Mapping} results are presented in the table
 \ref{table:mapping}. 
 
-The unmapped concepts are the concept id = 0 (no mapping concept). 
-
-
 % evaluation quantity of the mapping
-
 The value zero for
 concept\_id can appear in very different cases. In the first case, the local
 concept has no equivalent in the standard concept set. In the second case, it
@@ -259,8 +265,6 @@ because MIMIC provides a large number of equivalent concepts. For example,
 for body temperature, MIMIC provides 11 distinct concepts (Temperature F, 
 Temperature C (calc), Temp Skin [C], Temperature Fahrenheit, Temp Axillary [F], 
 Temperature C, Temperature F (calc), Temperature Celsius, Temp Rectal [F], 
-Temp Rectal, Blood Temperature CCO (C)). Our mapping links all this to a single 
-concept called temperature. All units have been converted to Celcius.
 
 % measurement units
 % TODO: example of units
@@ -284,21 +288,6 @@ SPECIMEN               & 39874171       & 70,00\%             & 92              
 \label{table:mapping}
 \end{table*}
 
-
-% Integration
-OMOP's terminology coverage has already been rated as excellent \cite{omop-vs-pcornet}. 
-We used OMOP mapping for NDC-RxNorm, ICD9-SNOMED, CPT4-SNOMED. 
-This was really useful to integreate MIMIC database because it provides a lot 
-of non-standard terminology already mapped by the OMOP community. 
-
-% Adding new concepts
-The actual \textit{visit\_detail} table does not introduce relevant information and 
-duplicate informations from \textit{visit\_occurrence} table. 
-For \textit{admitting\_concept\_id} and \textit{discharge\_to\_concept\_id} columns, 
-we extended the dictionary to track bed transfers and room transfers. 
-For \textit{visit\_type\_concept\_id} column we assigned a new concept for any level of 
-granularity necessary for your use case (ward, bed\ldots)
-
 % evaluation quality of the mapping
 Terminology mapping was evaluated by a physician. 
 We tried to evaluate this automatic OMOP mapping. We check 100 elements for each 
@@ -308,9 +297,26 @@ Partly because of an incorrect NDC code (from MIMIC), partly because only 78\%
 of NDC codes are mapped to Rxnorm. Moreover, even if this does not seem to have 
 affected our ELT we know that not all ICD-9-CM codes can have a one-to-one match 
 with SNOMED, some are one to several (28\%) \cite{snomed-icd9}
-
 This results are in favor with a good \textit{integration} of the model.
- 
+% Integration
+OMOP's terminology coverage has already been rated as excellent \cite{omop-vs-pcornet}. 
+We used OMOP mapping for NDC-RxNorm, ICD9-SNOMED, CPT4-SNOMED. 
+This was really useful to integreate MIMIC database because it provides a lot 
+of non-standard terminology already mapped by the OMOP community. 
+
+% What when mapping missing ?
+% New concepts added
+The actual \textit{visit\_detail} table does not introduce relevant information and 
+duplicate informations from \textit{visit\_occurrence} table. 
+For \textit{admitting\_concept\_id} and \textit{discharge\_to\_concept\_id} columns, 
+we extended the dictionary to track bed transfers and room transfers. 
+For \textit{visit\_type\_concept\_id} column we assigned a new concept for any level of 
+granularity necessary for your use case (ward, bed\ldots)
+These added concepts are succeptible to be replaced by new OMOP standard
+concepts in the future.
+
+% Unmmapped concepts
+The unmapped concepts are the concept id = 0 (no mapping concept). 
 
 %
 % Contributions
@@ -329,6 +335,10 @@ standardized allowing the creation of multicentric algorithms.
 the experience for scientists. The community should do more.
 This results reflect the lack of \textit{simplicity} of the model in its
 original form can be easily overcome.
+
+% TODO:
+% Extraction of sections
+%
 
 \begin{lstlisting}[language=sql,basicstyle=\scriptsize,caption=Optimized table microbiology SQL query,label={lst:optimized}]
 --
