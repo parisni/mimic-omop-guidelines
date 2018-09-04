@@ -83,10 +83,9 @@ and for \textit{visit\_detail} and \textit{caresite} links. The following SQL
 query~\ref{lst:original} shows how a microorganism is linked to its
 susceptibility test by a fact\_relationship. This results are in favor with a
 good \textit{flexibility}. However this flexibility affects the
-\textit{simplicity} and the performances of the model. 
+\textit{simplicity} and the performances of the model by increasing the number
+of joins within SQL queries. 
 
-OMOP had a 100\% match of the constraints and relationships of the data models
-and is a flexibility is high. 
 \begin{table*}[t]
 %\tbl{MIMIC to OMOP data flows}{
 \caption{MIMIC to OMOP data flows}
@@ -187,11 +186,12 @@ Exit dignosis per admissions (mean)    & 11.0                        & 11.0     
 \label{table:statistics}
 \end{table*}
 
-% Evaluation and Tests
+% Evaluation, Tests and integrity constraints
 All the code to create these statistics is provided on the github repository
 \cite{mimic-omop-website}. During the all ELT process we created a lot of unit
 tests thanks to pgTap library.  All are available on our github
-\cite{mimic-omop-website}. All the test passed.  
+\cite{mimic-omop-website}. All the test passed. OMOP had a 100\% match of the
+constraints and relationships of the data models and is a flexibility is high. 
 
 %
 % Loss of data
@@ -207,16 +207,16 @@ MIMIC chartevents tables provides the storetime and charttime columns, but OMOP
 only provides one location to store timestamp. Thus, MIMIC storetime column was
 eliminated during ELT. As mentioned in the methods the error lines have been
 deleted in the process (marked with a status column in the MIMIC tables
-inputevents\_mv, chartevents, procedureevents\_mv, note).
+\textit{inputevents\_mv}, \textit{chartevents}, \textit{procedureevents\_mv}, note).
 % loss of rows
-According to the tables \cite{lostrows}, 4 MIMIC tables lost rows in the
-process. The integrality of them were erroneous or cancelled informations
-because they are not supposed to be loaded into OMOP.
+According to the tables \cite{lostrows}, 4 MIMIC tables have lost rows in the
+process. All of them were erroneous or cancelled informations because they are
+not supposed to be loaded into OMOP.
 
 % modification of the structure
 A set of minor modifications of the OMOP structure was made in order to feet
 the data. All character typed columns with limited length have been modified
-unlimited lenght since it could cause unpredictable truncation of content, and
+unlimited length since it could cause unpredictable truncation of content, and
 it has no negative impact on PgSQL storage size or performance. The
 \textit{visit\_occurrence} and the \textit{visit\_detail} tables have been
 corrected accordingly to some discussions on the OHDSI forum. The
@@ -258,22 +258,11 @@ Note                & 0.04\%           \\\botrule
 The \textbf{Conceptual Mapping} results are presented in the table
 \ref{table:mapping}. 
 
-% evaluation quantity of the mapping
-The value zero for
-concept\_id can appear in very different cases. In the first case, the local
-concept has no equivalent in the standard concept set. In the second case, it
-has not yet been mapped and may have a standard equivalent. In the third case,
-the value is missing and cannot be mapped. In our opinion, although not all of
-these cases can be used for standard queries, they should have a different
-concept identifier in order to be treated differently (not only concept\_id =
-0). Some of the domains\_id do not match the table name, it makes sense because
-the observation domain can be measurement table and vice versa.
-
-Often we have mapped many source concepts to a standard concept\_id. This is 
-because MIMIC provides a large number of equivalent concepts. For example, 
-for body temperature, MIMIC provides 11 distinct concepts (Temperature F, 
-Temperature C (calc), Temp Skin [C], Temperature Fahrenheit, Temp Axillary [F], 
-Temperature C, Temperature F (calc), Temperature Celsius, Temp Rectal [F], 
+Often we have mapped many source concepts to a unique standard concept\_id.
+This is because MIMIC provides a large number of equivalent concepts. For
+example, for body temperature, MIMIC provides 11 distinct concepts (Temperature
+F, Temperature C (calc), Temp Skin [C], Temperature Fahrenheit, Temp Axillary
+[F], Temperature C, Temperature F (calc), Temperature Celsius, Temp Rectal [F], 
 
 % measurement units
 % TODO: example of units
@@ -302,40 +291,57 @@ Terminology mapping was evaluated by a physician.
 We tried to evaluate this automatic OMOP mapping. We check 100 elements for each 
 mapping used (NDC, ICD9 and CPT4). CIM9 and CPT4 are correctly mapped to SNOMED 
 (100\%). But only 85\% of NDCs are linked to a correct RxNorm code. 
-Partly because of an incorrect NDC code (from MIMIC), partly because only 78\% 
+Partly because of an incorrect NDC drug code (from MIMIC), partly because only 78\% 
 of NDC codes are mapped to Rxnorm. Moreover, even if this does not seem to have 
 affected our ELT we know that not all ICD-9-CM codes can have a one-to-one match 
 with SNOMED, some are one to several (28\%) \cite{snomed-icd9}
 This results are in favor with a good \textit{integration} of the model.
 % Integration
-OMOP's terminology coverage has already been rated as excellent \cite{omop-vs-pcornet}. 
-We used OMOP mapping for NDC-RxNorm, ICD9-SNOMED, CPT4-SNOMED. 
-This was really useful to integreate MIMIC database because it provides a lot 
-of non-standard terminology already mapped by the OMOP community. 
+OMOP's terminology coverage has already been rated as excellent
+\cite{omop-vs-pcornet}. We used the OMOP provided mapping to standardize a
+consequent set of MIMIC non-standard terminologies ( NDC-RxNorm, ICD9-SNOMED,
+CPT4-SNOMED). 
 
 % What when mapping missing ?
 % New concepts added
-The actual \textit{visit\_detail} table does not introduce relevant information and 
-duplicate informations from \textit{visit\_occurrence} table. 
-For \textit{admitting\_concept\_id} and \textit{discharge\_to\_concept\_id} columns, 
-we extended the dictionary to track bed transfers and room transfers. 
-For \textit{visit\_type\_concept\_id} column we assigned a new concept for any level of 
-granularity necessary for your use case (ward, bed\ldots)
-These added concepts are succeptible to be replaced by new OMOP standard
-concepts in the future.
+In several cases, OMOP had not sufficient concepts adapted to ICU specific
+cases.  The actual \textit{visit\_detail} table does not introduce relevant
+information and duplicate information from \textit{visit\_occurrence} table.
+For \textit{admitting\_concept\_id} and \textit{discharge\_to\_concept\_id}
+columns, we extended the dictionary to track bed transfers and room transfers.
+For \textit{visit\_type\_concept\_id} column we assigned a new concept for any
+level of granularity necessary for your use case (ward, bed\ldots) These added
+concepts are susceptible to be replaced by new OMOP standard concepts in the
+future and have been introduced with concept\_ids between 2 billion and 2.1
+billion to distinguish them with OMOP concepts (0 to 2B) and MIMIC locals
+(>2.2B).
 
-% Unmmapped concepts
-The unmapped concepts are the concept id = 0 (no mapping concept). 
+% Unmmapped concepts & transition to contribution part
+The unmapped concepts are the concept id = 0 (no mapping concept).  The value
+zero for concept\_id can appear in very different cases. In the first case, the
+local concept has no equivalent in the standard concept set. In the second
+case, it has not yet been mapped and may have a standard equivalent. In the
+third case, the value is missing and cannot be mapped. In our opinion, although
+not all of these cases can be used for standard queries, they should have a
+different concept identifier in order to be treated differently (not only
+concept\_id = 0). Some of the domains\_id do not match the table name, it makes
+sense because the observation domain can be measurement table and vice versa.
+Although various types of information are stored in the measurement table, the
+dedicated OMOP concepts for the \textit{measurement\_type\_concept\_id} column
+were not sufficient to distinguish them. We have added some. 
 
 %
 % Contributions
 %
 \subsection{Contribution}
+% MIMIC translated derived data
+Common derived information was introduced and loaded: corrected serum calcium,
+corrected serum potassium, P/F ratio, corrected osmolarity, SAPSII.
 
 \emph{Denormalized derived} tables improve calculation costs and SQL query verbosity. 
 In addition, the resulting tables are much more human readable with the concept 
 label directly in table and greatly reduces joins. Therefore, a little 
-denormalization greatly improves the analysts's experience and the simplicity
+denormalization greatly improves the analysts experience and the simplicity
  by adding some redundancy in the data while not interrupting existing SQL queries. 
 Moreover, these normalized views are backward compatible and remain 
 standardized allowing the creation of multicentric algorithms.
@@ -347,7 +353,12 @@ original form can be easily overcome.
 
 % TODO:
 % Extraction of sections
-%
+About the section extraction pipeline, 1200 sections were collected and then
+manually filtered to exclude false positives.  400 similar groups were
+highlighted. The extracted sections have not been mapped to standard
+terminology such as LOINC CDO. The reason for this is that the CDO LOINC
+decided to delete its sections from its standard, considering that these
+sections were not widely used  \cite{loinc-website}.
 
 \begin{lstlisting}[language=sql,basicstyle=\scriptsize,caption=Optimized table microbiology SQL query,label={lst:optimized}]
 --
