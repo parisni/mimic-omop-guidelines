@@ -3,150 +3,164 @@
 %
 \subsection{Data Transformation}
 
+%
 % General
+% (version, people, tools, ELT)
+
+% github
 All \textbf{transformation processes} are freely accessible to the public via
 the github website \cite{mimic-omop-website} maintained by MIT-LCP
-\cite{mimic-nature}.  The repository is based on git and is designed for
+\cite{mimic-nature}. The repository is based on git and is designed for
 sharing, improvement, collaboration and reproducible work. Indeed, github is
 archived on a universal and durable software archive solution
-\cite{universal-archive}.  The github repository centralizes the various
+\cite{universal-archive}. The github repository centralizes the various
 resources of this work such as documentation, source code, unit tests, as well
-as questioning examples, discussions and problem issues. 
-It also indicates web resources such as the physical data model 
-for MIMIC\cite{mimic-schemaspy} and OMOP\cite{omop-schemaspy}
-datasets and the Achilles' web client\cite{mimic-omop-achilles}.
-
+as questioning examples, discussions and problem issues.  It also indicates web
+resources such as the physical data model for MIMIC\cite{mimic-schemaspy} and
+OMOP\cite{omop-schemaspy} datasets and the Achilles' web
+client\cite{mimic-omop-achilles}.
+% tools
 The vast majority of source code is implemented in PostgreSQL 9.6.9 (PgSQL) 
 because it is the primary support for the MIMIC database and allows the community 
 to run our work on limited resources without needing a license. 
 Finally, PgSQL has recently made huge efforts to better manage data processing. 
 Some elaborate data transformations have been implemented as PgSQL functions.
+% data version
+MIMIC-III version 1.4.21 (MIMIC) has been loaded into pgSQL with the provided
+scripts. The OMOP CDM version 5.3.3.1 (OMOP) target tables were created from
+the provided scripts with some small changes stored in the change script. OMOP
+which defines 15 standardized \textit{clinical} data tables, 3 \textit{health}
+system data tables, 2 \textit{health economics} data tables, 5 tables for
+\textit{derived} elements and 12 tables for standardized \textit{vocabulary}.
+From MIMIC, we only used the clinical and derived tables. 
 
-MIMIC-III version 1.4.21 (MIMIC) has been loaded with the scripts provided in a PgSQL 
-instance. The OMOP CDM version 5.3.3.1 (OMOP) target tables were created from the 
-provided scripts with some small changes stored in the change script. 
-OMOP which defines 15 standardized \textit{clinical} data tables, 3 \textit{health} 
-system data tables, 2 \textit{health economics} data tables, 5 tables for \textit{derived} 
-elements and 12 tables for standardized \textit{vocabulary}. We didn't use the health 
-economics data tables (not provided by MIMIC). Indexes that would have slowed
-data migration with unnecessary calculations have been removed. Integrity
-constraints (primary keys, foreign keys, non-nullable columns) have been
-included to apply integrity checks at runtime. 
-A subset of 100 patients was selected based on their broad representativeness 
-of the database and cloned into a second instance to serve as a light and 
-representative development set. Each source table has been added a global unique 
-sequence incremented from 0 that serves as the primary key and link in the OMOP 
-target tables.
 
-% ELT
-Extract-Transformation-Load (ELT) is a methodology for migrating data from a 
-source to a target location. ETL first extracts the data from the source location, 
-then applies the transformations to a dedicated computer and finally loads the 
-resulting data into the target location. Extract-Load-Transform (ELT) processes 
-are slightly different methodologies that does not use a dedicated server 
-transformation. The data is extracted and loaded directly into the target location 
-and subsequently transformed into the location.
-Our ELT is composed of PgSQL scripts, each extracting information from the source 
-or concept mapping tables, then transforming and loading an OMOP target table. 
-The order of these scripts is important and is done sequentially through a main 
-script.
-
-% unit testing
-Each ELT part has been tested using pgTAP, a unit test framework for PgSQL.
-This allows to check for loss of information, or code regression during
-development. Each unit test script checks whether a particular OMOP target
-table is loaded correctly - most tables are covered and tests cover simple
-counts, aggregate counts or distribution checks.
-
-% modifications of structure 
-When needed some modification of the structural model of OMOP have been made. A
-dedicated script recap all of them. It contains columns name modifications, new
-columns, columns type modifications or database indexing modification.
-~
 \\
 
 % Structural Mapping 
-The \textbf{structural mapping} took place in several phases.
-The first phase consists of looping each MIMIC table and choosing an equivalent 
-location in OMOP for each column. In general, the MIMIC documentation and the OMOP 
-documentation were sufficiently informative. In several cases, we needed 
-clarification from MIMIC contributors on the dedicated github repository, or from 
-the OMOP community on the dedicated forum. All choices have been discussed in the 
-repository \cite{mimic-omop-github} and can be tracked in the commit log.
+% plan:
+% evaluation : dispatching, domains, relationships, statistics
+% loss of information, modification of the structure
+The \textbf{structural mapping} aims at moving the MIMIC data into the right
+place in OMOP with some data transformations. It consists of three
+phases: conception, implementation and evaluation.
 
-For the second step, we tried not to infer any results. For laboratory tests when 
-it makes sense to put a specimen (i.e. a body sample) for many laboratory results 
-(because one blood sample can be used for several tests), we decided to create as 
-many rows of samples as laboratory tests because the information is not present 
-in MIMIC. The same was true when date information was not provided (\textit{start
-/end\_datetime} for \textit{drug\_exposure}).
-Chartevents and labevents tables provide many number fields as a string, which is 
-not practical for statistical analysis. We provide a standard and easy enhancement 
-by the community model to extract the numerical value of the string with a PgSQL 
-function. The results of the MIMIC laboratory have been restructured to adapt to 
-OMOP format. In particular, the numerical value (value\_as\_number) is accompanied 
-by a mathematical operator (concept\_operator\_id) and a unit of measurement 
-(concept\_unit\_id). All lines marked in error have not been converted to OMOP 
-format since the MIMIC team plans to delete them at the next release.
+% conception step
+The conception phase has been looping over each MIMIC table and choosing an
+equivalent location in OMOP for each column. In general, the MIMIC
+documentation and the OMOP documentation were sufficiently informative. In
+several cases, we needed clarification from MIMIC contributors on the dedicated
+github repository, or from the OMOP community forum. Some complicated choices
+have been discussed in the repository \cite{mimic-omop-github} and can be
+tracked in the commit log.
 
-By design, MIMIC aggregates information from various systems\cite{mimic-omop}.
-Thus, the transfer information is divided into several tables, such as
-\textit{admissions}, \textit{transfers} and \textit{icustays}. OMOP centralizes
-this information in the detail of the \textit{visit\_detail}. 
-We added emergency stays as a normal location for patients throughout their 
-hospital stay (unlike what had been done by MIMIC). Icustays raw mimic table has 
-been removed because it is a table derived from the transfer table \cite{icustays-doc} 
-and we decided to assign a new \textit{visit\_detail} for each ICU stay (based on 
-the transfer table) while mimic preferred to assign a new icustay stay if a new 
-admission occurs > 24h after the end of the previous stay.
+% implementation step
+The implementation is generally done by an Extract-Transformation-Load (ELT)
+process which is a methodology for migrating data from a source to a target
+location. ETL first extracts the data from the source location, then applies
+the transformations to a dedicated computer and finally loads the resulting
+data into the target location. Extract-Load-Transform (ELT) is a slightly
+different methodologies that does not use a dedicated server transformation.
+The data is extracted and loaded directly into the target location and
+subsequently transformed into the location. The ELT is composed of PgSQL
+scripts, each extracting information from the source or concept mapping tables,
+then transforming and loading an OMOP target table. The order of these scripts
+is important and is done sequentially through a main script.
+% speeding up (subset, indexes, and unlogged tables)
+Measures have been taken to allow fast development cycles. A subset of 100
+patients over the 46K total MIMIC patients was selected based on their broad
+representativeness of the database and cloned into a second instance to serve
+as a light and representative development set. OMOP indexes that would have
+slowed data migration with unnecessary calculations have been removed.
+% modifications of the OMOP structure
+Finally in last resort some modification of the structural model of OMOP have
+been made. A dedicated script recaps all of them. It contains columns name
+modifications, new columns, columns type modifications or database indexing
+modification.
+
+% evaluation step 
+The evaluation step is a set of controls to guaranty a correct transformation.
+Each ELT script has been tested using pgTAP, a unit test framework for PgSQL.
+This enable checking for loss of information, or regression during development.
+Each unit test script checks whether a particular OMOP target table is loaded
+correctly - most tables are covered and tests cover simple counts, aggregate
+counts or distribution checks.
+% statistics evaluation of loss
+In order to compare overall statistics, some SQL queries have been setup to
+compare MIMIC and MIMIC/OMOP. The resulting tables are presented in the results
+section. Integrity constraints (primary keys, foreign keys, non-nullable
+columns) have been included to apply integrity checks at runtime. 
+% the sequence
+In particular, a global unique sequence have been introduced to identify
+relations between tables. Each source table has been added a global unique
+sequence incremented from 0 that serves as the primary key and links in the
+OMOP target tables. Each record in MIMIC is uniquely identified allowing to
+chain the information with OMOP while simplifying the primary/foreign key
+maintenance.
 \\
 
 
 % Conceptual Mapping 
-The \textbf{conceptual mapping} uses OMOP vocabulary tables that have 
-been loaded from an Athena export \cite{ohdsi-athena} of all terminologies 
-without license limitations.
+The \textbf{conceptual mapping} aims at aligning the MIMIC local terminologies
+to OMOP standard ones. It consists of three phases: integration, alignment and
+evaluation.
 
-Local MIMIC codes are also loaded into the concept table with a \textit{concept\_id}
-identifier from 2.1 billion (below this number is reserved for OMOP 
-terminologies \cite{omop-documentation-pdf}). 
-MIMIC codes can be distinguished with \textit{the vocabulary\_id} identifier equal 
-to "MIMIC code" and a \textit{domain\_id} identifier targeting the OMOP table in 
-which the corresponding data is stored. Later, this domain information 
-is used in the ELT to send the information in the proper table. As the OMOP model 
-did we adopt a "concept-driven methodology", domain of each local concept drive 
-the concept to the right table.
+The integration phase is about loading both kind of terminologies into the OMOP
+vocabulary tables.
+% Athena codes
+The OMOP terminologies are provided by the Athena tool \cite{ohdsi-athena} and
+where loaded with the provided programs. We have used an export with all
+terminologies without licensing limitations.
+% MIMIC local codes
+The local terminologies have been extracted from the multiple MIMIC tables and
+loaded in the unique OMOP concept table. When possible, relevant information
+from the original MIMIC tables has been concatenated in the
+\textit{concept\_name} column. 
+New local MIMIC concepts were introduced and given a value from 2 billion to
+distinguish them from local MIMIC concepts.  MIMIC local codes are also loaded
+into the vocabulary table with a \textit{concept\_id} identifier from 2.1
+billion (below this number is reserved for OMOP terminologies
+\cite{omop-documentation-pdf}). 
+MIMIC codes can also be distinguished with \textit{the vocabulary\_id}
+identifier equal to "MIMIC code" and a \textit{domain\_id} identifier targeting
+the OMOP table in which the corresponding data is stored. Later, this domain
+information is sometime used in the ELT to send the information in the proper
+table with a so called "concept-driven dispatching".
 
-Where possible, relevant information from the original MIMIC tables has been
-concatenated in the \textit{concept\_name} column. New local MIMIC concepts
-were introduced and given a value from 2 billion to distinguish them from local
-MIMIC concepts.
-
-When it came to standardizing local MIMIC codes in OMOP standards codes, there 
-were four distinct cases. In the \emph{first} case, MIMIC is by chance already in 
-OMOP standard terminology (e.g. LOINC laboratory results) and, therefore, the standard 
-and local concepts are the same. In the \emph{second} case, MIMIC is not in the 
-standard OMOP terminology, but the mapping is already provided by OMOP 
-(ex: ICD9/SNOMED-CT), so the domain tables have been loaded accordingly. 
-In the \emph{third} case, mapping is not provided, but it is small enough to be 
-done manually in a few hours (such as demographic status, signs and symptoms). 
-In the \emph{fourth} case, mapping is not provided and terminology is enormous 
-(admission diagnosis, drugs). Then, only a subset of the most represented code 
-was manually mapped.
-
+%alignment phase
+The alignment phase to standardizing local MIMIC codes into OMOP standards
+codes, had four distinct cases. In the \emph{first} case, MIMIC is by chance
+already in OMOP standard terminology (e.g. LOINC laboratory results) and,
+therefore, the standard and local concepts are the same. In the \emph{second}
+case, MIMIC is not in the standard OMOP terminology, but the mapping is already
+provided by OMOP (ex: ICD9/SNOMED-CT), so the domain tables have been loaded
+accordingly.  In the \emph{third} case, mapping is not provided, but it is
+small enough to be done manually in a few hours (such as demographic status,
+signs and symptoms). In the \emph{fourth} case, mapping is not provided and
+terminology is enormous (admission diagnosis, drugs). Then, only a subset of
+the most represented code was manually mapped.
 % fuzzy match
-When the mapping concept is required manually, a mapping csv file has been built. 
-This solution can be adapted to medical users who do not have training in 
-database engineering. The spreadsheet has several columns such as local/standard 
-labels, ids and also comments, evaluation metrics and a script loads them into 
-the PgSQL when completed. 
-In order to catalyse the mapping process, the language algorithm has proven to 
-be effective \cite{schema-matching} although OHDSI provides USAGI \cite{usagi}. We 
-have chosen to use simple SQL queries that are flexible enough to be queried on 
-demand or to generate a pre-filled csv with the best matches. It uses PGSQL 
-full-text ranking features  and links local and standard candidates with a rating 
-function based on their labels. This work was followed by a intensivist check.
+When the mapping concept is required manually, a mapping csv file has been
+built.  This solution can be adapted to medical users who do not have training
+in database engineering. The spreadsheet has several columns such as
+local/standard labels, ids and also comments, evaluation metrics and a script
+loads them into the PgSQL when completed. In order to catalyse the mapping
+process, the language algorithm has proven to be effective
+\cite{schema-matching} although OHDSI provides USAGI \cite{usagi}. We have
+chosen to use simple SQL queries that are flexible enough to be queried on
+demand or to generate a pre-filled csv with the best matches. It uses PGSQL
+full-text ranking features  and links local and standard candidates with a
+rating function based on their labels. This work was followed by a intensivist
+check.
 
+% evaluation
+The evaluation phase was of both qualitative and quantitative nature.
+The qualitative evaluation for newly generated mapping has consisted of tagging
+each mapping with a score between 0 and 1 and eventually write a commentary on
+each mapped concept. In case the mapping was provided by OMOP the evaluation
+was made manually by picking some concepts of each terminology.
+The quantitative evaluation measures the percent of concepts that are mapped to
+a standard with a SQL query.
 
 %
 % Contributions
@@ -213,5 +227,5 @@ The MIMIC-OMOP dataset has been loaded from a PGSQL instance to HIVE thought apa
 SQOOP 1.4.6 directly in ORC format. Participants also had access to the Schemaspy 
 database physical model to access the OMOP physical data model with both 
 table/column comments and key primary/foreign relationships materializing the 
-relationships between the tables. All queries were been logged.
+relationships between the tables. All queries have been logged.
 
