@@ -62,7 +62,7 @@ counts, aggregate counts or distribution checks.
 When needed some modification of the structural model of OMOP have been made. A
 dedicated script recap all of them. It contains columns name modifications, new
 columns, columns type modifications or database indexing modification.
-
+~
 \\
 
 % Structural Mapping 
@@ -147,9 +147,6 @@ demand or to generate a pre-filled csv with the best matches. It uses PGSQL
 full-text ranking features  and links local and standard candidates with a rating 
 function based on their labels. This work was followed by a intensivist check.
 
-Although various types of information are stored in the measurement table, the
-dedicated OMOP concepts for the \textit{measurement\_type\_concept\_id} column
-were not sufficient to distinguish them. We have added some. 
 
 %
 % Contributions
@@ -157,11 +154,9 @@ were not sufficient to distinguish them. We have added some.
 \subsection{Contribution}
 
 % scores
-MIMIC provides a large number of SQL scripts to calculate derived scores and 
-define cohorts. Some of them have been implemented in OMOP format and fill OMOP 
-cohort tables. Common derived information was introduced and loaded: 
-corrected serum calcium, corrected serum potassium, P/F ratio, corrected osmolarity, 
-SAPSII.
+MIMIC provides a large number of SQL scripts to calculate derived scores and
+defined cohorts as known as "contrib". Some of them have been implemented on
+top of the OMOP format to load the OMOP derived tables. 
 
 % denormalized tables
 A set of \emph{general denormalized} tables has been built on top of the original 
@@ -173,7 +168,7 @@ calculation time and provide an easier set of data for analysis.
 % specialized materialized views
 In addition, a set of \emph{specialized materialized analysis views} has been built 
 on the original OMOP format. Microbiologicalevents table is a reorganization of the 
-measurement table datas of microorganisms and associated susceptibility testing 
+measurement table data of microorganisms and associated susceptibility testing 
 antibiotics and is based on the MIMIC \textit{microbiologicalevents} table. 
 The OMOP icustays table allows to quickly obtain the patients admitted in 
 resuscitation and is inspired by the MIMIC \textit{icustays} tables.
@@ -197,12 +192,6 @@ medical sections \cite{section-extraction}, the prior work of describing section
 was too high, and we opted for a naive approach. Section templates (such as 
 "Illness History") have been automatically extracted from text with regular 
 expressions, then filtered to keep only the most frequent (frequency > to 1\%). 
-1200 sections were collected and then manually filtered to exclude false positives. 
-400 similar groups were highlighted. The extracted sections have not been mapped 
-to standard terminology such as LOINC CDO. The reason for this is that the CDO 
-LOINC decided to delete its sections from its standard, considering that these 
-sections were not widely used  \cite{loinc-website}.
-
 
 %
 % Analytics
