@@ -51,18 +51,16 @@ minutes and enables fast development cycles. The ELT lasts 3 hours to process
 the whole MIMIC database. The resulting csv archive is about the same size as
 the original archive, and MIMIC-OMOP is also the same size as MIMIC once loaded
 in PGSQL and indexed.
-
-~
 \\
 
 %
 % Structural Mapping
 %
 % plan:
-% evaluation : dispatiching, domains, relationships, statistics
+% evaluation : dispatching, domains, relationships, statistics
 % loss of information, modification of the structure
-The \textbf{Structural Mapping} results are presented in the table
-\ref{table:dispatch} shows the structural mapping, i.e. where the information
+The \textbf{Structural Mapping} results presented in the table
+\ref{table:dispatch} show the structural mapping, i.e. where the information
 goes from the MIMIC to the MIMIC-OMOP tables. Among of the 37 OMOP tables, the
 one related to hospital costs were not applicable, some related to derived data
 ware not populated and some tables related to vocabulary are pre-loaded with
@@ -85,6 +83,34 @@ susceptibility test by a fact\_relationship. This results are in favor with a
 good \textit{flexibility}. However this flexibility affects the
 \textit{simplicity} and the performances of the model by increasing the number
 of joins within SQL queries. 
+
+% -> to result
+For the second step, we tried not to infer any results. For laboratory tests when 
+it makes sense to put a specimen (i.e. a body sample) for many laboratory results 
+(because one blood sample can be used for several tests), we decided to create as 
+many rows of samples as laboratory tests because the information is not present 
+in MIMIC. The same was true when date information was not provided (\textit{start
+/end\_datetime} for \textit{drug\_exposure}).
+Chartevents and labevents tables provide many number fields as a string, which is 
+not practical for statistical analysis. We provide a standard and easy enhancement 
+by the community model to extract the numerical value of the string with a PgSQL 
+function. The results of the MIMIC laboratory have been restructured to adapt to 
+OMOP format. In particular, the numerical value (value\_as\_number) is accompanied 
+by a mathematical operator (concept\_operator\_id) and a unit of measurement 
+(concept\_unit\_id). All lines marked in error have not been converted to OMOP 
+format since the MIMIC team plans to delete them at the next release.
+
+% -> to results
+By design, MIMIC aggregates information from various systems\cite{mimic-omop}.
+Thus, the transfer information is divided into several tables, such as
+\textit{admissions}, \textit{transfers} and \textit{icustays}. OMOP centralizes
+this information in the detail of the \textit{visit\_detail}. 
+We added emergency stays as a normal location for patients throughout their 
+hospital stay (unlike what had been done by MIMIC). Icustays raw mimic table has 
+been removed because it is a table derived from the transfer table \cite{icustays-doc} 
+and we decided to assign a new \textit{visit\_detail} for each ICU stay (based on 
+the transfer table) while mimic preferred to assign a new icustay stay if a new 
+admission occurs > 24h after the end of the previous stay.
 
 \begin{table*}[t]
 %\tbl{MIMIC to OMOP data flows}{
@@ -188,7 +214,7 @@ Exit dignosis per admissions (mean)    & 11.0                        & 11.0     
 
 % Evaluation, Tests and integrity constraints
 All the code to create these statistics is provided on the github repository
-\cite{mimic-omop-website}. During the all ELT process we created a lot of unit
+\cite{mimic-omop-website}. During the ELT process we created a lot of unit
 tests thanks to pgTap library.  All are available on our github
 \cite{mimic-omop-website}. All the test passed. OMOP had a 100\% match of the
 constraints and relationships of the data models and is a flexibility is high. 
@@ -197,10 +223,10 @@ constraints and relationships of the data models and is a flexibility is high.
 % Loss of data
 %
 We estimated the loss of information during the ELT process by measuring the
-percentage of both columns and rows lost in the process as other studies have
-done \cite{omop-nashville}.
+percentage of both columns and rows lost in the process as other previous
+studies have done \cite{omop-nashville}.
 % loss of columns
-Between 40\% to 80\% of the columns in the sources have been deleted. Almost
+From 40\% to 80\% of the columns in the sources have been deleted. Almost
 all the deleted columns were redundant with others or provided derived
 information. The main concern is the loss of some timestamps. For example, the
 MIMIC chartevents tables provides the storetime and charttime columns, but OMOP
@@ -209,9 +235,9 @@ eliminated during ELT. As mentioned in the methods the error lines have been
 deleted in the process (marked with a status column in the MIMIC tables
 \textit{inputevents\_mv}, \textit{chartevents}, \textit{procedureevents\_mv}, note).
 % loss of rows
-According to the tables \cite{lostrows}, 4 MIMIC tables have lost rows in the
-process. All of them were erroneous or cancelled informations because they are
-not supposed to be loaded into OMOP.
+According to the tables \cite{lostrows}, four MIMIC tables have lost rows in
+the process. All of them were erroneous or cancelled informations because they
+are not supposed to be loaded into OMOP.
 
 % modification of the structure
 A set of minor modifications of the OMOP structure was made in order to feet
