@@ -84,33 +84,17 @@ good \textit{flexibility}. However this flexibility affects the
 \textit{simplicity} and the performances of the model by increasing the number
 of joins within SQL queries. 
 
-% -> to result
-For the second step, we tried not to infer any results. For laboratory tests when 
-it makes sense to put a specimen (i.e. a body sample) for many laboratory results 
-(because one blood sample can be used for several tests), we decided to create as 
-many rows of samples as laboratory tests because the information is not present 
-in MIMIC. The same was true when date information was not provided (\textit{start
-/end\_datetime} for \textit{drug\_exposure}).
-Chartevents and labevents tables provide many number fields as a string, which is 
-not practical for statistical analysis. We provide a standard and easy enhancement 
-by the community model to extract the numerical value of the string with a PgSQL 
-function. The results of the MIMIC laboratory have been restructured to adapt to 
-OMOP format. In particular, the numerical value (value\_as\_number) is accompanied 
-by a mathematical operator (concept\_operator\_id) and a unit of measurement 
-(concept\_unit\_id). All lines marked in error have not been converted to OMOP 
-format since the MIMIC team plans to delete them at the next release.
 
-% -> to results
-By design, MIMIC aggregates information from various systems\cite{mimic-omop}.
-Thus, the transfer information is divided into several tables, such as
-\textit{admissions}, \textit{transfers} and \textit{icustays}. OMOP centralizes
-this information in the detail of the \textit{visit\_detail}. 
-We added emergency stays as a normal location for patients throughout their 
-hospital stay (unlike what had been done by MIMIC). Icustays raw mimic table has 
-been removed because it is a table derived from the transfer table \cite{icustays-doc} 
-and we decided to assign a new \textit{visit\_detail} for each ICU stay (based on 
-the transfer table) while mimic preferred to assign a new icustay stay if a new 
-admission occurs > 24h after the end of the previous stay.
+%-> dit plus rapidement ailleurs
+%Chartevents and labevents tables provide many number fields as a string, which is 
+%not practical for statistical analysis. We provide a standard and easy enhancement 
+%by the community model to extract the numerical value of the string with a PgSQL 
+%function. The results of the MIMIC laboratory have been restructured to adapt to 
+%OMOP format. In particular, the numerical value (value\_as\_number) is accompanied 
+%by a mathematical operator (concept\_operator\_id) and a unit of measurement 
+%(concept\_unit\_id). All lines marked in error have not been converted to OMOP 
+%format since the MIMIC team plans to delete them at the next release.
+
 
 \begin{table*}[t]
 %\tbl{MIMIC to OMOP data flows}{
@@ -179,6 +163,24 @@ the methods. This table shows that the number of laboratory measurements per
 admission is increased. This is because MIMIC-OMOP gathers laboratory data from
 both the MIMIC dedicated laboratory table and the chartervents table which is
 usually not considered for this purpose.
+% 
+By design, MIMIC aggregates information from various systems\cite{mimic-omop}.
+Thus, the transfer information is divided into several tables, such as
+\textit{admissions}, \textit{transfers} and \textit{icustays}. OMOP centralizes
+this information in the detail of the \textit{visit\_detail}. 
+We added emergency stays as a normal location for patients throughout their 
+hospital stay (unlike what had been done by MIMIC). Icustays raw mimic table has 
+been removed because it is a table derived from the transfer table \cite{icustays-doc} 
+and we decided to assign a new \textit{visit\_detail} for each ICU stay (based on 
+the transfer table) while mimic preferred to assign a new icustay stay if a new 
+admission occurs > 24h after the end of the previous stay.
+% added specimens
+For laboratory tests when it makes sense to put a specimen (i.e. a body sample)
+for many laboratory results (because one blood sample can be used for several
+tests), we decided to create as many rows of samples as laboratory tests
+because the information is not present in MIMIC. The same was true when date
+information was not provided (\textit{start /end\_datetime} for
+\textit{drug\_exposure}).
 
 \begin{table*}[t]
 %\tbl{Baseline characteristics MIMIC versus OMOP}{
@@ -212,12 +214,6 @@ Exit dignosis per admissions (mean)    & 11.0                        & 11.0     
 \label{table:statistics}
 \end{table*}
 
-% Evaluation, Tests and integrity constraints
-All the code to create these statistics is provided on the github repository
-\cite{mimic-omop-website}. During the ELT process were created a lot of unit
-tests thanks to the pgTap library. All are available on our github
-\cite{mimic-omop-website}. All the tests passed. Moreover OMOP had a 100\%
-match of the integrity constraints and the relationships of the data models.
 
 %
 % Loss of data
@@ -254,6 +250,25 @@ into two integer type columns because the offset word is a SQL reserved word
 and it makes sense to fill the resulting \textit{offset\_begin} and
 \textit{offset\_end} resulting columns.
 
+
+% Evaluation, Tests and integrity constraints
+All the code to create these statistics is provided on the github repository
+\cite{mimic-omop-website}. During the ELT process were created a lot of unit
+tests thanks to the pgTap library. All are available on our github
+\cite{mimic-omop-website}. All the tests passed. Moreover OMOP had a 100\%
+match of the integrity constraints and the relationships of the data models.
+%% Achilles evaluation            
+The second axe was Achilles evaluation. Like many previous authors, we used the
+Achille software to assess data quality \cite{achilles-evaluation}.  It is an
+open-source analysis software produced by OHDSI \cite{ohdsi-achilles}.  This
+tool is used for data characterization, data quality assessment (Achilles'
+heel) and health observation data visualization \cite{ohdsi-achilles}.  It has
+been common practice to perform Achilles tests and use it as a quality
+assessment in many works. After 18 hours of computations Achilles Heel issued
+12 errors and y warnings.  This result is correct compared to other studies
+\cite{achilles-evaluation} We believe that this tool has several limitations.
+It does not evaluate the structural change, it is difficult to understand some
+error messages and we decide to process more evaluation tests. 
 
 \begin{table*}[t]
 %\tbl{Row level Data lost}{
@@ -431,15 +446,3 @@ at the end of the datathon.
 This results are in favor with a good \textit{understandibility} and
 \textit{simplicity} of the model.
 
-%% Achilles evaluation            
-The second axe was Achilles evaluation. Like many previous authors, we used the
-Achille software to assess data quality \cite{achilles-evaluation}.  It is an
-open-source analysis software produced by OHDSI \cite{ohdsi-achilles}.  This
-tool is used for data characterization, data quality assessment (Achilles'
-heel) and health observation data visualization \cite{ohdsi-achilles}.  It has
-been common practice to perform Achilles tests and use it as a quality
-assessment in many works. After 18 hours of computations Achilles Heel issued
-12 errors and y warnings.  This result is correct compared to other studies
-\cite{achilles-evaluation} We believe that this tool has several limitations.
-It does not evaluate the structural change, it is difficult to understand some
-error messages and we decide to process more evaluation tests. 
