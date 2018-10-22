@@ -63,7 +63,7 @@ The \textbf{Structural Mapping} results presented in the table
 \ref{table:dispatch} show the structural mapping, i.e. where the information
 goes from the MIMIC to the MIMIC-OMOP tables. Among of the 37 OMOP tables, the
 one related to hospital costs were not applicable, some related to derived data
-ware not populated and some tables related to vocabulary are pre-loaded with
+were not populated and some tables related to vocabulary are pre-loaded with
 terminology informations. The 26 tables of MIMIC have been dispatched into 19
 OMOP tables. The reduced number of tables results from the differences in
 design of both models. OMOP stores all the terminologies into one table whereas
@@ -71,7 +71,7 @@ MIMIC has one table for each typology and the same applies for facts data that
 are grouped by nature in OMOP while MIMIC tables are more specialized and
 respects the source EHR's design. For example the measurement gather measured
 information and combines 4 source tables resulting in 366272371 rows which is
-20\% more than the largest MIMIC table. Is some extends this is a regression in
+20\% more than the largest MIMIC table. To some extends this is a regression in
 terms of performances.
 % relationships flexibility
 Two important tables are provided by OMOP to represent the relationship between
@@ -177,8 +177,8 @@ intensive care stays while OMOP contains 71,576 intensive care stays. This
 represents a 16\% increase in stays due to our ELT methodology as explained in
 the methods. This table shows that the number of laboratory measurements per
 admission is increased. This is because MIMIC-OMOP gathers laboratory data from
-both the dedicated laboratory table and the chartervents table which is usually
-not considered for this purpose.
+both the MIMIC dedicated laboratory table and the chartervents table which is
+usually not considered for this purpose.
 
 \begin{table*}[t]
 %\tbl{Baseline characteristics MIMIC versus OMOP}{
@@ -214,10 +214,10 @@ Exit dignosis per admissions (mean)    & 11.0                        & 11.0     
 
 % Evaluation, Tests and integrity constraints
 All the code to create these statistics is provided on the github repository
-\cite{mimic-omop-website}. During the ELT process we created a lot of unit
-tests thanks to pgTap library.  All are available on our github
-\cite{mimic-omop-website}. All the test passed. OMOP had a 100\% match of the
-constraints and relationships of the data models and is a flexibility is high. 
+\cite{mimic-omop-website}. During the ELT process were created a lot of unit
+tests thanks to the pgTap library. All are available on our github
+\cite{mimic-omop-website}. All the tests passed. Moreover OMOP had a 100\%
+match of the integrity constraints and the relationships of the data models.
 
 %
 % Loss of data
@@ -236,14 +236,14 @@ deleted in the process (marked with a status column in the MIMIC tables
 \textit{inputevents\_mv}, \textit{chartevents}, \textit{procedureevents\_mv}, note).
 % loss of rows
 According to the tables \cite{lostrows}, four MIMIC tables have lost rows in
-the process. All of them were erroneous or cancelled informations because they
-are not supposed to be loaded into OMOP.
+the process. All of them were tagged in MIMIC as erroneous or cancelled
+informations since OMOP does not consider those information to be loaded.
 
 % modification of the structure
 A set of minor modifications of the OMOP structure was made in order to feet
-the data. All character typed columns with limited length have been modified
-unlimited length since it could cause unpredictable truncation of content, and
-it has no negative impact on PgSQL storage size or performance. The
+the data. All character typed columns with limited length have been modified to
+unlimited length since it could cause unpredictable truncation of content,
+while having no negative impact on PgSQL storage size or performance. The
 \textit{visit\_occurrence} and the \textit{visit\_detail} tables have been
 corrected accordingly to some discussions on the OHDSI forum. The
 \textit{nlp\_note} table has been completed by fields corresponding to the
@@ -258,6 +258,11 @@ and it makes sense to fill the resulting \textit{offset\_begin} and
 %TODO: 
 % - extraction of labs values
 % - normalization of coding (transition with Conceptual mapping paragraph)
+Some MIMIC raw information have been transformed and added to meet the
+structural model. The laboratory values have been splitted into operators,
+values, and units when needed with a dedicated stored procedure. The free text
+conditions have been normalized and mapped to OMOP standard codes to meet the
+conceptual model.
 
 \begin{table*}[t]
 %\tbl{Row level Data lost}{
@@ -284,11 +289,11 @@ Note                & 0.04\%           \\\botrule
 The \textbf{Conceptual Mapping} results are presented in the table
 \ref{table:mapping}. 
 
-Often we have mapped many source concepts to a unique standard concept\_id.
-This is because MIMIC provides a large number of equivalent concepts. For
-example, for body temperature, MIMIC provides 11 distinct concepts (Temperature
-F, Temperature C (calc), Temp Skin [C], Temperature Fahrenheit, Temp Axillary
-[F], Temperature C, Temperature F (calc), Temperature Celsius, Temp Rectal [F], 
+Often we have mapped many source concepts to a unique standard concept\_id
+because MIMIC provides a large number of equivalent concepts. For example, for
+body temperature, MIMIC provides 11 distinct concepts (Temperature F,
+Temperature C (calc), Temp Skin [C], Temperature Fahrenheit, Temp Axillary [F],
+Temperature C, Temperature F (calc), Temperature Celsius, Temp Rectal [F], 
 
 % measurement units
 % TODO: example of units
@@ -325,13 +330,13 @@ This results are in favor with a good \textit{integration} of the model.
 % Integration
 OMOP's terminology coverage has already been rated as excellent
 \cite{omop-vs-pcornet}. We used the OMOP provided mapping to standardize a
-consequent set of MIMIC non-standard terminologies ( NDC-RxNorm, ICD9-SNOMED,
+consequent set of MIMIC non-standard terminologies (NDC-RxNorm, ICD9-SNOMED,
 CPT4-SNOMED). 
 
 % What when mapping missing ?
 % New concepts added
 In several cases, OMOP had not sufficient concepts adapted to ICU specific
-cases.  The actual \textit{visit\_detail} table does not introduce relevant
+cases. The actual \textit{visit\_detail} table does not introduce relevant
 information and duplicate information from \textit{visit\_occurrence} table.
 For \textit{admitting\_concept\_id} and \textit{discharge\_to\_concept\_id}
 columns, we extended the dictionary to track bed transfers and room transfers.
@@ -344,7 +349,7 @@ billion to distinguish them with OMOP concepts (0 to 2B) and MIMIC locals
 
 % Unmmapped concepts & transition to contribution part
 The unmapped concepts are the concept id = 0 (no mapping concept).  The value
-zero for concept\_id can appear in very different cases. In the first case, the
+zero for concept\_id can appear in different cases. In the first case, the
 local concept has no equivalent in the standard concept set. In the second
 case, it has not yet been mapped and may have a standard equivalent. In the
 third case, the value is missing and cannot be mapped. In our opinion, although
