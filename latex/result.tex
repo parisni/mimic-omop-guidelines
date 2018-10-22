@@ -263,6 +263,13 @@ structural model. The laboratory values have been splitted into operators,
 values, and units when needed with a dedicated stored procedure. The free text
 conditions have been normalized and mapped to OMOP standard codes to meet the
 conceptual model.
+% Extraction of sections
+The note section extraction pipeline, 1200 sections were collected and then
+manually filtered to exclude false positives.  400 similar groups were
+highlighted. The extracted sections have not been mapped to standard
+terminology such as LOINC CDO. The reason for this is that the CDO LOINC
+decided to delete its sections from its standard, considering that these
+sections were not widely used  \cite{loinc-website}.
 
 \begin{table*}[t]
 %\tbl{Row level Data lost}{
@@ -366,30 +373,23 @@ were not sufficient to distinguish them. We have added some.
 %
 \subsection{Contribution}
 % MIMIC translated derived data
-Common derived information was introduced and loaded: corrected serum calcium,
+Common derived information were introduced and loaded: corrected serum calcium,
 corrected serum potassium, P/F ratio, corrected osmolarity, SAPSII.
 
-\emph{Denormalized derived} tables improve calculation costs and SQL query verbosity. 
-In addition, the resulting tables are much more human readable with the concept 
-label directly in table and greatly reduces joins. Therefore, a little 
-denormalization greatly improves the analysts experience and the simplicity
- by adding some redundancy in the data while not interrupting existing SQL queries. 
-Moreover, these normalized views are backward compatible and remain 
-standardized allowing the creation of multicentric algorithms.
+\emph{Denormalized derived} tables improve calculation costs and SQL query
+verbosity.  In addition, the resulting tables are much more human readable with
+the concept label directly in table and greatly reduces joins. Therefore, a
+little denormalization greatly improves the analysts experience of the data
+model and the simplicity by adding some redundancy in the data while not
+interrupting existing SQL queries. Moreover, these normalized views are
+backward compatible and remain standardized allowing the creation of
+multicentric algorithms.
 
-\emph{Materialized derived views} from microbiologyevents and icustays simplify 
-the experience for scientists. The community should do more.
-This results reflect the lack of \textit{simplicity} of the model in its
-original form can be easily overcome.
+\emph{Materialized derived views} from microbiologyevents and icustays simplify
+the experience for scientists.  This results reflect the lack of
+\textit{simplicity} of the model in its original form but this can be easily
+overcome.
 
-% TODO:
-% Extraction of sections
-About the section extraction pipeline, 1200 sections were collected and then
-manually filtered to exclude false positives.  400 similar groups were
-highlighted. The extracted sections have not been mapped to standard
-terminology such as LOINC CDO. The reason for this is that the CDO LOINC
-decided to delete its sections from its standard, considering that these
-sections were not widely used  \cite{loinc-website}.
 
 \begin{lstlisting}[language=sql,basicstyle=\scriptsize,caption=Optimized table microbiology SQL query,label={lst:optimized}]
 --
