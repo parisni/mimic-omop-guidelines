@@ -238,6 +238,8 @@ deleted in the process (marked with a status column in the MIMIC tables
 According to the tables \cite{lostrows}, four MIMIC tables have lost rows in
 the process. All of them were tagged in MIMIC as erroneous or cancelled
 informations since OMOP does not consider those information to be loaded.
+In the other hand some data has been added which is discussed later in the
+contribution section.
 
 % modification of the structure
 A set of minor modifications of the OMOP structure was made in order to feet
@@ -252,24 +254,6 @@ into two integer type columns because the offset word is a SQL reserved word
 and it makes sense to fill the resulting \textit{offset\_begin} and
 \textit{offset\_end} resulting columns.
 
-%
-% Addition of data
-%
-%TODO: 
-% - extraction of labs values
-% - normalization of coding (transition with Conceptual mapping paragraph)
-Some MIMIC raw information have been transformed and added to meet the
-structural model. The laboratory values have been splitted into operators,
-values, and units when needed with a dedicated stored procedure. The free text
-conditions have been normalized and mapped to OMOP standard codes to meet the
-conceptual model.
-% Extraction of sections
-The note section extraction pipeline, 1200 sections were collected and then
-manually filtered to exclude false positives.  400 similar groups were
-highlighted. The extracted sections have not been mapped to standard
-terminology such as LOINC CDO. The reason for this is that the CDO LOINC
-decided to delete its sections from its standard, considering that these
-sections were not widely used  \cite{loinc-website}.
 
 \begin{table*}[t]
 %\tbl{Row level Data lost}{
@@ -372,10 +356,27 @@ were not sufficient to distinguish them. We have added some.
 % Contributions
 %
 \subsection{Contribution}
+%
+% Addition of data
+%
+Some MIMIC raw information have been transformed and added to meet the
+structural model. The laboratory values have been splitted into operators,
+values, and units when needed with a dedicated stored procedure. The free text
+conditions have been normalized and mapped to OMOP standard codes to meet the
+conceptual model.
+% Extraction of sections
+The note section extraction pipeline, 1200 sections were collected and then
+manually filtered to exclude false positives.  400 similar groups were
+highlighted. The extracted sections have not been mapped to standard
+terminology such as LOINC CDO. The reason for this is that the CDO LOINC
+decided to delete its sections from its standard, considering that these
+sections were not widely used  \cite{loinc-website}.
 % MIMIC translated derived data
 Common derived information were introduced and loaded: corrected serum calcium,
 corrected serum potassium, P/F ratio, corrected osmolarity, SAPSII.
 
+%
+% Structural optimization
 \emph{Denormalized derived} tables improve calculation costs and SQL query
 verbosity.  In addition, the resulting tables are much more human readable with
 the concept label directly in table and greatly reduces joins. Therefore, a
@@ -389,7 +390,6 @@ multicentric algorithms.
 the experience for scientists.  This results reflect the lack of
 \textit{simplicity} of the model in its original form but this can be easily
 overcome.
-
 
 \begin{lstlisting}[language=sql,basicstyle=\scriptsize,caption=Optimized table microbiology SQL query,label={lst:optimized}]
 --
