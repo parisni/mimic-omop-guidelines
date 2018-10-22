@@ -16,7 +16,7 @@ archived on a universal and durable software archive solution
 \cite{universal-archive}. The github repository centralizes the various
 resources of this work such as documentation, source code, unit tests, as well
 as questioning examples, discussions and problem issues.  It also indicates web
-resources such as the physical data model for MIMIC\cite{mimic-schemaspy} and
+resources such as the physical data model for MIMIC \cite{mimic-schemaspy} and
 OMOP\cite{omop-schemaspy} datasets and the Achilles' web
 client\cite{mimic-omop-achilles}.
 % tools
@@ -33,8 +33,6 @@ which defines 15 standardized \textit{clinical} data tables, 3 \textit{health}
 system data tables, 2 \textit{health economics} data tables, 5 tables for
 \textit{derived} elements and 12 tables for standardized \textit{vocabulary}.
 From MIMIC, we only used the clinical and derived tables. 
-
-
 \\
 
 % Structural Mapping 
@@ -65,7 +63,7 @@ The data is extracted and loaded directly into the target location and
 subsequently transformed into the location. The ELT is composed of PgSQL
 scripts, each extracting information from the source or concept mapping tables,
 then transforming and loading an OMOP target table. The order of these scripts
-is important and is done sequentially through a main script.
+is important and is done sequentially through a main script. 
 % speeding up (subset, indexes, and unlogged tables)
 Measures have been taken to allow fast development cycles. A subset of 100
 patients over the 46K total MIMIC patients was selected based on their broad
@@ -104,7 +102,7 @@ maintenance.
 The \textbf{conceptual mapping} aims at aligning the MIMIC local terminologies
 to OMOP standard ones. It consists of three phases: integration, alignment and
 evaluation.
-
+% integration phase
 The integration phase is about loading both kind of terminologies into the OMOP
 vocabulary tables.
 % Athena codes
@@ -125,7 +123,13 @@ MIMIC codes can also be distinguished with \textit{the vocabulary\_id}
 identifier equal to "MIMIC code" and a \textit{domain\_id} identifier targeting
 the OMOP table in which the corresponding data is stored. Later, this domain
 information is sometime used in the ELT to send the information in the proper
-table with a so called "concept-driven dispatching".
+table with a so called "concept-driven dispatching". 
+OMOP documentation explains that concept mapping has to be done before the
+structural mapping because the nature of the OMOP standard concepts guides in
+which table (domain) the information should be stored. The concept-driven
+dispatching methodology, enable changing the concept mapping after the
+transformation without modifying the underlying ELT code because the latter is
+dynamically based on the concept table content.
 
 %alignment phase
 The alignment phase to standardizing local MIMIC codes into OMOP standards
