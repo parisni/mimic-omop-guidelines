@@ -1,6 +1,6 @@
 % ETL state
-The choice of ELT has several advantages over the use of dedicated ELT/ETL 
-software. It factors both people's knowledge and computer resources allowing 
+The choice of ELT without a dedicated ETL/ELT software has several advantages.
+It factors both people's knowledge and computer resources allowing 
 analysts to become implementers and revise code or contribute to transformation 
 with SQL as the unique language and technology.
 
@@ -13,16 +13,16 @@ contribute \cite{mimic-git}.
 
 % Data quality
 Any data transformation is likely to generate bugs that can have a huge impact 
-in medical research. The foundations of the RDBMS, such as transactions, 
-standardization and integrity constraints, are integrated safeguards that have
- been useful throughout the process. In addition to the implemented, 
+in medical research. The foundations of the Relational database management system (RDBMS)
+, such as transactions, standardization and integrity constraints, are integrated 
+safeguards that have been useful throughout the process. In addition to the implemented, 
 unit tests ensure that past or future bugs are behind us. An ideal but complex 
 validation method \cite{johnson-reprod} would be to replicate existing OMOP 
 studies and ensure that the results are consistent. 
 
 
 % ELT Time
-The calculation time of the ETL on the PGSQL instance on a modest personal 
+The calculation time of the ETL on the PgSQL instance on a modest personal 
 computer is compatible with a community work where the collaborator can clone 
 the source code and configure a development instance to reproduce or improve 
 the work. The choice of ELT based mainly on SQL code allows end users with 
@@ -32,10 +32,11 @@ translation profiles to be involved.
 
 % SQL: a choice for future
 The datathon showed that platforms distributed with basic hardware provide SQL 
-tools for OLAP analysis with excellent performance that overcome OLTP RDBMS 
-weaknesses. Therefore, it takes advantage of SQL language analysis functions 
+tools for Online Analytical Processing  with excellent performance that overcome 
+OnLine Transaction Processing RDBMS weaknesses. 
+Therefore, it takes advantage of SQL language analysis functions 
 such as grouping, windowing, assembling and mathematical functions that are 
-often missing in NOSQL databases.
+often missing in NoSQL databases.
 
 % about derived tables
 It is important that OMOP maintains a level of standardisation in order to 
@@ -100,15 +101,3 @@ We think that MIMIC-OMOP could be used to learn OMOP and build algorithms.
 Then it is necessary to send the data we imagine to send the algorithms in the 
 centers having transcribed their database in OMOP format. 
 This would resolve confidentiality issues.
-
-TODO:
-%To improve this mapping, we need collaborative work.
-
-% Implementability
-% OMOP has been available for 9 years. Its models and concepts provided are 
-% license free, the community is large and has been very helpful. Full versions 
-% are generally published annually and are not backwards compatible. 
-% Minor versions are not guaranteed to be backwards compatible, although an effort 
-% is made to ensure that current requests will not break. Micro-versions are 
-% published irregularly and often, and contain small corrections or changes 
-% that are backward compatible with the latest minor version \cite{omop-cdm}
