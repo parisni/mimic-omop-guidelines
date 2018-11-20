@@ -6,24 +6,22 @@
 % 3. Analytics
 %% Understandability and simplicity 
 
-The results are presented in tree sections accordingly to the method. The
-evaluation of a system and a structural model is rather difficult
+The evaluation of a system and a structural model is rather difficult
 \cite{moody-quality}. Several articles attempted to assess the quality of the
-CDM \cite{kahn_data_2012,omop-vs-pcornet}. The criteria developed by Khan and
-Al\cite{khan-quality}, which refer to the metrics Moody and Shanks
+CDM \cite{kahn-data-2012,omop-vs-pcornet}. The criteria developed by Khan and
+Al\cite{kahn-quality}, which refer to the metrics Moody and Shanks
 \cite{moody-quality}, have been adapted to assess the quality of the data
 transformation (table \ref{table:quality}). Those metrics are mentionned along
 the results to bring some additional comparison metrics.
 
-\tiny
 \begin{table*}[t]
 %\tbl{Data Transformation Quality Evaluation Metrics}{%
-\caption{Data Transformation Quality Evaluation Metrics}
-\begin{tabular}{@{}ll@{}}\toprule
+\caption{Transformation Quality Evaluation Metrics}
+\begin{tabular}{lp{12cm}}\toprule
 Data Model Dimension              & Descriptions                                                                                                      \\\colrule
 Completeness - structural mapping & Domain coverage : coverage of sources domains that are accommodated by the standard OMOP model                    \\
 Completeness - conceptual mapping & Data coverage : coverage of sources data concepts that mapped to standard OMOP concept                            \\
-Integrity                         & "Meaningful data relationships and constraints that uphold th eintent of the data-s original purpose" Khan and Al \\
+Integrity                         & "Meaningful data relationships and constraints that uphold the intent of the data's original purpose" \cite{kahn-quality} \\
 Flexibility                       & The ease to expand the standard model for new datatypes, concepts                                                 \\
 Integration                       & The capacity of the standard model to use multiples terminology and links its to standard one                     \\
 Implementability                  & The stability of the models, the community, the cost of adoption                                                  \\
@@ -50,7 +48,7 @@ generation of ready-to-load archive) on a subset of 100 patients takes five
 minutes and enables fast development cycles. The ELT lasts 3 hours to process
 the whole MIMIC database. The resulting csv archive is about the same size as
 the original archive, and MIMIC-OMOP is also the same size as MIMIC once loaded
-in PGSQL and indexed.
+in PgSQL and indexed.
 \\
 
 %
@@ -78,7 +76,7 @@ Two important tables are provided by OMOP to represent the relationship between
 the data : \textit{concept\_relationship} and \textit{fact\_relationship}. We
 used them to bind the drugs into a solution, for microbiology / antibiograms
 and for \textit{visit\_detail} and \textit{caresite} links. The following SQL
-query~\ref{lst:original} shows how a microorganism is linked to its
+query (listing \ref{lst:original}) shows how a microorganism is linked to its
 susceptibility test by a fact\_relationship. This results are in favor with a
 good \textit{flexibility}. However this flexibility affects the
 \textit{simplicity} and the performances of the model by increasing the number
@@ -144,10 +142,10 @@ JOIN
    AND measurement_concept_id = 46235217               			
       -- 'Bacteria identified in Blood product 
          unit.autologous by Culture'
-) staph ON id_is_staph = fact_id_1;
+) staph ON id_is_staph = fact_id_1
 WHERE TRUE
-AND  measurement_type_concept_id = 2000000008        			        
-  -- concept.concept_name = 'Labs - Culture Sensitivity'
+AND measurement_type_concept_id = 2000000008
+  -- 'Labs - Culture Sensitivity'
 \end{lstlisting}
 
 
@@ -164,7 +162,7 @@ admission is increased. This is because MIMIC-OMOP gathers laboratory data from
 both the MIMIC dedicated laboratory table and the chartervents table which is
 usually not considered for this purpose.
 % 
-By design, MIMIC aggregates information from various systems\cite{mimic-omop}.
+By design, MIMIC aggregates information from various systems\cite{mimic-omop-github}.
 Thus, the transfer information is divided into several tables, such as
 \textit{admissions}, \textit{transfers} and \textit{icustays}. OMOP centralizes
 this information in the detail of the \textit{visit\_detail}. 
@@ -175,7 +173,7 @@ and we decided to assign a new \textit{visit\_detail} for each ICU stay (based o
 the transfer table) while mimic preferred to assign a new icustay stay if a new 
 admission occurs > 24h after the end of the previous stay.
 % added specimens
-For laboratory tests when it makes sense to put a specimen (i.e. a body sample)
+For laboratory tests when it makes sense to put a specimen (i.e. a blood sample)
 for many laboratory results (because one blood sample can be used for several
 tests), we decided to create as many rows of samples as laboratory tests
 because the information is not present in MIMIC. The same was true when date
@@ -231,7 +229,7 @@ eliminated during ELT. As mentioned in the methods the error lines have been
 deleted in the process (marked with a status column in the MIMIC tables
 \textit{inputevents\_mv}, \textit{chartevents}, \textit{procedureevents\_mv}, note).
 % loss of rows
-According to the tables \cite{lostrows}, four MIMIC tables have lost rows in
+According to the tables \ref{table:lostrows}, four MIMIC tables have lost rows in
 the process. All of them were tagged in MIMIC as erroneous or cancelled
 informations since OMOP does not consider those information to be loaded.
 In the other hand some data has been added which is discussed later in the
@@ -270,7 +268,7 @@ assessment in many works. After 18 hours of computations Achilles Heel issued
 It does not evaluate the structural change, it is difficult to understand some
 error messages and we decide to process more evaluation tests. 
 
-\begin{table*}[t]
+\begin{table}[t]
 %\tbl{Row level Data lost}{
 \caption{Row level Data lost}{
 \begin{tabular}{@{}ll@{}}\toprule
@@ -281,7 +279,7 @@ procedureevents\_mv & 3,00\%           \\
 Note                & 0.04\%           \\\botrule
 \end{tabular}}
 \label{table:lostrows}
-\end{table*}
+\end{table}
 
 ~
 \\
@@ -301,14 +299,12 @@ body temperature, MIMIC provides 11 distinct concepts (Temperature F,
 Temperature C (calc), Temp Skin [C], Temperature Fahrenheit, Temp Axillary [F],
 Temperature C, Temperature F (calc), Temperature Celsius, Temp Rectal [F], 
 
-% measurement units
-% TODO: example of units
 
 \begin{table*}[t]
 %\tbl{Terminology Mapping coverage}
 \caption{Terminology Mapping coverage}
 \begin{tabular}{@{}lllll@{}}\toprule
-Omop tables (domain)   & Total\_records & \% Mapped\_records  & Total\_concepts\_source & \% Mapped\_concepts\_source  \\\colrule
+Omop tables (domain)   & Records 	& \% Mapped records  & Concepts source 		& \% Mapped concepts source  \\\colrule
 PERSONS                & 93040          & 100,00\%            & 43                      & 100,00\%                     \\
 VISIT\_OCCURRENCE      & 58976          & 100,00\%            & 34                      & 100,00\%                     \\
 VISIT\_DETAIL          & 396930         & 100,00\%            & 28                      & 100,00\%                     \\
@@ -331,7 +327,7 @@ mapping used (NDC, ICD9 and CPT4). CIM9 and CPT4 are correctly mapped to SNOMED
 Partly because of an incorrect NDC drug code (from MIMIC), partly because only 78\% 
 of NDC codes are mapped to Rxnorm. Moreover, even if this does not seem to have 
 affected our ELT we know that not all ICD-9-CM codes can have a one-to-one match 
-with SNOMED, some are one to several (28\%) \cite{snomed-icd9}
+with SNOMED, some are one to several (28\%) \cite{snomed-icd9}.
 This results are in favor with a good \textit{integration} of the model.
 % Integration
 OMOP's terminology coverage has already been rated as excellent
@@ -402,14 +398,30 @@ backward compatible and remain standardized allowing the creation of
 multicentric algorithms.
 
 \emph{Materialized derived views} from microbiologyevents and icustays simplify
-the experience for scientists.  This results reflect the lack of
+the experience for scientists (listing \ref{lst:optimized}).  This results reflect the lack of
 \textit{simplicity} of the model in its original form but this can be easily
 overcome.
 
-\begin{lstlisting}[language=sql,basicstyle=\scriptsize,caption=Optimized table microbiology SQL query,label={lst:optimized}]
---
---TODO: write the query
---
+\begin{lstlisting}[language=sql,basicstyle=\scriptsize,caption=Optimized and denormalized table microbiology SQL query,label={lst:optimized}]
+SELECT 
+, o.organism_source_value
+, o.organism_concept_id
+, o.antibiotic_concept_id
+, o.antibiotic_concept_name
+, o.antibiotic_source_value
+, o.antibiotic_interpretation_concept_id
+, o.antibiotic_interpretation_concept_name
+, o.MIC_operator_concept_id
+, o.MIC_operator_concept_name
+, o.MIC_value_as_number
+, o.MIC_source_value
+FROM microbiology
+WHERE TRUE
+AND value_as_concept_id = 4149419                     			
+  -- 'Staph aureus coag +' 
+AND measurement_concept_id = 46235217               			
+  -- 'Bacteria identified in Blood product 
+      unit.autologous by Culture';
 \end{lstlisting}
 
 As indicated in the methods section, we have provided many \emph{derived values}. 
@@ -440,7 +452,7 @@ requires knowing the organization of relational models (SQL) and also mastering
 the graphical nature of certain terminologies such as SNOMED-CT in order to 
 capture all potential codes that might be related to the one analysts think of 
 first. This complexity is inherent in terminology complexity and the closure
-table \ref{closure-table}. It is therefore not specific to OMOP or MIMIC-OMOP.
+table \ref{closure-table}. It is therefore not specific to MIMIC or OMOP.
 Overall the teams found MIMIC-OMOP easy to learn and managed to produce results
 at the end of the datathon.
 This results are in favor with a good \textit{understandibility} and

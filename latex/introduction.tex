@@ -32,12 +32,12 @@ and also easily enroll a large, multi-center cohort while minimizing costs.
 \emph{MIMIC} (Medical Information Mart for Intensive Care) 
 is a 10 year semi-automatic dataset of over 60,000 intensive care stays 
 with very high granularity (including EKG) 
-from two successive intensive care information systems (CCI)
+from two successive intensive care information systems
  at the Beth Israel Deaconess Medical Center in Boston. 
 It is the first ICU database available free of charge and has been the subject 
 of more than 300 international publications. 
 However, its monocentric nature makes it difficult to generalize findings to other ICUs. 
-The MIMIC relational data model reflects the original CCI, 
+The MIMIC relational data model reflects the original intensive care information system, 
 as evidenced by the two separate \textit{inputevent\_mv} and \textit{ouputevent\_cv} \cite{mimic-nature}
 or the two separate terminologies for physiological data. 
 This leads analysts (datascientists, statisticians, etc.) 
@@ -48,17 +48,18 @@ Some studies have shown that using a common data model (CDM) by generalizing
 the structural (data model) and conceptual (terminological model) design database 
 allows for multicentre research, exploitation of rare diseases 
 and catalyzes research by sharing practices, source code and tools \cite{cdm-review,data-enclave}. 
-As Kahn and Al said \cite(kahn-data-2012),  "databases modelling is the process 
+As Kahn and Al said \cite{kahn-data-2012},  "databases modelling is the process 
 of determining how data are to be stored in a database". 
 It specifies data types, constraints, relationship and metadata definitions 
 and provides a standardized way to represent resources/data and their relationships. 
 However, some studies have shown that the results are not fully reproducible 
 from one CDM to another \cite{cdm-comparison} or from one centre to another \cite{omop-replicability}. 
-The lighter approaches argue that maintaining the local conceptual model \cite{fhir-deep}
-or the original conceptual and structural model \cite{imi-protect} of the research database 
-leads to better results. On the one hand, keeping MIMIC on its specific form 
+Some approaches argue that keeping the local conceptual model \cite{fhir-deep}
+and the local structural model \cite{imi-protect} leads to better results. 
+On one hand, keeping MIMIC on its specific form 
 will not solve the limitation for multicentric research and, on the other hand, 
-a fully standardized form would introduce other disadvantages. 
+a fully standardized form would introduce other disadvantages, such as loss of datas,
+lower computational performances.
 The ideal solution is probably in between to allow 
 local or standardized analysis depending on the research question.
 
@@ -81,16 +82,16 @@ the concept mapping process is known to have an impact on results \cite{omop-con
 and the application of the same protocol on different data sources 
 leads to different results \cite{omop-replicability}. 
 This shows the importance of keeping local codes so that local analysis is always possible.
-Previous preliminary work has been done on the translation of MIMIC into OMOP \cite{mimic-omop-previous}. This work remains to be refined and updated to be evaluated.
+Previous preliminary work has been done on the translation of MIMIC into OMOP \cite{mimic-omop-previous}. 
+This work remains to be refined and updated to be evaluated.
 
 % CDM Comparison
 In a recent CDM comparative study \cite{cdm-review,omop-vs-pcornet}
-OMOP obtained better results in the criteria of the evaluation database 
-compared to the other models: completeness, integrity, flexibility, simplicity 
-of integration and implementability, adapting to the wider coverage 
-of standard terminologies, providing a more systematic analysis 
-with an analytical library and visualization tools, providing SQL models easier to use.
-That is why OMOP offers a broader set of standardised concepts.
+OMOP obtained better results in database's evaluation in completeness, integrity, 
+flexibility, simplicity of integration and implementability, adapting to the wider coverage 
+of standard terminologies, a more systematic analysis thanks to an analytical library and 
+to visualization tools, easier SQL models to use.
+In terms of conceptual approch, OMOP offers a broader set of standardised concepts.
 In terms of structural CDM, OMOP is very rigorous in how data should be loaded 
 into a particular table when i2b2 for example is very flexible 
 with a general table that solves all data domains. This rigorous approach 
@@ -100,9 +101,10 @@ however, the concept mapping step has limited the results since i2b2 design
 does not store local ontologies or informations where OMOP design keeps 
 concept mapping unfinished. OMOP has the advantage of not making the terminology 
 mapping step mandatory by keeping local codes in a usable format. 
-Compared to the FHIR, OMOP performs better as a conceptual CDM because 
-the FHIR does not specify the terminology to be used. In terms of structural CDM, 
-the OMOP relational model can be materialized in csv format
+Compared to the Fast Healthcare Interoperability Resources (FHIR) \cite{FHIR-doc},
+ OMOP performs better as a conceptual CDM because 
+the FHIR does not specify the terminology to be used. 
+OMOP relational model can be materialized in csv format
  and stored in any relational database when FHIR uses json files and 
 needs some processing and more skills to exploit.
 We believe OMOP shares the advantages of all the above models.

@@ -19,16 +19,17 @@
 
 
 % Title portion
-\title{MIMIC in the OMOP Common Data Model\thanks{To whom correspondence should be addressed Tel: +33111111111; e-mail: nicolas.paris@aphp.fr}}
+%\title{MIMIC in the OMOP Common Data Model\thanks{To whom correspondence should be addressed e-mail: nicolas.paris@aphp.fr}}
+\title{MIMIC in the OMOP Common Data Model}
 
 %Author Info.
 \authorgroup{
-\author{Nicolas PARIS},
+\author{N. PARIS and Adrien PARROT,}
 \role{WIND-DSI, AP-HP, Paris, France}
-AND \author{Adrien PARROT},
-\role{WIND-DSI, AP-HP, Paris, France}
-\email{(nicolas.paris@aphp.fr)\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad (adrien.parrot@caramail.fr)}
-\affil{AP-HP, Paris, France}
+\email{nicolas.paris@aphp.fr, adrien.parrot@caramail.fr}
+\author{T.POLLARD, A.E.W JOHNSON,}
+\role{Laboratory for Computational Physiology, MIT Institute for Medical Engineering and Science}
+%\affil{AP-HP, Paris, France}
 }
 
 %Abstract
@@ -45,7 +46,7 @@ for community contributions.\\
 \textbf{Material \& Method}: A documented, tested, versioned, exemplified and 
 open repository has been put in place to support the transformation and 
 enhancement of community source code. The resulting data set was evaluated over 
-a 48-hour datathon with 160 participants.\\
+a 48-hours datathon with 160 participants.\\
 \textbf{Result}: Most of the data correspond to the model and much of the 
 terminology has been standardized with an investment of 2 people for 500 hours. 
 The model demonstrated its ability to support community contributions and was 
@@ -60,9 +61,10 @@ for ICUs, generalizable to other services.
 
 \maketitle
 %Head 1
-\section{INTRODUCTION}
+\section*{INTRODUCTION}
 \input{introduction.tex}
 
+\setcounter{section}{0}
 \section{MATERIAL \& METHOD}
 \input{method.tex}
 
@@ -196,8 +198,11 @@ for ICUs, generalizable to other services.
 %%\section{CONCLUSION}
 %Filtering an audio signal with an allpass filter does not usually have a major effect on the signal's timbre. The allpass filter does not change the frequency content of the signal, but only introduces a phase shift or delay. Audibility of the phase distortion caused by an allpass filter in a sound reproduction system has been a topic of many studies, see, e.g., \cite{DEK1}, \cite{DEK2}. In this paper, we investigate audio effects processing using high-order allpass filters that consist of many cascaded low-order allpass filters. These filters have long chirp-like impulse responses. When audio and music signals are processed with such a filter, remarkable changes are obtained that are similar to the spectral delay effect  \cite{DEK3}, \cite{DEK4}. Note that articles might have a digital object identifier~\cite{DEK5}.
 
-\section{ACKNOWLEDGMENT}
-This research was conducted in fall 2008 when Vesa V\"alim\"aki was a visiting scholar at CCRMA, Stanford University. His visit was financed by the Academy of Finland (project no. 126310). The authors would like to Dr. Henri Penttinen for his comments and for the snare drum sample used in this work.
+\section{GRANT}
+This research received non specific grant from any funding agency in the public, commercial, or not-for-profit sectors
+
+\section{REPOSITORY WORK}
+All the latex files, statistics, pdf of the article are provide online : 
 
 \bibliography{aes2e.bib}
 \bibliographystyle{aes2e.bst}
@@ -242,25 +247,18 @@ This research was conducted in fall 2008 when Vesa V\"alim\"aki was a visiting s
 %\end{thebibliography}
 
 %Appendix
-\appendix
-\section*{APPENDIX}
-Filtering an audio signal with an allpass filter does not usually have a major effect on the signal's timbre. The allpass filter does not change the frequency content of the signal, but only introduces a phase shift or delay. Audibility of the phase distortion caused by an allpass filter in a sound reproduction system has been a topic of many studies, see, e.g., \cite{DEK1}, \cite{DEK2}.
-\begin{equation}
-\phi (\omega ) =  - \omega  + 2\arctan \left( {\frac{{a_1 \sin \omega }}{{1 + a_1 \cos \omega }}} \right)
-\end{equation}
-
-In this paper, we investigate audio effects processing using high-order allpass filters that consist of many cascaded low-order allpass filters. These filters have long chirp-like impulse responses. When audio and music signals are processed with such a filter, remarkable changes are obtained that are similar to the spectral delay effect  \cite{DEK3}, \cite{DEK4}.
-
-
-\begin{nomenclature}[PAMPs]
-\subsection*{NOMENCLATURE}
-\nomentry{a$_c$}{condensation coefficient condensation coefficient condensation coefficient}
-
-
-\nomentry{TLR}{Toll-like receptor}
-
-\nomentry{PAMPs}{pathogen-associated molecular patterns condensation coefficient condensation}
-\end{nomenclature}
+%\appendix
+%\section*{APPENDIX}
+%
+%\begin{nomenclature}[PAMPs]
+%\subsection*{NOMENCLATURE}
+%\nomentry{a$_c$}{condensation coefficient condensation coefficient condensation coefficient}
+%
+%
+%\nomentry{TLR}{Toll-like receptor}
+%
+%\nomentry{PAMPs}{pathogen-associated molecular patterns condensation coefficient condensation}
+%\end{nomenclature}
 
 %Biography
 % \biography{A1firstname A1lastname}{a.eps}{A1firstname A1lastname is professor of audio signal processing at Helsinki University of Technology (TKK), Espoo, Finland. He received his Master of Science in Technology, Licentiate of Science in Technology, and Doctor of Science in Technology degrees in electrical engineering from TKK in 1992, 1994, and 1995, respectively. His doctoral dissertation dealt with fractional delay filters and physical modeling of musical wind instruments. Since 1990, he has worked mostly at TKK with the exception of a few periods. In 1996 he spent six months as a postdoctoral research fellow at the University of Westminster, London, UK. In 2001-2002 he was professor of signal processing at the Pori School of Technology and Economics, Tampere University of Technology, Pori, Finland. During the academic year 2008-2009 he has been on sabbatical and has spent several months as a visiting scholar at the Center for Computer Research in Music and Acoustics (CCRMA), Stanford University, Stanford, CA. His research interests include musical signal processing, digital filter design, and acoustics of musical instruments. Prof. V\"alim\"aki is a senior member of the IEEE Signal Processing Society and is a member of the AES, the Acoustical Society of Finland, and the Finnish Musicological Society. He was the chairman of the 11th International Conference on Digital Audio Effects (DAFx-08), which was held in Espoo, Finland, in 2008.}

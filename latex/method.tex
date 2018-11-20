@@ -26,7 +26,7 @@ to run our work on limited resources without needing a license.
 Finally, PgSQL has recently made huge efforts to better manage data processing. 
 Some elaborate data transformations have been implemented as PgSQL functions.
 % data version
-MIMIC-III version 1.4.21 (MIMIC) has been loaded into pgSQL with the provided
+MIMIC-III version 1.4.21 (MIMIC) has been loaded into PgSQL with the provided
 scripts. The OMOP CDM version 5.3.3.1 (OMOP) target tables were created from
 the provided scripts with some small changes stored in the change script. OMOP
 which defines 15 standardized \textit{clinical} data tables, 3 \textit{health}
@@ -55,10 +55,10 @@ tracked in the commit log.
 % implementation step
 The implementation is generally done by an Extract-Transformation-Load (ELT)
 process which is a methodology for migrating data from a source to a target
-location. ETL first extracts the data from the source location, then applies
+location. ELT first extracts the data from the source location, then applies
 the transformations to a dedicated computer and finally loads the resulting
 data into the target location. Extract-Load-Transform (ELT) is a slightly
-different methodologies that does not use a dedicated server transformation.
+different methodologie that does not use a dedicated server transformation.
 The data is extracted and loaded directly into the target location and
 subsequently transformed into the location. The ELT is composed of PgSQL
 scripts, each extracting information from the source or concept mapping tables,
@@ -111,20 +111,20 @@ where loaded with the provided programs. We have used an export with all
 terminologies without licensing limitations.
 % MIMIC local codes
 The local terminologies have been extracted from the multiple MIMIC tables and
-loaded in the unique OMOP concept table. When possible, relevant information
-from the original MIMIC tables has been concatenated in the
+loaded in the unique OMOP concept table. When possible, relevant informations
+from the original MIMIC tables have been concatenated in the
 \textit{concept\_name} column. 
-New local MIMIC concepts were introduced and given a value from 2 billion to
-distinguish them from local MIMIC concepts.  MIMIC local codes are also loaded
-into the vocabulary table with a \textit{concept\_id} identifier from 2.1
-billion (below this number is reserved for OMOP terminologies
-\cite{omop-documentation-pdf}). 
-MIMIC codes can also be distinguished with \textit{the vocabulary\_id}
+New local MIMIC concepts were introduced in OMOP concept table and a \textit{concept\_id} value 
+starting at 2 billion has been assigned to distinguish them from local MIMIC concepts.  
+MIMIC local codes were also loaded into the vocabulary table with a \textit{concept\_id} 
+identifier started at 2.1 billion (lower numbers are reserved for OMOP terminologies
+\cite{omop-documentation}). 
+In OMOP concept table, MIMIC codes can also be distinguished with \textit{the vocabulary\_id}
 identifier equal to "MIMIC code" and a \textit{domain\_id} identifier targeting
 the OMOP table in which the corresponding data is stored. Later, this domain
 information is sometime used in the ELT to send the information in the proper
 table with a so called "concept-driven dispatching". 
-OMOP documentation explains that concept mapping has to be done before the
+OMOP documentation explains that conceptual mapping has to be done before the
 structural mapping because the nature of the OMOP standard concepts guides in
 which table (domain) the information should be stored. The concept-driven
 dispatching methodology, enable changing the concept mapping after the
@@ -158,7 +158,7 @@ rating function based on their labels. This work was followed by a intensivist
 check.
 
 % evaluation
-The evaluation phase was of both qualitative and quantitative nature.
+The evaluation phase was both qualitative and quantitative.
 The qualitative evaluation for newly generated mapping has consisted of tagging
 each mapping with a score between 0 and 1 and eventually write a commentary on
 each mapped concept. In case the mapping was provided by OMOP the evaluation
@@ -180,15 +180,15 @@ top of the OMOP format to load the OMOP derived tables.
 A set of \emph{general denormalized} tables has been built on top of the original 
 OMOP  format that have the \textit{concept\_name} related to the \textit{concept\_id} 
 columns. The concept table is a central element of OMOP and, therefore, it is 
-involved in many joins to obtain the concept label. Normalized tables accelerate 
+involved in many joins to obtain the concept label. Denormalized tables accelerate 
 calculation time and provide an easier set of data for analysis.
 
 % specialized materialized views
 In addition, a set of \emph{specialized materialized analysis views} has been built 
-on the original OMOP format. Microbiologicalevents table is a reorganization of the 
+on the original OMOP format. The OMOP \textit{microbiologicalevents} table is a reorganization of the 
 measurement table data of microorganisms and associated susceptibility testing 
 antibiotics and is based on the MIMIC \textit{microbiologicalevents} table. 
-The OMOP icustays table allows to quickly obtain the patients admitted in 
+The OMOP \textit{icustays} table allows to quickly obtain the patients admitted in 
 resuscitation and is inspired by the MIMIC \textit{icustays} tables.
 
 % note nlp
@@ -227,7 +227,7 @@ OMOP has been loaded into apache HIVE 1.2.1 in ORC format. Users had access to
 the ORC dataset from a web interface jupyter notebooks with python, R or scala. 
 A SQL web client allowed teams to write SQL from presto to the same dataset. 
 The hadoop cluster was based on 5 computers with 16 cores and 220GB of RAM memory. 
-The MIMIC-OMOP dataset has been loaded from a PGSQL instance to HIVE thought apache 
+The MIMIC-OMOP dataset has been loaded from a PgSQL instance to HIVE thought apache 
 SQOOP 1.4.6 directly in ORC format. Participants also had access to the Schemaspy 
 database physical model to access the OMOP physical data model with both 
 table/column comments and key primary/foreign relationships materializing the 

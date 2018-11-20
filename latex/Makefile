@@ -6,6 +6,6 @@ run:
 
 run_adrien:
 	/usr/local/texlive/2018/bin/x86_64-darwin/xelatex mimic-omop.tex
-	/usr/local/texlive/2018/bin/x86_64-darwin/xelatex mimic-omop.aux
+	/usr/local/texlive/2018/bin/x86_64-darwin/bibtex mimic-omop.aux
 	/usr/local/texlive/2018/bin/x86_64-darwin/xelatex mimic-omop.tex
-
+	/usr/local/texlive/2018/bin/x86_64-darwin/xelatex mimic-omop.tex
